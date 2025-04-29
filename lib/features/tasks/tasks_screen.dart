@@ -1,8 +1,8 @@
 import 'package:anchor/features/tasks/models/task_model.dart';
 import 'package:flutter/material.dart';
 
+import 'task_list/tasks_list.dart';
 import 'tasks_calendar.dart';
-import 'tasks_list.dart';
 
 class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});

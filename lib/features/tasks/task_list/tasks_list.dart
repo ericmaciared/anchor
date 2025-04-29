@@ -1,9 +1,10 @@
+import 'package:anchor/shared/modals/undo_confirmation_dialog.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'models/task_model.dart';
-import 'task_card.dart';
+import '../models/task_model.dart';
+import 'task_list_view.dart';
 
 class TasksList extends StatefulWidget {
   final List<Task> tasks;
@@ -36,10 +37,24 @@ class _TasksListState extends State<TasksList> {
       task.completed = true;
     });
     _confettiController.play();
+  }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Completed "${task.title}"')),
+  void _undoTaskCompleted(Task task) {
+    HapticFeedback.lightImpact();
+    setState(() {
+      task.completed = false;
+    });
+  }
+
+  Future<void> _confirmUndoTask(Task task) async {
+    final bool? shouldUndo = await showDialog<bool>(
+      context: context,
+      builder: (context) => const UndoConfirmationDialog(),
     );
+
+    if (shouldUndo == true) {
+      _undoTaskCompleted(task);
+    }
   }
 
   @override
@@ -49,20 +64,10 @@ class _TasksListState extends State<TasksList> {
     }
     return Stack(
       children: [
-        ListView.builder(
-          itemCount: widget.tasks.length,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          itemBuilder: (context, index) {
-            final task = widget.tasks[index];
-
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: GestureDetector(
-                onLongPress: () => _markTaskCompleted(task),
-                child: TaskCard(task: task),
-              ),
-            );
-          },
+        TaskListView(
+          tasks: widget.tasks,
+          onMarkCompleted: _markTaskCompleted,
+          onUndoCompleted: _confirmUndoTask,
         ),
         Align(
           alignment: Alignment.topCenter,
