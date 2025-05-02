@@ -18,13 +18,13 @@ class WelcomeScreen extends StatelessWidget {
                 color: Theme.of(context).colorScheme.primary,
               ),
               Text(
-                'Anchor',
+                'anchor.',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
+              TextButton(
                 onPressed: () {
-                  context.go('/tasks');
+                  context.go('/home');
                 },
                 child: Text('Start'),
               ),

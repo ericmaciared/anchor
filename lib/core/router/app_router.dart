@@ -1,3 +1,4 @@
+import 'package:anchor/features/habits/habits_screen.dart';
 import 'package:anchor/features/home/home_screen.dart';
 import 'package:anchor/features/tasks/tasks_screen.dart';
 import 'package:anchor/features/welcome/welcome_screen.dart';
@@ -20,6 +21,11 @@ final router = GoRouter(
       path: '/tasks',
       name: 'tasks',
       builder: (context, state) => const TasksScreen(),
+    ),
+    GoRoute(
+      path: '/habits',
+      name: 'habits',
+      builder: (context, state) => const HabitsScreen(),
     ),
   ],
 );

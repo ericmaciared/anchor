@@ -24,15 +24,16 @@ class TaskListView extends StatelessWidget {
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: GestureDetector(
-            onLongPress: () {
-              if (!task.completed) {
-                onMarkCompleted(task);
-              }
-            },
+          child: InkWell(
+            borderRadius: BorderRadius.circular(16),
             onTap: () {
               if (task.completed) {
                 onUndoCompleted(task);
+              }
+            },
+            onLongPress: () {
+              if (!task.completed) {
+                onMarkCompleted(task);
               }
             },
             child: TaskCard(task: task),
