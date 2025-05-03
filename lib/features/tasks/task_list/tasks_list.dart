@@ -1,21 +1,24 @@
+import 'package:anchor/features/tasks/add_edit_task_modal.dart';
+import 'package:anchor/features/tasks/tasks_provider.dart';
 import 'package:anchor/shared/modals/undo_confirmation_dialog.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/task_model.dart';
 import 'task_list_view.dart';
 
-class TasksList extends StatefulWidget {
+class TasksList extends ConsumerStatefulWidget {
   final List<Task> tasks;
 
   const TasksList({super.key, required this.tasks});
 
   @override
-  State<TasksList> createState() => _TasksListState();
+  ConsumerState<TasksList> createState() => _TasksListState();
 }
 
-class _TasksListState extends State<TasksList> {
+class _TasksListState extends ConsumerState<TasksList> {
   late final ConfettiController _confettiController;
 
   @override
@@ -68,6 +71,22 @@ class _TasksListState extends State<TasksList> {
           tasks: widget.tasks,
           onMarkCompleted: _markTaskCompleted,
           onUndoCompleted: _confirmUndoTask,
+          onTapTask: (task) {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (_) => AddEditTaskModal(
+                existingTask: task,
+                onSubmit: (updatedTask) async {
+                  await ref.read(tasksProvider.notifier).addTask(
+                      updatedTask); // replace with updateTask() if added
+                },
+                onDelete: () async {
+                  // TODO: implement deleteTask
+                },
+              ),
+            );
+          },
         ),
         Align(
           alignment: Alignment.topCenter,

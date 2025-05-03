@@ -1,10 +1,11 @@
 import 'package:anchor/core/router/app_router.dart';
 import 'package:anchor/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const AnchorApp());
+  runApp(const ProviderScope(child: AnchorApp()));
 }
 
 class AnchorApp extends StatelessWidget {

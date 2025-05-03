@@ -6,12 +6,14 @@ class TaskListView extends StatelessWidget {
   final List<Task> tasks;
   final void Function(Task task) onMarkCompleted;
   final Future<void> Function(Task task) onUndoCompleted;
+  final void Function(Task task) onTapTask;
 
   const TaskListView({
     super.key,
     required this.tasks,
     required this.onMarkCompleted,
     required this.onUndoCompleted,
+    required this.onTapTask,
   });
 
   @override
@@ -30,6 +32,7 @@ class TaskListView extends StatelessWidget {
               if (task.completed) {
                 onUndoCompleted(task);
               }
+              onTapTask(task);
             },
             onLongPress: () {
               if (!task.completed) {
