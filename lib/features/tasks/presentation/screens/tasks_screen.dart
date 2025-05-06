@@ -12,17 +12,26 @@ class TasksScreen extends ConsumerWidget {
     final tasks = ref.watch(taskProvider);
     final taskNotifier = ref.read(taskProvider.notifier);
 
+    final sortedTasks = [...tasks]..sort((a, b) {
+        final aTime = a.startTime;
+        final bTime = b.startTime;
+        if (aTime == null && bTime == null) return 0;
+        if (aTime == null) return 1; // nulls last
+        if (bTime == null) return -1;
+        return aTime.compareTo(bTime);
+      });
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Tasks'),
+        title: const Text('good morning.'),
       ),
-      body: tasks.isEmpty
+      body: sortedTasks.isEmpty
           ? const Center(child: Text('No tasks yet.'))
           : ListView.builder(
               padding: const EdgeInsets.all(16),
-              itemCount: tasks.length,
+              itemCount: sortedTasks.length,
               itemBuilder: (context, index) {
-                final task = tasks[index];
+                final task = sortedTasks[index];
                 return TaskCard(
                   task: task,
                   onTap: () => taskNotifier.toggleTask(task.id),
