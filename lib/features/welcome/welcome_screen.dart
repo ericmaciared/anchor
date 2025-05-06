@@ -24,7 +24,7 @@ class WelcomeScreen extends StatelessWidget {
               const SizedBox(height: 16),
               TextButton(
                 onPressed: () {
-                  context.go('/home');
+                  context.go('/tasks');
                 },
                 child: Text('Start'),
               ),
