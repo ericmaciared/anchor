@@ -31,6 +31,13 @@ class TaskNotifier extends StateNotifier<List<Task>> {
     state = [...state, task];
   }
 
+  Future<void> updateTask(Task updatedTask) async {
+    await repository.updateTask(updatedTask);
+    state = state.map((task) {
+      return task.id == updatedTask.id ? updatedTask : task;
+    }).toList();
+  }
+
   Future<Task?> deleteTask(String taskId) async {
     try {
       final taskToDelete = state.firstWhere((task) => task.id == taskId);

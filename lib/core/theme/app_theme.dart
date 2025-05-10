@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
+      fontFamily: 'Sora',
       colorScheme: ColorScheme.fromSeed(
         seedColor: Colors.blueAccent,
         brightness: Brightness.light,
@@ -37,6 +38,7 @@ class AppTheme {
 
   static ThemeData get darkTheme {
     return ThemeData(
+      fontFamily: 'Sora',
       colorScheme: ColorScheme.fromSeed(
         seedColor: Colors.blueAccent,
         brightness: Brightness.dark,
