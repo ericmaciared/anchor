@@ -22,6 +22,7 @@ class _TaskActionsDialogState extends State<TaskActionsDialog> {
   final _titleController = TextEditingController();
   TimeOfDay? _selectedTime;
   int? _durationMinutes;
+  Color _selectedColor = Colors.blue;
 
   @override
   void initState() {
@@ -33,6 +34,7 @@ class _TaskActionsDialogState extends State<TaskActionsDialog> {
         _selectedTime = TimeOfDay.fromDateTime(task.startTime!);
       }
       _durationMinutes = task.duration?.inMinutes;
+      _selectedColor = task.color;
     }
   }
 
@@ -70,6 +72,7 @@ class _TaskActionsDialogState extends State<TaskActionsDialog> {
       duration: _durationMinutes != null
           ? Duration(minutes: _durationMinutes!)
           : null,
+      color: _selectedColor,
     );
 
     widget.onSubmit(newTask);
@@ -105,6 +108,14 @@ class _TaskActionsDialogState extends State<TaskActionsDialog> {
   @override
   Widget build(BuildContext context) {
     final isEdit = widget.initialTask != null;
+    const presetColors = [
+      Colors.blue,
+      Colors.green,
+      Colors.orange,
+      Colors.red,
+      Colors.purple,
+      Colors.teal,
+    ];
 
     return AlertDialog(
       title: Text(isEdit ? 'Edit Task' : 'New Task'),
@@ -147,6 +158,31 @@ class _TaskActionsDialogState extends State<TaskActionsDialog> {
                     .toList(),
                 onChanged: (value) => setState(() => _durationMinutes = value),
               ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              const Text('Color:'),
+              const SizedBox(width: 12),
+              ...presetColors.map((color) {
+                final isSelected = _selectedColor == color;
+                return GestureDetector(
+                  onTap: () => setState(() => _selectedColor = color),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    width: isSelected ? 30 : 24,
+                    height: isSelected ? 30 : 24,
+                    decoration: BoxDecoration(
+                      color: color,
+                      shape: BoxShape.circle,
+                      border: isSelected
+                          ? Border.all(color: Colors.black, width: 2)
+                          : null,
+                    ),
+                  ),
+                );
+              }),
             ],
           ),
         ],

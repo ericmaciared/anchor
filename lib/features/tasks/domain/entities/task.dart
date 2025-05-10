@@ -1,9 +1,12 @@
+import 'dart:ui';
+
 class Task {
   final String id;
   final String title;
   final bool isDone;
   final DateTime? startTime;
   final Duration? duration;
+  final Color color;
 
   Task({
     required this.id,
@@ -11,6 +14,7 @@ class Task {
     required this.isDone,
     this.startTime,
     this.duration,
+    required this.color,
   });
 
   Task copyWith({
@@ -19,6 +23,7 @@ class Task {
     bool? isDone,
     DateTime? startTime,
     Duration? duration,
+    Color? color,
   }) {
     return Task(
       id: id ?? this.id,
@@ -26,6 +31,7 @@ class Task {
       isDone: isDone ?? this.isDone,
       startTime: startTime ?? this.startTime,
       duration: duration ?? this.duration,
+      color: color ?? this.color,
     );
   }
 }

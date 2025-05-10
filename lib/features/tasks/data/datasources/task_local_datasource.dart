@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:anchor/features/tasks/domain/entities/task.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -31,7 +33,8 @@ class TaskLocalDataSource {
         title TEXT,
         isDone INTEGER,
         startTime TEXT,
-        duration INTEGER
+        duration INTEGER,
+        color INTEGER
       )
     ''');
   }
@@ -51,6 +54,7 @@ class TaskLocalDataSource {
         duration: map['duration'] != null
             ? Duration(minutes: map['duration'] as int)
             : null,
+        color: Color(map['color'] as int),
       );
     }).toList();
   }
@@ -63,6 +67,7 @@ class TaskLocalDataSource {
       'isDone': task.isDone ? 1 : 0,
       'startTime': task.startTime?.toIso8601String(),
       'duration': task.duration?.inMinutes,
+      'color': task.color.toARGB32(),
     });
   }
 
@@ -75,6 +80,7 @@ class TaskLocalDataSource {
         'isDone': task.isDone ? 1 : 0,
         'startTime': task.startTime?.toIso8601String(),
         'duration': task.duration?.inMinutes,
+        'color': task.color.toARGB32(),
       },
       where: 'id = ?',
       whereArgs: [task.id],

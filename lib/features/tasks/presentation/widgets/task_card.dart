@@ -72,7 +72,6 @@ class _TaskCardState extends State<TaskCard>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -81,7 +80,7 @@ class _TaskCardState extends State<TaskCard>
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: Colors.green,
+                    color: Colors.grey,
                   ),
                 ),
                 TextButton(
@@ -95,29 +94,22 @@ class _TaskCardState extends State<TaskCard>
       );
     }
 
-    // If task is not completed, show hold-to-complete button
     return Padding(
       padding: const EdgeInsets.only(top: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Divider(),
           GestureDetector(
-            onLongPress: widget.onComplete,
+            onLongPress: () {
+              setState(() => _isExpanded = false);
+              widget.onComplete();
+            },
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
+                color: task.color,
                 borderRadius: BorderRadius.circular(32),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.green.withAlpha(40),
-                    blurRadius: 12,
-                    spreadRadius: 1,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
               ),
               child: const Text(
                 'Hold to Complete',
@@ -145,7 +137,16 @@ class _TaskCardState extends State<TaskCard>
         children: [
           _buildTimeColumn(task),
           const SizedBox(width: 8),
-          const Icon(Icons.circle, size: 12),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeInOut,
+            width: 8,
+            height: _isExpanded ? 130 : 50,
+            decoration: BoxDecoration(
+              color: task.color,
+              borderRadius: BorderRadius.circular(4),
+            ),
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Card(
@@ -167,7 +168,7 @@ class _TaskCardState extends State<TaskCard>
                             task.isDone
                                 ? Icons.check_circle
                                 : Icons.circle_outlined,
-                            color: task.isDone ? Colors.green : Colors.grey,
+                            color: task.isDone ? task.color : Colors.grey,
                           ),
                           const SizedBox(width: 8),
                           Expanded(

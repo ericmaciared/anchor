@@ -70,7 +70,20 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: const Text('good morning.'),
+        actions: [
+          IconButton(
+            onPressed: () => showDialog(
+              context: context,
+              builder: (_) => TaskActionsDialog(
+                onSubmit: (task) => taskNotifier.addTask(task),
+              ),
+            ),
+            tooltip: 'Add Task',
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -113,16 +126,6 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => showDialog(
-          context: context,
-          builder: (_) => TaskActionsDialog(
-            onSubmit: (task) => taskNotifier.addTask(task),
-          ),
-        ),
-        tooltip: 'Add Task',
-        child: const Icon(Icons.add),
       ),
     );
   }
