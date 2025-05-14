@@ -32,6 +32,7 @@ class TaskLocalDataSource {
         id TEXT PRIMARY KEY,
         title TEXT,
         isDone INTEGER,
+        day TEXT,
         startTime TEXT,
         duration INTEGER,
         color INTEGER
@@ -48,6 +49,7 @@ class TaskLocalDataSource {
         id: map['id'] as String,
         title: map['title'] as String,
         isDone: (map['isDone'] as int) == 1,
+        day: DateTime.parse(map['day'] as String),
         startTime: map['startTime'] != null
             ? DateTime.tryParse(map['startTime'] as String)
             : null,
@@ -65,6 +67,7 @@ class TaskLocalDataSource {
       'id': task.id,
       'title': task.title,
       'isDone': task.isDone ? 1 : 0,
+      'day': task.day.toIso8601String(),
       'startTime': task.startTime?.toIso8601String(),
       'duration': task.duration?.inMinutes,
       'color': task.color.toARGB32(),
@@ -78,6 +81,7 @@ class TaskLocalDataSource {
       {
         'title': task.title,
         'isDone': task.isDone ? 1 : 0,
+        'day': task.day.toIso8601String(),
         'startTime': task.startTime?.toIso8601String(),
         'duration': task.duration?.inMinutes,
         'color': task.color.toARGB32(),

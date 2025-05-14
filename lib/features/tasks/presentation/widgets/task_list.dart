@@ -30,7 +30,7 @@ class TaskList extends StatelessWidget {
             padding: const EdgeInsets.only(top: 16, bottom: 8),
             child: Text(
               label!,
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
         ...tasks.map(
@@ -38,7 +38,7 @@ class TaskList extends StatelessWidget {
             task: task,
             onComplete: () => onComplete(task),
             onLongPress: () => onLongPress(task),
-            onUndoComplete: () => onComplete(task), // Toggle again
+            onUndoComplete: () => onComplete(task),
           ),
         ),
       ],

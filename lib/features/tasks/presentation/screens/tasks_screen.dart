@@ -1,8 +1,12 @@
-import 'package:anchor/features/tasks/application/providers/task_provider.dart';
+import 'package:anchor/core/utils/date_utils.dart';
+import 'package:anchor/features/shared/confetti/confetti_provider.dart';
 import 'package:anchor/features/tasks/domain/entities/task.dart';
+import 'package:anchor/features/tasks/presentation/providers/task_provider.dart';
+import 'package:anchor/features/tasks/presentation/widgets/empty_task_state.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions_dialog.dart';
-import 'package:anchor/features/tasks/presentation/widgets/task_list.dart';
-import 'package:confetti/confetti.dart';
+import 'package:anchor/features/tasks/presentation/widgets/task_list_section.dart';
+import 'package:anchor/features/tasks/presentation/widgets/tasks_screen_app_bar.dart';
+import 'package:anchor/features/tasks/presentation/widgets/week_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,33 +18,16 @@ class TasksScreen extends ConsumerStatefulWidget {
 }
 
 class _TasksScreenState extends ConsumerState<TasksScreen> {
-  late final ConfettiController _confettiController;
-
-  @override
-  void initState() {
-    super.initState();
-    _confettiController =
-        ConfettiController(duration: const Duration(milliseconds: 500));
-  }
-
-  @override
-  void dispose() {
-    _confettiController.dispose();
-    super.dispose();
-  }
-
-  void triggerConfetti() {
-    _confettiController.play();
-  }
+  DateTime _selectedDay = normalizeDate(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
     final tasks = ref.watch(taskProvider);
     final taskNotifier = ref.read(taskProvider.notifier);
+    final confettiController = ref.read(confettiProvider);
 
-    final scheduledTasks = tasks.where((t) => t.startTime != null).toList()
-      ..sort((a, b) => a.startTime!.compareTo(b.startTime!));
-    final unscheduledTasks = tasks.where((t) => t.startTime == null).toList();
+    final todayTasks =
+        tasks.where((t) => isSameDay(t.day, _selectedDay)).toList();
 
     void handleLongPress(Task task) {
       showDialog(
@@ -68,63 +55,45 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
       );
     }
 
+    void handleCompletion(Task task) {
+      final wasDone = task.isDone;
+      taskNotifier.toggleTask(task.id);
+      if (!wasDone) confettiController.play();
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: const Text('good morning.'),
-        actions: [
-          IconButton(
-            onPressed: () => showDialog(
-              context: context,
-              builder: (_) => TaskActionsDialog(
-                onSubmit: (task) => taskNotifier.addTask(task),
-              ),
-            ),
-            tooltip: 'Add Task',
-            icon: const Icon(Icons.add),
+      appBar: TasksScreenAppBar(
+        onAddTask: () => showDialog(
+          context: context,
+          builder: (_) => TaskActionsDialog(
+            onSubmit: (task) => taskNotifier.addTask(task),
           ),
-        ],
+        ),
       ),
-      body: Stack(
+      body: Column(
         children: [
-          tasks.isEmpty
-              ? const Center(child: Text('No tasks yet.'))
-              : ListView(
-                  padding: const EdgeInsets.all(16),
-                  children: [
-                    TaskList(
-                      tasks: unscheduledTasks,
-                      label: 'Unscheduled Tasks',
-                      onComplete: (task) {
-                        final wasDone = task.isDone;
-                        taskNotifier.toggleTask(task.id);
-                        if (!wasDone) triggerConfetti();
-                      },
-                      onLongPress: handleLongPress,
-                    ),
-                    TaskList(
-                      tasks: scheduledTasks,
-                      label: 'Scheduled Tasks',
-                      onComplete: (task) {
-                        final wasDone = task.isDone;
-                        taskNotifier.toggleTask(task.id);
-                        if (!wasDone) triggerConfetti();
-                      },
-                      onLongPress: handleLongPress,
-                    ),
-                  ],
-                ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: ConfettiWidget(
-              confettiController: _confettiController,
-              blastDirectionality: BlastDirectionality.explosive,
-              shouldLoop: false,
-              numberOfParticles: 30,
-              gravity: 0.3,
-              emissionFrequency: 0.05,
-            ),
+          WeekCalendar(
+            selectedDay: _selectedDay,
+            onDaySelected: (day) => setState(() {
+              _selectedDay = normalizeDate(day);
+            }),
           ),
+          Expanded(
+            child: todayTasks.isEmpty
+                ? EmptyTaskState(
+                    onAdd: () => showDialog(
+                      context: context,
+                      builder: (_) => TaskActionsDialog(
+                        onSubmit: (task) => taskNotifier.addTask(task),
+                      ),
+                    ),
+                  )
+                : TaskListSection(
+                    selectedDayTasks: todayTasks,
+                    onComplete: handleCompletion,
+                    onLongPress: handleLongPress,
+                  ),
+          )
         ],
       ),
     );

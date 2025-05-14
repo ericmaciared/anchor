@@ -68,6 +68,7 @@ class _TaskActionsDialogState extends State<TaskActionsDialog> {
       id: widget.initialTask?.id ?? const Uuid().v4(),
       title: title,
       isDone: widget.initialTask?.isDone ?? false,
+      day: now,
       startTime: startTime,
       duration: _durationMinutes != null
           ? Duration(minutes: _durationMinutes!)

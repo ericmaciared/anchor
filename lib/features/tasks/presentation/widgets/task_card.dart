@@ -63,10 +63,36 @@ class _TaskCardState extends State<TaskCard>
     );
   }
 
+  Future<void> _showUndoConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Undo Completion'),
+          content:
+              const Text('Are you sure you want to undo this task completion?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                widget.onUndoComplete?.call();
+              },
+              child: const Text('Undo'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget _buildExpandedAction(Task task) {
     if (!_isExpanded) return const SizedBox.shrink();
 
-    if (task.isDone) {
+    if (task.isDone && widget.onUndoComplete != null) {
       return Padding(
         padding: const EdgeInsets.only(top: 12),
         child: Column(
@@ -84,12 +110,24 @@ class _TaskCardState extends State<TaskCard>
                   ),
                 ),
                 TextButton(
-                  onPressed: widget.onUndoComplete,
+                  onPressed: () => _showUndoConfirmationDialog(context),
                   child: const Text('Undo'),
                 ),
               ],
             ),
           ],
+        ),
+      );
+    } else if (task.isDone && widget.onUndoComplete == null) {
+      return const Padding(
+        padding: EdgeInsets.only(top: 12),
+        child: Text(
+          'Task completed!',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+          ),
         ),
       );
     }
@@ -140,11 +178,11 @@ class _TaskCardState extends State<TaskCard>
           AnimatedContainer(
             duration: const Duration(milliseconds: 250),
             curve: Curves.easeInOut,
-            width: 8,
+            width: 16,
             height: _isExpanded ? 130 : 50,
             decoration: BoxDecoration(
               color: task.color,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(8),
             ),
           ),
           const SizedBox(width: 12),
