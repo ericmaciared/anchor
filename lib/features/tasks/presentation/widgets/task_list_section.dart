@@ -1,3 +1,4 @@
+import 'package:anchor/features/shared/quotes/presentation/widgets/daily_quote_card.dart';
 import 'package:anchor/features/tasks/domain/entities/task.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_list.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +26,9 @@ class TaskListSection extends StatelessWidget {
         selectedDayTasks.where((t) => t.startTime == null).toList();
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       children: [
+        DailyQuoteCard(),
         TaskList(
           tasks: unscheduledTasks,
           label: 'Unscheduled Tasks',
