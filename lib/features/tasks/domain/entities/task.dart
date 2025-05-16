@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 class Task {
   final String id;
@@ -8,6 +8,7 @@ class Task {
   final DateTime? startTime;
   final Duration? duration;
   final Color color;
+  final IconData icon;
 
   Task({
     required this.id,
@@ -17,6 +18,7 @@ class Task {
     this.startTime,
     this.duration,
     required this.color,
+    required this.icon,
   });
 
   Task copyWith({
@@ -27,6 +29,7 @@ class Task {
     DateTime? startTime,
     Duration? duration,
     Color? color,
+    IconData? icon,
   }) {
     return Task(
       id: id ?? this.id,
@@ -36,6 +39,7 @@ class Task {
       startTime: startTime ?? this.startTime,
       duration: duration ?? this.duration,
       color: color ?? this.color,
+      icon: icon ?? this.icon,
     );
   }
 }

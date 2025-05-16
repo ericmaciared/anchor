@@ -178,11 +178,16 @@ class _TaskCardState extends State<TaskCard>
           AnimatedContainer(
             duration: const Duration(milliseconds: 250),
             curve: Curves.easeInOut,
-            width: 16,
+            width: 48,
             height: _isExpanded ? 130 : 50,
             decoration: BoxDecoration(
               color: task.color,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: Icon(
+              task.icon,
+              color: Colors.white,
+              size: 24,
             ),
           ),
           const SizedBox(width: 12),

@@ -1,6 +1,5 @@
-import 'dart:ui';
-
 import 'package:anchor/features/tasks/domain/entities/task.dart';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -35,7 +34,8 @@ class TaskLocalDataSource {
         day TEXT,
         startTime TEXT,
         duration INTEGER,
-        color INTEGER
+        color INTEGER,
+        iconCodePoint INTEGER
       )
     ''');
   }
@@ -57,6 +57,10 @@ class TaskLocalDataSource {
             ? Duration(minutes: map['duration'] as int)
             : null,
         color: Color(map['color'] as int),
+        icon: IconData(
+          map['iconCodePoint'] as int,
+          fontFamily: 'MaterialIcons',
+        ),
       );
     }).toList();
   }
@@ -71,6 +75,7 @@ class TaskLocalDataSource {
       'startTime': task.startTime?.toIso8601String(),
       'duration': task.duration?.inMinutes,
       'color': task.color.toARGB32(),
+      'iconCodePoint': task.icon.codePoint,
     });
   }
 
@@ -85,6 +90,7 @@ class TaskLocalDataSource {
         'startTime': task.startTime?.toIso8601String(),
         'duration': task.duration?.inMinutes,
         'color': task.color.toARGB32(),
+        'iconCodePoint': task.icon.codePoint,
       },
       where: 'id = ?',
       whereArgs: [task.id],
