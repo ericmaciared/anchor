@@ -29,18 +29,14 @@ class _TaskCardState extends State<TaskCard>
   }
 
   String _buildSubtitle(Task task) {
-    final buffer = StringBuffer();
-
     if (task.startTime != null) {
-      buffer.write('Starts at ${DateFormat('HH:mm').format(task.startTime!)}');
+      if (task.duration == null) {
+        return DateFormat('HH:mm').format(task.startTime!);
+      }
+      final endTime = task.startTime!.add(task.duration ?? Duration.zero);
+      return '${DateFormat('HH:mm').format(task.startTime!)} - ${DateFormat('HH:mm').format(endTime)} (${task.duration?.inMinutes ?? 0} min)';
     }
-
-    if (task.duration != null) {
-      if (buffer.isNotEmpty) buffer.write(' • ');
-      buffer.write('Duration: ${task.duration!.inMinutes}min');
-    }
-
-    return buffer.toString();
+    return '';
   }
 
   Widget _buildTimeColumn(Task task) {
@@ -178,16 +174,11 @@ class _TaskCardState extends State<TaskCard>
           AnimatedContainer(
             duration: const Duration(milliseconds: 250),
             curve: Curves.easeInOut,
-            width: 48,
+            width: 12,
             height: _isExpanded ? 130 : 50,
             decoration: BoxDecoration(
               color: task.color,
               borderRadius: BorderRadius.circular(18),
-            ),
-            child: Icon(
-              task.icon,
-              color: Colors.white,
-              size: 24,
             ),
           ),
           const SizedBox(width: 12),
@@ -208,34 +199,44 @@ class _TaskCardState extends State<TaskCard>
                       Row(
                         children: [
                           Icon(
+                            task.icon,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  task.title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    decoration: task.isDone
+                                        ? TextDecoration.lineThrough
+                                        : null,
+                                  ),
+                                ),
+                                if (subtitle.isNotEmpty)
+                                  Text(
+                                    subtitle,
+                                    style: const TextStyle(fontSize: 13),
+                                  ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Icon(
                             task.isDone
                                 ? Icons.check_circle
                                 : Icons.circle_outlined,
-                            color: task.isDone ? task.color : Colors.grey,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              task.title,
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                decoration: task.isDone
-                                    ? TextDecoration.lineThrough
-                                    : null,
-                              ),
-                            ),
+                            color: !task.isDone ? task.color : Colors.grey,
                           ),
                         ],
                       ),
-                      if (subtitle.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Text(
-                            subtitle,
-                            style: const TextStyle(fontSize: 13),
-                          ),
-                        ),
                       AnimatedSize(
                         duration: const Duration(milliseconds: 250),
                         curve: Curves.easeInOut,

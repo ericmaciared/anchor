@@ -67,6 +67,8 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
       appBar: TasksScreenAppBar(
         onAddTask: () => showModalBottomSheet(
           context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
           builder: (_) => TaskActionsModal(
             onSubmit: (task) => taskNotifier.addTask(task),
           ),
@@ -86,6 +88,8 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
                   ? EmptyTaskState(
                       onAdd: () => showModalBottomSheet(
                         context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
                         builder: (_) => TaskActionsModal(
                           onSubmit: (task) => taskNotifier.addTask(task),
                         ),

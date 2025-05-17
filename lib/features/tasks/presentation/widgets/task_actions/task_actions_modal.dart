@@ -1,6 +1,13 @@
 import 'package:anchor/features/tasks/domain/entities/task.dart';
+import 'package:anchor/features/tasks/presentation/widgets/task_actions/icon_and_title.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+
+import 'color_picker.dart';
+import 'duration_dropdown.dart';
+import 'footer_actions.dart';
+import 'suggested_tasks_list.dart';
+import 'time_picker.dart';
 
 class TaskActionsModal extends StatefulWidget {
   final Task? initialTask;
@@ -19,30 +26,24 @@ class TaskActionsModal extends StatefulWidget {
 }
 
 class _TaskActionsModalState extends State<TaskActionsModal> {
-  final _titleController = TextEditingController();
+  String _title = '';
   TimeOfDay? _selectedTime;
   int? _durationMinutes;
   Color _selectedColor = Colors.blue;
   IconData _selectedIcon = Icons.check_circle_outline;
 
-  final _availableIcons = [
-    Icons.work,
-    Icons.fitness_center,
-    Icons.book,
-    Icons.shopping_cart,
-    Icons.music_note,
-    Icons.pets,
-  ];
+  bool get _isTitleEntered => _title.trim().isNotEmpty;
 
   @override
   void initState() {
     super.initState();
+
     final task = widget.initialTask;
     if (task != null) {
-      _titleController.text = task.title;
-      if (task.startTime != null) {
-        _selectedTime = TimeOfDay.fromDateTime(task.startTime!);
-      }
+      _title = task.title;
+      _selectedTime = task.startTime != null
+          ? TimeOfDay.fromDateTime(task.startTime!)
+          : null;
       _durationMinutes = task.duration?.inMinutes;
       _selectedColor = task.color;
       _selectedIcon = task.icon;
@@ -50,7 +51,7 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
   }
 
   void _submit() {
-    final title = _titleController.text.trim();
+    final title = _title.trim();
     if (title.isEmpty) return;
 
     final now = DateTime.now();
@@ -59,7 +60,7 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
             _selectedTime!.minute)
         : null;
 
-    final newTask = Task(
+    final task = Task(
       id: widget.initialTask?.id ?? const Uuid().v4(),
       title: title,
       isDone: widget.initialTask?.isDone ?? false,
@@ -72,20 +73,13 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
       icon: _selectedIcon,
     );
 
-    widget.onSubmit(newTask);
+    widget.onSubmit(task);
     Navigator.of(context).pop();
-  }
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final isEdit = widget.initialTask != null;
-    final mediaQuery = MediaQuery.of(context);
 
     return DraggableScrollableSheet(
       expand: false,
@@ -93,172 +87,106 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
       minChildSize: 0.5,
       maxChildSize: 0.95,
       builder: (_, controller) => Container(
-        padding: EdgeInsets.only(
-          top: 24,
-          left: 20,
-          right: 20,
-          bottom: mediaQuery.viewInsets.bottom + 20,
-        ),
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         ),
-        child: ListView(
-          controller: controller,
-          children: [
-            Text(
-              isEdit ? 'Edit Task' : 'New Task',
-              style: Theme.of(context).textTheme.headlineSmall,
+        child: SafeArea(
+          top: false,
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: 24,
+              left: 20,
+              right: 20,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 20,
             ),
-            const SizedBox(height: 20),
-            Row(
+            child: Column(
               children: [
-                IconButton(
-                  onPressed: () {
-                    showModalBottomSheet(
+                Expanded(
+                  child: ListView(
+                    controller: controller,
+                    children: [
+                      Text(isEdit ? 'edit task' : 'new task',
+                          style: Theme.of(context).textTheme.headlineSmall),
+                      const SizedBox(height: 24),
+                      IconAndTitle(
+                        title: _title,
+                        selectedIcon: _selectedIcon,
+                        onTitleChanged: (text) => setState(() => _title = text),
+                        onIconChanged: (icon) =>
+                            setState(() => _selectedIcon = icon),
+                      ),
+                      const SizedBox(height: 36),
+                      if (!_isTitleEntered)
+                        SuggestedTasksList(
+                          onTap: (task) {
+                            setState(() {
+                              _title = task.title;
+                              _selectedIcon = task.icon;
+                              _selectedColor = task.color;
+                              _selectedTime = task.startTime != null
+                                  ? TimeOfDay.fromDateTime(task.startTime!)
+                                  : null;
+                              _durationMinutes = task.duration?.inMinutes;
+                            });
+                          },
+                        ),
+                      if (_isTitleEntered) ...[
+                        TimePicker(
+                          selectedTime: _selectedTime,
+                          onPick: (time) =>
+                              setState(() => _selectedTime = time),
+                        ),
+                        const SizedBox(height: 16),
+                        DurationDropdown(
+                          duration: _durationMinutes,
+                          onChanged: (min) =>
+                              setState(() => _durationMinutes = min),
+                        ),
+                        const SizedBox(height: 16),
+                        ColorPicker(
+                          selectedColor: _selectedColor,
+                          onColorSelected: (color) =>
+                              setState(() => _selectedColor = color),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                FooterActions(
+                  isEdit: isEdit,
+                  onDelete: () async {
+                    final confirmed = await showDialog<bool>(
                       context: context,
-                      builder: (_) => Wrap(
-                        children: _availableIcons.map((icon) {
-                          return IconButton(
-                            icon: Icon(icon),
-                            onPressed: () {
-                              setState(() => _selectedIcon = icon);
-                              Navigator.pop(context);
-                            },
-                          );
-                        }).toList(),
+                      builder: (_) => AlertDialog(
+                        title: const Text('Confirm Deletion'),
+                        content: const Text(
+                            'Are you sure you want to delete this task?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text('Delete'),
+                          ),
+                        ],
                       ),
                     );
-                  },
-                  icon: Icon(_selectedIcon, size: 28),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: TextField(
-                    controller: _titleController,
-                    decoration: const InputDecoration(
-                      labelText: 'Task Name',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    _selectedTime == null
-                        ? 'Start time: Not set'
-                        : 'Start time: ${_selectedTime!.format(context)}',
-                  ),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    final picked = await showTimePicker(
-                      context: context,
-                      initialTime: _selectedTime ?? TimeOfDay.now(),
-                    );
-                    if (picked != null) {
-                      setState(() => _selectedTime = picked);
+                    if (confirmed == true &&
+                        widget.onDelete != null &&
+                        context.mounted) {
+                      widget.onDelete!(widget.initialTask!);
+                      Navigator.of(context).pop();
                     }
                   },
-                  child: const Text('Pick Time'),
+                  onSave: _submit,
                 ),
               ],
             ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                const Text('Duration:'),
-                const SizedBox(width: 12),
-                DropdownButton<int>(
-                  value: _durationMinutes,
-                  hint: const Text('Select'),
-                  items: [15, 30, 45, 60, 90, 120]
-                      .map((min) => DropdownMenuItem(
-                            value: min,
-                            child: Text('$min min'),
-                          ))
-                      .toList(),
-                  onChanged: (value) =>
-                      setState(() => _durationMinutes = value),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                const Text('Color:'),
-                const SizedBox(width: 12),
-                ...[
-                  Colors.blue,
-                  Colors.green,
-                  Colors.orange,
-                  Colors.red,
-                  Colors.purple,
-                  Colors.teal,
-                ].map((color) {
-                  final isSelected = _selectedColor == color;
-                  return GestureDetector(
-                    onTap: () => setState(() => _selectedColor = color),
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      width: isSelected ? 30 : 24,
-                      height: isSelected ? 30 : 24,
-                      decoration: BoxDecoration(
-                        color: color,
-                        shape: BoxShape.circle,
-                        border: isSelected
-                            ? Border.all(color: Colors.black, width: 2)
-                            : null,
-                      ),
-                    ),
-                  );
-                }),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                if (isEdit)
-                  TextButton(
-                    onPressed: () async {
-                      final confirmed = await showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                          title: const Text('Confirm Deletion'),
-                          content: const Text(
-                              'Are you sure you want to delete this task?'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, false),
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, true),
-                              child: const Text('Delete'),
-                            ),
-                          ],
-                        ),
-                      );
-                      if (confirmed == true &&
-                          widget.onDelete != null &&
-                          context.mounted) {
-                        widget.onDelete!(widget.initialTask!);
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    child: const Text('Delete'),
-                  ),
-                ElevatedButton(
-                  onPressed: _submit,
-                  child: const Text('Save'),
-                ),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );
