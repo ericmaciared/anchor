@@ -1,51 +1,148 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-class ColorPicker extends StatelessWidget {
+class ColorPickerWidget extends StatefulWidget {
   final Color selectedColor;
   final ValueChanged<Color> onColorSelected;
 
-  const ColorPicker({
+  const ColorPickerWidget({
     super.key,
     required this.selectedColor,
     required this.onColorSelected,
   });
 
   @override
-  Widget build(BuildContext context) {
-    const colorOptions = [
-      Colors.blue,
-      Colors.green,
-      Colors.orange,
-      Colors.red,
-      Colors.purple,
-      Colors.teal,
-    ];
+  State<ColorPickerWidget> createState() => _ColorPickerWidgetState();
+}
 
-    return Row(
+class _ColorPickerWidgetState extends State<ColorPickerWidget> {
+  final List<Color> _defaultColors = [
+    Colors.blue,
+    Colors.pink,
+    Colors.green,
+    Colors.orange,
+    Colors.yellow,
+    Colors.red,
+    Colors.purple,
+    Colors.teal,
+    Colors.indigo,
+    Colors.brown,
+  ];
+
+  Color? _customColor;
+
+  List<Color> get _colorOptions {
+    return [..._defaultColors, if (_customColor != null) _customColor!];
+  }
+
+  void _openCustomColorPicker() {
+    Color tempColor = _customColor ?? Colors.grey;
+
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text('Select a Custom Color'),
+          content: SingleChildScrollView(
+            child: ColorPicker(
+              pickerColor: tempColor,
+              onColorChanged: (color) => tempColor = color,
+              enableAlpha: false,
+              pickerAreaHeightPercent: 0.8,
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            ElevatedButton(
+              child: const Text('Select'),
+              onPressed: () {
+                setState(() => _customColor = tempColor);
+                widget.onColorSelected(tempColor);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildColorCircle(Color color) {
+    final isSelected = color == widget.selectedColor;
+
+    return GestureDetector(
+      onTap: () => widget.onColorSelected(color),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        width: 30,
+        height: 30,
+        decoration: BoxDecoration(
+          color: color,
+          shape: BoxShape.circle,
+        ),
+        child: isSelected
+            ? const Center(
+                child: Icon(
+                  Icons.check,
+                  size: 18,
+                  color: Colors.white,
+                ),
+              )
+            : null,
+      ),
+    );
+  }
+
+  Widget _buildAddCustomButton() {
+    return GestureDetector(
+      onTap: _openCustomColorPicker,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        width: 30,
+        height: 30,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.transparent,
+          border: Border.all(color: Colors.grey),
+        ),
+        child: const Center(
+          child: Icon(Icons.add, size: 18, color: Colors.grey),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Color:'),
-        const SizedBox(width: 12),
-        ...colorOptions.map((color) {
-          final isSelected = color == selectedColor;
-          return GestureDetector(
-            onTap: () => onColorSelected(color),
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              width: isSelected ? 30 : 30,
-              height: isSelected ? 30 : 30,
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-                border: isSelected
-                    ? Border.all(
-                        color: Colors.black,
-                        width: 2,
-                      )
-                    : null,
+        Text(
+          'Task Color',
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium!
+              .copyWith(color: Colors.grey),
+        ),
+        const SizedBox(height: 8),
+        Card(
+          color: Theme.of(context).colorScheme.surfaceContainerHigh,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _buildAddCustomButton(),
+                  ..._colorOptions.map(_buildColorCircle),
+                ],
               ),
             ),
-          );
-        }),
+          ),
+        ),
       ],
     );
   }

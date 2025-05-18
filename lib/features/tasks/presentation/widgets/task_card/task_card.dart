@@ -127,6 +127,8 @@ class _TaskCardState extends State<TaskCard>
         ),
       );
     }
+    final isDark = (task.color.computeLuminance() < 0.5);
+    final textColor = isDark ? Colors.white : Colors.black;
 
     return Padding(
       padding: const EdgeInsets.only(top: 12),
@@ -145,12 +147,12 @@ class _TaskCardState extends State<TaskCard>
                 color: task.color,
                 borderRadius: BorderRadius.circular(32),
               ),
-              child: const Text(
+              child: Text(
                 'Hold to Complete',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: textColor,
                 ),
               ),
             ),

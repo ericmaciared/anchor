@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 import 'color_picker.dart';
-import 'duration_dropdown.dart';
+import 'duration_selector.dart';
 import 'footer_actions.dart';
 import 'suggested_tasks_list.dart';
 import 'time_picker.dart';
@@ -132,22 +132,22 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                           },
                         ),
                       if (_isTitleEntered) ...[
+                        ColorPickerWidget(
+                          selectedColor: _selectedColor,
+                          onColorSelected: (color) =>
+                              setState(() => _selectedColor = color),
+                        ),
+                        const SizedBox(height: 36),
                         TimePicker(
                           selectedTime: _selectedTime,
                           onPick: (time) =>
                               setState(() => _selectedTime = time),
                         ),
-                        const SizedBox(height: 16),
-                        DurationDropdown(
+                        const SizedBox(height: 24),
+                        DurationSelector(
                           duration: _durationMinutes,
                           onChanged: (min) =>
                               setState(() => _durationMinutes = min),
-                        ),
-                        const SizedBox(height: 16),
-                        ColorPicker(
-                          selectedColor: _selectedColor,
-                          onColorSelected: (color) =>
-                              setState(() => _selectedColor = color),
                         ),
                       ],
                     ],

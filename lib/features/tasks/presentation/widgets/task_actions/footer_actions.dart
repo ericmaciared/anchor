@@ -15,11 +15,22 @@ class FooterActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         if (isEdit)
-          TextButton(onPressed: onDelete, child: const Text('Delete')),
-        ElevatedButton(onPressed: onSave, child: const Text('Save')),
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: TextButton(
+              onPressed: onDelete,
+              child: Text('Delete',
+                  style: TextStyle(color: Theme.of(context).colorScheme.error)),
+            ),
+          ),
+        Expanded(
+          child: ElevatedButton(
+            onPressed: onSave,
+            child: Text(isEdit ? 'Update' : 'Create'),
+          ),
+        ),
       ],
     );
   }

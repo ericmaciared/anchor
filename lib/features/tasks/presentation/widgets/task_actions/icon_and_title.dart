@@ -33,6 +33,18 @@ class _IconAndTitleState extends State<IconAndTitle> {
   }
 
   @override
+  void didUpdateWidget(covariant IconAndTitle oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.title != oldWidget.title && widget.title != _controller.text) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _controller.text = widget.title;
+        }
+      });
+    }
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
