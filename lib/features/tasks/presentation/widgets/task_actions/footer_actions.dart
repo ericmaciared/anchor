@@ -4,12 +4,14 @@ class FooterActions extends StatelessWidget {
   final bool isEdit;
   final VoidCallback onDelete;
   final VoidCallback onSave;
+  final bool isSaveEnabled;
 
   const FooterActions({
     super.key,
     required this.isEdit,
     required this.onDelete,
     required this.onSave,
+    required this.isSaveEnabled,
   });
 
   @override
@@ -27,7 +29,10 @@ class FooterActions extends StatelessWidget {
           ),
         Expanded(
           child: ElevatedButton(
-            onPressed: onSave,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: isSaveEnabled ? null : Colors.grey,
+            ),
+            onPressed: isSaveEnabled ? onSave : null,
             child: Text(isEdit ? 'Update' : 'Create'),
           ),
         ),

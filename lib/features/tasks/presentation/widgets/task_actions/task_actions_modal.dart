@@ -117,7 +117,7 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                             setState(() => _selectedIcon = icon),
                       ),
                       const SizedBox(height: 36),
-                      if (!_isTitleEntered)
+                      if (!_isTitleEntered && !isEdit)
                         SuggestedTasksList(
                           onTap: (task) {
                             setState(() {
@@ -131,7 +131,7 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                             });
                           },
                         ),
-                      if (_isTitleEntered) ...[
+                      if (_isTitleEntered || isEdit) ...[
                         ColorPickerWidget(
                           selectedColor: _selectedColor,
                           onColorSelected: (color) =>
@@ -156,6 +156,7 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                 const SizedBox(height: 20),
                 FooterActions(
                   isEdit: isEdit,
+                  isSaveEnabled: _isTitleEntered,
                   onDelete: () async {
                     final confirmed = await showDialog<bool>(
                       context: context,
