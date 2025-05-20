@@ -32,7 +32,14 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
   Color? _customColor;
 
   List<Color> get _colorOptions {
-    return [..._defaultColors, if (_customColor != null) _customColor!];
+    final colors = [..._defaultColors];
+
+    // If the selected color is not in default and not already added, prepend it
+    if (!colors.contains(widget.selectedColor)) {
+      colors.insert(0, widget.selectedColor);
+    }
+
+    return colors;
   }
 
   void _openCustomColorPicker() {

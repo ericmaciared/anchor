@@ -11,4 +11,9 @@ class QuoteRepositoryImpl implements QuoteRepository {
   Future<Quote> getDailyQuote() {
     return localDataSource.getDailyQuote();
   }
+
+  @override
+  Future<Quote> getRandomQuote() {
+    return localDataSource.getRandomQuote();
+  }
 }

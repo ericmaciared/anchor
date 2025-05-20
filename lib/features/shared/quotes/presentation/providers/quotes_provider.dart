@@ -13,7 +13,11 @@ final quoteRepositoryProvider = Provider<QuoteRepository>((ref) {
   return QuoteRepositoryImpl(localDataSource);
 });
 
-final dailyQuoteProvider = FutureProvider<Quote>((ref) async {
+final dailyQuoteProvider = StreamProvider.autoDispose<Quote>((ref) async* {
   final repository = ref.read(quoteRepositoryProvider);
-  return await repository.getDailyQuote();
+  while (true) {
+    final quote = await repository.getDailyQuote();
+    yield quote;
+    await Future.delayed(const Duration(seconds: 1));
+  }
 });

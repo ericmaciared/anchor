@@ -153,7 +153,7 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 28),
                 FooterActions(
                   isEdit: isEdit,
                   isSaveEnabled: _isTitleEntered,

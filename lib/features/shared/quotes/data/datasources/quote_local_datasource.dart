@@ -34,6 +34,13 @@ class QuoteLocalDataSource {
     return quotes;
   }
 
+  Future<Quote> getRandomQuote() async {
+    final quotes = await _loadQuotes();
+    final random =
+        quotes[DateTime.now().millisecondsSinceEpoch % quotes.length];
+    return random;
+  }
+
   Future<Quote> getDailyQuote() async {
     final quotes = await _loadQuotes();
     final today = DateTime.now();

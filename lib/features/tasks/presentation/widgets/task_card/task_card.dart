@@ -202,7 +202,7 @@ class _TaskCardState extends State<TaskCard>
                         children: [
                           Icon(
                             task.icon,
-                            color: Colors.white,
+                            color: task.isDone ? Colors.grey : null,
                             size: 30,
                           ),
                           const SizedBox(width: 12),
@@ -215,6 +215,7 @@ class _TaskCardState extends State<TaskCard>
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
+                                    color: task.isDone ? Colors.grey : null,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                     decoration: task.isDone

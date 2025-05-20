@@ -1,7 +1,7 @@
 import 'package:anchor/features/tasks/domain/entities/task.dart';
 import 'package:flutter/material.dart';
 
-class SuggestedTasksList extends StatelessWidget {
+class SuggestedTasksList extends StatefulWidget {
   final void Function(Task task) onTap;
 
   const SuggestedTasksList({super.key, required this.onTap});
@@ -59,7 +59,52 @@ class SuggestedTasksList extends StatelessWidget {
         isDone: false,
         day: now,
       ),
+      Task(
+        id: 'suggestion-6',
+        title: 'Journal',
+        icon: Icons.edit,
+        color: Colors.brown,
+        startTime: DateTime(now.year, now.month, now.day, 22, 0),
+        duration: const Duration(minutes: 20),
+        isDone: false,
+        day: now,
+      ),
+      Task(
+        id: 'suggestion-7',
+        title: 'Clean room',
+        icon: Icons.cleaning_services,
+        color: Colors.lightBlue,
+        startTime: DateTime(now.year, now.month, now.day, 15, 0),
+        duration: const Duration(minutes: 40),
+        isDone: false,
+        day: now,
+      ),
     ];
+  }
+
+  @override
+  State<SuggestedTasksList> createState() => _SuggestedTasksListState();
+}
+
+class _SuggestedTasksListState extends State<SuggestedTasksList> {
+  final List<bool> _visible =
+      List.generate(SuggestedTasksList.suggestions.length, (_) => false);
+
+  @override
+  void initState() {
+    super.initState();
+    _staggeredShow();
+  }
+
+  Future<void> _staggeredShow() async {
+    for (int i = 0; i < _visible.length; i++) {
+      await Future.delayed(const Duration(milliseconds: 100));
+      if (mounted) {
+        setState(() {
+          _visible[i] = true;
+        });
+      }
+    }
   }
 
   @override
@@ -75,26 +120,39 @@ class SuggestedTasksList extends StatelessWidget {
               .copyWith(color: Colors.grey),
         ),
         const SizedBox(height: 12),
-        ...suggestions.map((task) {
-          return Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () => onTap(task),
-              borderRadius: BorderRadius.circular(8),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: task.color,
-                  child: Icon(task.icon, color: Colors.white),
+        ...SuggestedTasksList.suggestions.asMap().entries.map((entry) {
+          final i = entry.key;
+          final task = entry.value;
+
+          return AnimatedOpacity(
+            opacity: _visible[i] ? 1 : 0,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+            child: AnimatedSlide(
+              offset: _visible[i] ? Offset.zero : const Offset(0, 0.2),
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.easeOut,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () => widget.onTap(task),
+                  borderRadius: BorderRadius.circular(8),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: task.color,
+                      child: Icon(task.icon, color: Colors.white),
+                    ),
+                    title: Text(task.title),
+                    subtitle: task.startTime != null
+                        ? Text(
+                            '${TimeOfDay.fromDateTime(task.startTime!).format(context)} · ${task.duration?.inMinutes ?? 0} min',
+                            style: TextStyle(color: Colors.grey.shade600),
+                          )
+                        : null,
+                    horizontalTitleGap: 12,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                  ),
                 ),
-                title: Text(task.title),
-                subtitle: task.startTime != null
-                    ? Text(
-                        '${TimeOfDay.fromDateTime(task.startTime!).format(context)} · ${task.duration?.inMinutes ?? 0} min',
-                        style: TextStyle(color: Colors.grey.shade600),
-                      )
-                    : null,
-                horizontalTitleGap: 12,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 8),
               ),
             ),
           );
