@@ -3,27 +3,27 @@ import 'package:anchor/features/tasks/domain/entities/task.dart';
 import 'package:anchor/features/tasks/domain/repositories/task_repository.dart';
 
 class TaskRepositoryImpl implements TaskRepository {
-  final TaskLocalDataSource localDataSource;
+  final TaskLocalDataSource taskLocalDataSource;
 
-  TaskRepositoryImpl(this.localDataSource);
+  TaskRepositoryImpl(this.taskLocalDataSource);
 
   @override
-  Future<List<Task>> getTasks() {
-    return localDataSource.getTasks();
+  Future<List<Task>> getAllTasks() {
+    return taskLocalDataSource.getAllTasks();
   }
 
   @override
-  Future<void> addTask(Task task) {
-    return localDataSource.addTask(task);
+  Future<void> createTask(Task task) {
+    return taskLocalDataSource.createTask(task);
   }
 
   @override
   Future<void> updateTask(Task task) {
-    return localDataSource.updateTask(task);
+    return taskLocalDataSource.updateTask(task);
   }
 
   @override
   Future<void> deleteTask(String id) {
-    return localDataSource.deleteTask(id);
+    return taskLocalDataSource.deleteTask(id);
   }
 }

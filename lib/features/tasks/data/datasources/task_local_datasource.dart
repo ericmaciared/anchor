@@ -1,46 +1,17 @@
+import 'package:anchor/core/database/database_provider.dart';
 import 'package:anchor/features/tasks/domain/entities/task.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TaskLocalDataSource {
-  static final TaskLocalDataSource _instance = TaskLocalDataSource._internal();
+  final Ref ref;
 
-  factory TaskLocalDataSource() => _instance;
+  TaskLocalDataSource(this.ref);
 
-  TaskLocalDataSource._internal();
+  Future<Database> get database async => ref.read(databaseProvider);
 
-  Database? _database;
-
-  Future<Database> get database async {
-    if (_database != null) return _database!;
-    final dbPath = await getDatabasesPath();
-    final path = join(dbPath, 'tasks.db');
-
-    _database = await openDatabase(
-      path,
-      version: 1,
-      onCreate: _createDb,
-    );
-    return _database!;
-  }
-
-  Future<void> _createDb(Database db, int version) async {
-    await db.execute('''
-      CREATE TABLE tasks (
-        id TEXT PRIMARY KEY,
-        title TEXT,
-        isDone INTEGER,
-        day TEXT,
-        startTime TEXT,
-        duration INTEGER,
-        color INTEGER,
-        iconCodePoint INTEGER
-      )
-    ''');
-  }
-
-  Future<List<Task>> getTasks() async {
+  Future<List<Task>> getAllTasks() async {
     final db = await database;
     final maps = await db.query('tasks');
 
@@ -61,11 +32,12 @@ class TaskLocalDataSource {
           map['iconCodePoint'] as int,
           fontFamily: 'MaterialIcons',
         ),
+        parentTaskId: map['parentTaskId'] as String?,
       );
     }).toList();
   }
 
-  Future<void> addTask(Task task) async {
+  Future<void> createTask(Task task) async {
     final db = await database;
     await db.insert('tasks', {
       'id': task.id,
@@ -76,6 +48,7 @@ class TaskLocalDataSource {
       'duration': task.duration?.inMinutes,
       'color': task.color.toARGB32(),
       'iconCodePoint': task.icon.codePoint,
+      'parentTaskId': task.parentTaskId,
     });
   }
 
@@ -91,6 +64,7 @@ class TaskLocalDataSource {
         'duration': task.duration?.inMinutes,
         'color': task.color.toARGB32(),
         'iconCodePoint': task.icon.codePoint,
+        'parentTaskId': task.parentTaskId,
       },
       where: 'id = ?',
       whereArgs: [task.id],

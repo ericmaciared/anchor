@@ -1,9 +1,9 @@
 import 'package:anchor/features/tasks/domain/entities/task.dart';
 
 abstract class TaskRepository {
-  Future<List<Task>> getTasks();
+  Future<List<Task>> getAllTasks();
 
-  Future<void> addTask(Task task);
+  Future<void> createTask(Task task);
 
   Future<void> updateTask(Task task);
 

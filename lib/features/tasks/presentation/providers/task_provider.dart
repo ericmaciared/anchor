@@ -12,11 +12,11 @@ class TaskNotifier extends StateNotifier<List<Task>> {
   }
 
   Future<void> _loadTasks() async {
-    final tasks = await repository.getTasks();
+    final tasks = await repository.getAllTasks();
     state = tasks;
   }
 
-  Future<void> toggleTask(String taskId) async {
+  Future<void> toggleTaskCompletion(String taskId) async {
     final updatedTasks = state.map((task) {
       return task.id == taskId ? task.copyWith(isDone: !task.isDone) : task;
     }).toList();
@@ -26,8 +26,8 @@ class TaskNotifier extends StateNotifier<List<Task>> {
     state = updatedTasks;
   }
 
-  Future<void> addTask(Task task) async {
-    await repository.addTask(task);
+  Future<void> createTask(Task task) async {
+    await repository.createTask(task);
     state = [...state, task];
   }
 
@@ -52,11 +52,13 @@ class TaskNotifier extends StateNotifier<List<Task>> {
   }
 
   Future<void> undoDelete(Task task) async {
-    await repository.addTask(task);
+    await repository.createTask(task);
     state = [...state, task];
   }
 }
 
 final taskProvider = StateNotifierProvider<TaskNotifier, List<Task>>(
-  (ref) => TaskNotifier(TaskRepositoryImpl(TaskLocalDataSource())),
+  (ref) => TaskNotifier(
+    TaskRepositoryImpl(TaskLocalDataSource(ref)),
+  ),
 );

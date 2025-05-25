@@ -1,8 +1,5 @@
 import 'package:anchor/core/utils/date_utils.dart';
-import 'package:anchor/features/shared/confetti/confetti_provider.dart';
-import 'package:anchor/features/tasks/domain/entities/task.dart';
-import 'package:anchor/features/tasks/presentation/providers/task_provider.dart';
-import 'package:anchor/features/tasks/presentation/widgets/task_actions/task_actions_modal.dart';
+import 'package:anchor/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_card/empty_task_state.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_card/task_list_section.dart';
 import 'package:anchor/features/tasks/presentation/widgets/tasks_screen_app_bar.dart';
@@ -22,57 +19,12 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tasks = ref.watch(taskProvider);
-    final taskNotifier = ref.read(taskProvider.notifier);
-    final confettiController = ref.read(confettiProvider);
-
-    final todayTasks =
-        tasks.where((t) => isSameDay(t.day, _selectedDay)).toList();
-
-    void handleLongPress(Task task) {
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (_) => TaskActionsModal(
-          initialTask: task,
-          onSubmit: (updatedTask) => taskNotifier.updateTask(updatedTask),
-          onDelete: (deletedTask) async {
-            final deleted = await taskNotifier.deleteTask(deletedTask.id);
-            if (deleted != null && context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Task "${deleted.title}" deleted'),
-                  action: SnackBarAction(
-                    label: 'Undo',
-                    onPressed: () {
-                      taskNotifier.undoDelete(deleted);
-                    },
-                  ),
-                ),
-              );
-            }
-          },
-        ),
-      );
-    }
-
-    void handleCompletion(Task task) {
-      final wasDone = task.isDone;
-      taskNotifier.toggleTask(task.id);
-      if (!wasDone) confettiController.play();
-    }
+    final controller = TaskController(ref, context);
+    final todayTasks = controller.getTasksForDay(_selectedDay);
 
     return Scaffold(
       appBar: TasksScreenAppBar(
-        onAddTask: () => showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          builder: (_) => TaskActionsModal(
-            onSubmit: (task) => taskNotifier.addTask(task),
-          ),
-        ),
+        onAddTask: controller.showCreateTaskModal,
       ),
       body: SafeArea(
         child: Column(
@@ -85,20 +37,11 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
             ),
             Expanded(
               child: todayTasks.isEmpty
-                  ? EmptyTaskState(
-                      onAdd: () => showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder: (_) => TaskActionsModal(
-                          onSubmit: (task) => taskNotifier.addTask(task),
-                        ),
-                      ),
-                    )
+                  ? EmptyTaskState(onAdd: controller.showCreateTaskModal)
                   : TaskListSection(
                       selectedDayTasks: todayTasks,
-                      onComplete: handleCompletion,
-                      onLongPress: handleLongPress,
+                      onComplete: controller.completeTask,
+                      onLongPress: controller.showEditTaskModal,
                     ),
             )
           ],

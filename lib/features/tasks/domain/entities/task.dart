@@ -9,6 +9,7 @@ class Task {
   final Duration? duration;
   final Color color;
   final IconData icon;
+  final String? parentTaskId;
 
   Task({
     required this.id,
@@ -19,6 +20,7 @@ class Task {
     this.duration,
     required this.color,
     required this.icon,
+    this.parentTaskId,
   });
 
   Task copyWith({
@@ -30,6 +32,7 @@ class Task {
     Duration? duration,
     Color? color,
     IconData? icon,
+    String? parentTaskId,
   }) {
     return Task(
       id: id ?? this.id,
@@ -40,6 +43,7 @@ class Task {
       duration: duration ?? this.duration,
       color: color ?? this.color,
       icon: icon ?? this.icon,
+      parentTaskId: parentTaskId ?? this.parentTaskId,
     );
   }
 }
