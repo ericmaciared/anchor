@@ -1,6 +1,10 @@
 import 'package:anchor/features/tasks/domain/entities/task.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
+import 'task_expanded_actions.dart';
+import 'task_header_row.dart';
+import 'task_progress_bar.dart';
+import 'task_time_column.dart';
 
 class TaskCard extends StatefulWidget {
   final Task task;
@@ -26,37 +30,6 @@ class _TaskCardState extends State<TaskCard>
 
   void _toggleExpanded() {
     setState(() => _isExpanded = !_isExpanded);
-  }
-
-  String _buildSubtitle(Task task) {
-    if (task.startTime != null) {
-      if (task.duration == null) {
-        return DateFormat('HH:mm').format(task.startTime!);
-      }
-      final endTime = task.startTime!.add(task.duration ?? Duration.zero);
-      return '${DateFormat('HH:mm').format(task.startTime!)} - ${DateFormat('HH:mm').format(endTime)} (${task.duration?.inMinutes ?? 0} min)';
-    }
-    return '';
-  }
-
-  Widget _buildTimeColumn(Task task) {
-    if (task.startTime == null) return const SizedBox.shrink();
-
-    final endTime = task.startTime!.add(task.duration ?? Duration.zero);
-
-    return SizedBox(
-      width: 50,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(DateFormat('HH:mm').format(task.startTime!),
-              textAlign: TextAlign.center),
-          if (task.duration != null)
-            Text(DateFormat('HH:mm').format(endTime),
-                textAlign: TextAlign.center),
-        ],
-      ),
-    );
   }
 
   Future<void> _showUndoConfirmationDialog(BuildContext context) async {
@@ -85,173 +58,76 @@ class _TaskCardState extends State<TaskCard>
     );
   }
 
-  Widget _buildExpandedAction(Task task) {
-    if (!_isExpanded) return const SizedBox.shrink();
-
-    if (task.isDone && widget.onUndoComplete != null) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Task completed!',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => _showUndoConfirmationDialog(context),
-                  child: const Text('Undo'),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-    } else if (task.isDone && widget.onUndoComplete == null) {
-      return const Padding(
-        padding: EdgeInsets.only(top: 12),
-        child: Text(
-          'Task completed!',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey,
-          ),
-        ),
-      );
-    }
-    final isDark = (task.color.computeLuminance() < 0.5);
-    final textColor = isDark ? Colors.white : Colors.black;
-
-    return Padding(
-      padding: const EdgeInsets.only(top: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onLongPress: () {
-              setState(() => _isExpanded = false);
-              widget.onComplete();
-            },
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              decoration: BoxDecoration(
-                color: task.color,
-                borderRadius: BorderRadius.circular(32),
-              ),
-              child: Text(
-                'Hold to Complete',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final task = widget.task;
-    final subtitle = _buildSubtitle(task);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
-      child: Row(
-        children: [
-          _buildTimeColumn(task),
-          const SizedBox(width: 8),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 250),
-            curve: Curves.easeInOut,
-            width: 12,
-            height: _isExpanded ? 130 : 50,
-            decoration: BoxDecoration(
-              color: task.color,
-              borderRadius: BorderRadius.circular(18),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              clipBehavior: Clip.antiAlias,
-              child: GestureDetector(
-                onTap: _toggleExpanded,
-                onLongPress: widget.onLongPress,
-                behavior: HitTestBehavior.opaque,
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TaskTimeColumn(
+                  startTime: task.startTime, duration: task.duration),
+              const SizedBox(width: 8),
+              // Match card height using LayoutBuilder
+              Builder(builder: (context) {
+                return ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: 50,
+                    // Let height be dynamic based on card height
+                    maxHeight: constraints.maxHeight,
+                  ),
+                  child: TaskProgressBar(
+                    color: task.color,
+                  ),
+                );
+              }),
+              const SizedBox(width: 12),
+              // Main task card
+              Expanded(
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: GestureDetector(
+                    onTap: _toggleExpanded,
+                    onLongPress: widget.onLongPress,
+                    behavior: HitTestBehavior.opaque,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            task.icon,
-                            color: task.isDone ? Colors.grey : null,
-                            size: 30,
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  task.title,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: task.isDone ? Colors.grey : null,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    decoration: task.isDone
-                                        ? TextDecoration.lineThrough
-                                        : null,
-                                  ),
-                                ),
-                                if (subtitle.isNotEmpty)
-                                  Text(
-                                    subtitle,
-                                    style: const TextStyle(fontSize: 13),
-                                  ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Icon(
-                            task.isDone
-                                ? Icons.check_circle
-                                : Icons.circle_outlined,
-                            color: !task.isDone ? task.color : Colors.grey,
+                          TaskHeaderRow(task: task),
+                          AnimatedSize(
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.easeInOut,
+                            child: _isExpanded
+                                ? TaskExpandedActions(
+                                    task: task,
+                                    onComplete: () {
+                                      setState(() => _isExpanded = false);
+                                      widget.onComplete();
+                                    },
+                                    showUndoDialog: () =>
+                                        _showUndoConfirmationDialog(context),
+                                    onUndoComplete: widget.onUndoComplete,
+                                  )
+                                : const SizedBox.shrink(),
                           ),
                         ],
                       ),
-                      AnimatedSize(
-                        duration: const Duration(milliseconds: 250),
-                        curve: Curves.easeInOut,
-                        child: _buildExpandedAction(task),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }

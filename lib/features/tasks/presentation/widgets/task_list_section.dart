@@ -1,6 +1,6 @@
 import 'package:anchor/features/shared/quotes/presentation/widgets/daily_quote_card.dart';
 import 'package:anchor/features/tasks/domain/entities/task.dart';
-import 'package:anchor/features/tasks/presentation/widgets/task_card/task_list.dart';
+import 'package:anchor/features/tasks/presentation/widgets/task_list.dart';
 import 'package:flutter/material.dart';
 
 class TaskListSection extends StatelessWidget {

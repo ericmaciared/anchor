@@ -15,7 +15,8 @@ class TaskLocalDataSource {
     final db = await database;
     final maps = await db.query('tasks');
 
-    return maps.map((map) {
+    // Parse all tasks
+    final allTasks = maps.map((map) {
       return Task(
         id: map['id'] as String,
         title: map['title'] as String,
@@ -35,6 +36,24 @@ class TaskLocalDataSource {
         parentTaskId: map['parentTaskId'] as String?,
       );
     }).toList();
+
+    // Group tasks by ID
+    final taskMap = {
+      for (var task in allTasks) task.id: task.copyWith(subtasks: [])
+    };
+
+    // Assign subtasks to their parents
+    for (final task in taskMap.values) {
+      if (task.parentTaskId != null && taskMap.containsKey(task.parentTaskId)) {
+        final parent = taskMap[task.parentTaskId!]!;
+        final updatedSubtasks = List<Task>.from(parent.subtasks)..add(task);
+        taskMap[task.parentTaskId!] =
+            parent.copyWith(subtasks: updatedSubtasks);
+      }
+    }
+
+    // Return only root tasks (no parent)
+    return taskMap.values.where((task) => task.parentTaskId == null).toList();
   }
 
   Future<void> createTask(Task task) async {

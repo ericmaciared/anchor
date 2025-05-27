@@ -10,6 +10,7 @@ class Task {
   final Color color;
   final IconData icon;
   final String? parentTaskId;
+  final List<Task> subtasks;
 
   Task({
     required this.id,
@@ -21,6 +22,7 @@ class Task {
     required this.color,
     required this.icon,
     this.parentTaskId,
+    this.subtasks = const [],
   });
 
   Task copyWith({
@@ -33,6 +35,7 @@ class Task {
     Color? color,
     IconData? icon,
     String? parentTaskId,
+    List<Task>? subtasks,
   }) {
     return Task(
       id: id ?? this.id,
@@ -44,6 +47,7 @@ class Task {
       color: color ?? this.color,
       icon: icon ?? this.icon,
       parentTaskId: parentTaskId ?? this.parentTaskId,
+      subtasks: subtasks ?? this.subtasks,
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:anchor/core/utils/date_utils.dart';
 import 'package:anchor/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_card/empty_task_state.dart';
-import 'package:anchor/features/tasks/presentation/widgets/task_card/task_list_section.dart';
+import 'package:anchor/features/tasks/presentation/widgets/task_list_section.dart';
 import 'package:anchor/features/tasks/presentation/widgets/tasks_screen_app_bar.dart';
 import 'package:anchor/features/tasks/presentation/widgets/week_calendar.dart';
 import 'package:flutter/material.dart';
