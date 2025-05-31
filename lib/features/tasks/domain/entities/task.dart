@@ -1,3 +1,4 @@
+import 'package:anchor/features/tasks/domain/entities/subtask.dart';
 import 'package:flutter/material.dart';
 
 class Task {
@@ -9,8 +10,7 @@ class Task {
   final Duration? duration;
   final Color color;
   final IconData icon;
-  final String? parentTaskId;
-  final List<Task> subtasks;
+  final List<Subtask> subtasks;
 
   Task({
     required this.id,
@@ -21,7 +21,6 @@ class Task {
     this.duration,
     required this.color,
     required this.icon,
-    this.parentTaskId,
     this.subtasks = const [],
   });
 
@@ -35,7 +34,7 @@ class Task {
     Color? color,
     IconData? icon,
     String? parentTaskId,
-    List<Task>? subtasks,
+    List<Subtask>? subtasks,
   }) {
     return Task(
       id: id ?? this.id,
@@ -46,7 +45,6 @@ class Task {
       duration: duration ?? this.duration,
       color: color ?? this.color,
       icon: icon ?? this.icon,
-      parentTaskId: parentTaskId ?? this.parentTaskId,
       subtasks: subtasks ?? this.subtasks,
     );
   }

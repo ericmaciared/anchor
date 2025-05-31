@@ -12,6 +12,7 @@ final databaseProvider = Provider<Future<Database>>((ref) async {
     version: 1,
     onCreate: (db, version) async {
       await db.execute(createTasksTable);
+      await db.execute(createSubtasksTable);
     },
   );
 });

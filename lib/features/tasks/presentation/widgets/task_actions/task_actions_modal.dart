@@ -1,13 +1,13 @@
 import 'package:anchor/features/tasks/domain/entities/task.dart';
-import 'package:anchor/features/tasks/presentation/models/subtask_form_model.dart';
-import 'package:anchor/features/tasks/presentation/models/task_form_model.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/color_picker.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/duration_selector.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/footer_actions.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/icon_and_title.dart';
+import 'package:anchor/features/tasks/presentation/widgets/task_actions/subtask_editor.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/suggested_tasks_list.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class TaskActionsModal extends StatefulWidget {
   final Task? initialTask;
@@ -26,64 +26,30 @@ class TaskActionsModal extends StatefulWidget {
 }
 
 class _TaskActionsModalState extends State<TaskActionsModal> {
-  late TaskFormModel _form;
-  final List<SubtaskFormModel> _subtasks = [];
+  late Task _task;
 
   @override
   void initState() {
     super.initState();
-    _form = widget.initialTask != null
-        ? TaskFormModel.fromTask(widget.initialTask!)
-        : TaskFormModel.empty();
+    final now = DateTime.now();
+    _task = widget.initialTask ??
+        Task(
+          id: const Uuid().v4(),
+          title: '',
+          isDone: false,
+          day: DateTime(now.year, now.month, now.day),
+          startTime: null,
+          duration: null,
+          color: Colors.blue,
+          icon: Icons.check_circle_outline,
+          subtasks: [],
+        );
   }
 
   void _submit() {
-    if (!_form.isValid) return;
-
-    // Submit parent task
-    final mainTask = _form.toTask();
-    widget.onSubmit(mainTask);
-
-    // Submit subtasks with parentTaskId
-    for (final subtaskForm in _subtasks.where((s) => s.isValid)) {
-      final subtask = subtaskForm.toTask(mainTask.id);
-      widget.onSubmit(subtask);
-    }
-
+    if (_task.title.trim().isEmpty) return;
+    widget.onSubmit(_task);
     Navigator.of(context).pop();
-  }
-
-  void _addSubtask() {
-    setState(() {
-      _subtasks.add(SubtaskFormModel());
-    });
-  }
-
-  Widget _buildSubtaskFields(SubtaskFormModel subtask, int index) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              decoration: const InputDecoration(
-                hintText: 'Subtask title',
-              ),
-              onChanged: (val) => setState(() => subtask.title = val),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Checkbox(
-            value: subtask.isDone,
-            onChanged: (val) => setState(() => subtask.isDone = val ?? false),
-          ),
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () => setState(() => _subtasks.removeAt(index)),
-          ),
-        ],
-      ),
-    );
   }
 
   @override
@@ -121,73 +87,76 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                       ),
                       const SizedBox(height: 24),
                       IconAndTitle(
-                        title: _form.title,
-                        selectedIcon: _form.icon,
+                        title: _task.title,
+                        selectedIcon: _task.icon,
                         onTitleChanged: (text) =>
-                            setState(() => _form.title = text),
+                            setState(() => _task = _task.copyWith(title: text)),
                         onIconChanged: (icon) =>
-                            setState(() => _form.icon = icon),
+                            setState(() => _task = _task.copyWith(icon: icon)),
                       ),
                       const SizedBox(height: 36),
-                      if (!_form.isValid && !isEdit)
+                      if (_task.title.trim().isEmpty && !isEdit)
                         SuggestedTasksList(
-                          onTap: (task) {
+                          onTap: (suggested) {
                             setState(() {
-                              _form.title = task.title;
-                              _form.icon = task.icon;
-                              _form.color = task.color;
-                              _form.selectedTime = task.startTime != null
-                                  ? TimeOfDay.fromDateTime(task.startTime!)
-                                  : null;
-                              _form.durationMinutes = task.duration?.inMinutes;
+                              _task = _task.copyWith(
+                                title: suggested.title,
+                                icon: suggested.icon,
+                                color: suggested.color,
+                                startTime: suggested.startTime,
+                                duration: suggested.duration,
+                              );
                             });
                           },
                         ),
-                      if (_form.isValid || isEdit) ...[
+                      if (_task.title.trim().isNotEmpty || isEdit) ...[
                         ColorPickerWidget(
-                          selectedColor: _form.color,
-                          onColorSelected: (color) =>
-                              setState(() => _form.color = color),
+                          selectedColor: _task.color,
+                          onColorSelected: (color) => setState(
+                              () => _task = _task.copyWith(color: color)),
                         ),
                         const SizedBox(height: 36),
                         TimePicker(
-                          selectedTime: _form.selectedTime,
-                          onPick: (time) =>
-                              setState(() => _form.selectedTime = time),
+                          selectedTime: _task.startTime != null
+                              ? TimeOfDay.fromDateTime(_task.startTime!)
+                              : null,
+                          onPick: (time) {
+                            setState(() => _task = _task.copyWith(
+                                startTime: time != null
+                                    ? DateTime(
+                                        DateTime.now().year,
+                                        DateTime.now().month,
+                                        DateTime.now().day,
+                                        time.hour,
+                                        time.minute,
+                                      )
+                                    : null));
+                          },
                         ),
                         const SizedBox(height: 24),
                         DurationSelector(
-                          duration: _form.durationMinutes,
-                          onChanged: (min) =>
-                              setState(() => _form.durationMinutes = min),
+                          duration: _task.duration?.inMinutes,
+                          onChanged: (min) => setState(() => _task =
+                              _task.copyWith(
+                                  duration: min != null
+                                      ? Duration(minutes: min)
+                                      : null)),
+                        ),
+                        const SizedBox(height: 24),
+                        SubtaskEditor(
+                          subtasks: _task.subtasks,
+                          onChanged: (subtasks) => setState(() {
+                            _task = _task.copyWith(subtasks: subtasks);
+                          }),
                         ),
                       ],
-                      const SizedBox(height: 24),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Subtasks',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold)),
-                          TextButton.icon(
-                            onPressed: _addSubtask,
-                            icon: const Icon(Icons.add),
-                            label: const Text('Add'),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      ..._subtasks
-                          .asMap()
-                          .entries
-                          .map((e) => _buildSubtaskFields(e.value, e.key)),
                     ],
                   ),
                 ),
                 const SizedBox(height: 28),
                 FooterActions(
                   isEdit: isEdit,
-                  isSaveEnabled: _form.isValid,
+                  isSaveEnabled: _task.title.trim().isNotEmpty,
                   onDelete: () async {
                     final confirmed = await showDialog<bool>(
                       context: context,

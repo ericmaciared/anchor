@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'subtask_local_datasource.dart';
+
 class TaskLocalDataSource {
   final Ref ref;
 
@@ -13,12 +15,20 @@ class TaskLocalDataSource {
 
   Future<List<Task>> getAllTasks() async {
     final db = await database;
-    final maps = await db.query('tasks');
+    final subtaskDataSource = SubtaskLocalDataSource(ref); // Step 1
 
-    // Parse all tasks
-    final allTasks = maps.map((map) {
-      return Task(
-        id: map['id'] as String,
+    final taskMaps = await db.query('tasks');
+
+    final List<Task> tasks = [];
+
+    for (final map in taskMaps) {
+      final taskId = map['id'] as String;
+
+      final subtasks =
+          await subtaskDataSource.getSubtasksForTask(taskId); // Step 2
+
+      final task = Task(
+        id: taskId,
         title: map['title'] as String,
         isDone: (map['isDone'] as int) == 1,
         day: DateTime.parse(map['day'] as String),
@@ -33,31 +43,19 @@ class TaskLocalDataSource {
           map['iconCodePoint'] as int,
           fontFamily: 'MaterialIcons',
         ),
-        parentTaskId: map['parentTaskId'] as String?,
+        subtasks: subtasks, // Step 3
       );
-    }).toList();
 
-    // Group tasks by ID
-    final taskMap = {
-      for (var task in allTasks) task.id: task.copyWith(subtasks: [])
-    };
-
-    // Assign subtasks to their parents
-    for (final task in taskMap.values) {
-      if (task.parentTaskId != null && taskMap.containsKey(task.parentTaskId)) {
-        final parent = taskMap[task.parentTaskId!]!;
-        final updatedSubtasks = List<Task>.from(parent.subtasks)..add(task);
-        taskMap[task.parentTaskId!] =
-            parent.copyWith(subtasks: updatedSubtasks);
-      }
+      tasks.add(task);
     }
 
-    // Return only root tasks (no parent)
-    return taskMap.values.where((task) => task.parentTaskId == null).toList();
+    return tasks;
   }
 
   Future<void> createTask(Task task) async {
     final db = await database;
+    final subtaskDataSource = SubtaskLocalDataSource(ref);
+
     await db.insert('tasks', {
       'id': task.id,
       'title': task.title,
@@ -67,12 +65,17 @@ class TaskLocalDataSource {
       'duration': task.duration?.inMinutes,
       'color': task.color.toARGB32(),
       'iconCodePoint': task.icon.codePoint,
-      'parentTaskId': task.parentTaskId,
     });
+
+    for (final subtask in task.subtasks) {
+      await subtaskDataSource.createSubtask(task.id, subtask);
+    }
   }
 
   Future<void> updateTask(Task task) async {
     final db = await database;
+    final subtaskDataSource = SubtaskLocalDataSource(ref);
+
     await db.update(
       'tasks',
       {
@@ -83,11 +86,15 @@ class TaskLocalDataSource {
         'duration': task.duration?.inMinutes,
         'color': task.color.toARGB32(),
         'iconCodePoint': task.icon.codePoint,
-        'parentTaskId': task.parentTaskId,
       },
       where: 'id = ?',
       whereArgs: [task.id],
     );
+
+    await subtaskDataSource.deleteSubtasksForTask(task.id);
+    for (final subtask in task.subtasks) {
+      await subtaskDataSource.createSubtask(task.id, subtask);
+    }
   }
 
   Future<void> deleteTask(String id) async {

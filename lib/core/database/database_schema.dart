@@ -7,7 +7,15 @@ const String createTasksTable = '''
     startTime TEXT,
     duration INTEGER,
     color INTEGER,
-    iconCodePoint INTEGER,
-    parentTaskId TEXT REFERENCES tasks(id) ON DELETE CASCADE
+    iconCodePoint INTEGER
+  )
+''';
+
+const String createSubtasksTable = '''
+  CREATE TABLE subtasks (
+    id TEXT PRIMARY KEY,
+    taskId TEXT REFERENCES tasks(id) ON DELETE CASCADE,
+    title TEXT,
+    isDone INTEGER
   )
 ''';

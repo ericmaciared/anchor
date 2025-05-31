@@ -1,8 +1,8 @@
-import 'package:anchor/features/tasks/domain/entities/task.dart';
+import 'package:anchor/features/tasks/domain/entities/subtask.dart';
 import 'package:flutter/material.dart';
 
 class SubtaskList extends StatelessWidget {
-  final List<Task> subtasks;
+  final List<Subtask> subtasks;
   final Color baseColor;
 
   const SubtaskList(
