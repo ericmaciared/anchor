@@ -1,3 +1,5 @@
+import 'package:anchor/features/habits/presentation/screens/habits_screen.dart';
+import 'package:anchor/features/shared/main/main_scaffold.dart';
 import 'package:anchor/features/tasks/presentation/screens/tasks_screen.dart';
 import 'package:anchor/features/welcome/welcome_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -10,10 +12,34 @@ final router = GoRouter(
       name: 'welcome',
       builder: (context, state) => const WelcomeScreen(),
     ),
-    GoRoute(
-      path: '/tasks',
-      name: 'tasks',
-      builder: (context, state) => const TasksScreen(),
+
+    // Main tabs shell
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) =>
+          MainScaffold(navigationShell: navigationShell),
+      branches: [
+        // Tasks branch
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/tasks',
+              name: 'tasks',
+              builder: (context, state) => const TasksScreen(),
+            ),
+          ],
+        ),
+
+        // Habits branch
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/habits',
+              name: 'habits',
+              builder: (context, state) => const HabitsScreen(),
+            ),
+          ],
+        ),
+      ],
     ),
   ],
 );
