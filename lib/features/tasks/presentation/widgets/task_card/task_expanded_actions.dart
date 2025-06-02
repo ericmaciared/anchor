@@ -57,15 +57,17 @@ class TaskExpandedActions extends StatelessWidget {
         else
           GestureDetector(
             onLongPress: onComplete,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
+            behavior: HitTestBehavior.opaque,
+            child: Container(
+              width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               decoration: BoxDecoration(
                 color: task.color,
-                borderRadius: BorderRadius.circular(32),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
                 'Hold to Complete',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
