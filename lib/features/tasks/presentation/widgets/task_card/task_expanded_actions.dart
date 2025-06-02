@@ -1,3 +1,4 @@
+import 'package:anchor/features/tasks/domain/entities/subtask.dart';
 import 'package:anchor/features/tasks/domain/entities/task.dart';
 import 'package:flutter/material.dart';
 
@@ -6,15 +7,17 @@ import 'subtask_list.dart';
 class TaskExpandedActions extends StatelessWidget {
   final Task task;
   final VoidCallback onComplete;
-  final VoidCallback? onUndoComplete;
+  final VoidCallback onUndoComplete;
   final VoidCallback showUndoDialog;
+  final void Function(Subtask subtask) onToggleSubtaskCompletion;
 
   const TaskExpandedActions({
     super.key,
     required this.task,
     required this.onComplete,
     required this.showUndoDialog,
-    this.onUndoComplete,
+    required this.onUndoComplete,
+    required this.onToggleSubtaskCompletion,
   });
 
   @override
@@ -26,9 +29,14 @@ class TaskExpandedActions extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (task.subtasks.isNotEmpty)
-          SubtaskList(subtasks: task.subtasks, baseColor: task.color),
+          SubtaskList(
+            subtasks: task.subtasks,
+            baseColor: task.color,
+            onToggleSubtaskCompletion: (subtask) =>
+                onToggleSubtaskCompletion(subtask),
+          ),
         const SizedBox(height: 12),
-        if (task.isDone && onUndoComplete != null)
+        if (task.isDone)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -45,15 +53,6 @@ class TaskExpandedActions extends StatelessWidget {
                 child: const Text('Undo'),
               ),
             ],
-          )
-        else if (task.isDone)
-          const Text(
-            'Task completed!',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey,
-            ),
           )
         else
           GestureDetector(

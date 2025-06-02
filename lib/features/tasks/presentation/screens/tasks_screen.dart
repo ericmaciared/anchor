@@ -40,7 +40,9 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
                   ? EmptyTaskState(onAdd: controller.showCreateTaskModal)
                   : TaskListSection(
                       selectedDayTasks: todayTasks,
-                      onComplete: controller.completeTask,
+                      onToggleTaskCompletion: controller.toggleTaskCompletion,
+                      onToggleSubtaskCompletion:
+                          controller.toggleSubtaskCompletion,
                       onLongPress: controller.showEditTaskModal,
                     ),
             )

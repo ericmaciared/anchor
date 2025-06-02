@@ -26,6 +26,23 @@ class TaskNotifier extends StateNotifier<List<Task>> {
     state = updatedTasks;
   }
 
+  Future<void> toggleSubtaskCompletion({
+    required String taskId,
+    required String subtaskId,
+  }) async {
+    final task = state.firstWhere((t) => t.id == taskId);
+
+    final updatedSubtasks = task.subtasks.map((sub) {
+      return sub.id == subtaskId ? sub.copyWith(isDone: !sub.isDone) : sub;
+    }).toList();
+
+    final updatedTask = task.copyWith(subtasks: updatedSubtasks);
+
+    await repository.updateTask(updatedTask);
+
+    state = state.map((t) => t.id == taskId ? updatedTask : t).toList();
+  }
+
   Future<void> createTask(Task task) async {
     await repository.createTask(task);
     state = [...state, task];

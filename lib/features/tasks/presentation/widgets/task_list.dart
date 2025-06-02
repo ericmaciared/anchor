@@ -1,3 +1,4 @@
+import 'package:anchor/features/tasks/domain/entities/subtask.dart';
 import 'package:anchor/features/tasks/domain/entities/task.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_card/task_card.dart';
 import 'package:flutter/material.dart';
@@ -7,13 +8,15 @@ typedef TaskCallback = void Function(Task task);
 class TaskList extends StatelessWidget {
   final List<Task> tasks;
   final String? label;
-  final TaskCallback onComplete;
+  final void Function(Task task) onToggleTaskCompletion;
+  final void Function(Subtask subtask) onToggleSubtaskCompletion;
   final TaskCallback onLongPress;
 
   const TaskList({
     super.key,
     required this.tasks,
-    required this.onComplete,
+    required this.onToggleTaskCompletion,
+    required this.onToggleSubtaskCompletion,
     required this.onLongPress,
     this.label,
   });
@@ -36,9 +39,10 @@ class TaskList extends StatelessWidget {
         ...tasks.map(
           (task) => TaskCard(
             task: task,
-            onComplete: () => onComplete(task),
+            onToggleTaskCompletion: () => onToggleTaskCompletion(task),
             onLongPress: () => onLongPress(task),
-            onUndoComplete: () => onComplete(task),
+            onToggleSubtaskCompletion: (subtask) =>
+                onToggleSubtaskCompletion(subtask),
           ),
         ),
       ],

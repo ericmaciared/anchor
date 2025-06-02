@@ -1,6 +1,5 @@
 import 'package:anchor/features/tasks/domain/entities/task.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class TaskHeaderRow extends StatelessWidget {
   final Task task;
@@ -8,12 +7,12 @@ class TaskHeaderRow extends StatelessWidget {
   const TaskHeaderRow({super.key, required this.task});
 
   String _buildSubtitle(Task task) {
-    if (task.startTime != null) {
-      if (task.duration == null) {
-        return DateFormat('HH:mm').format(task.startTime!);
+    if (task.duration != null) {
+      if (task.subtasks.isNotEmpty) {
+        final completedSubtasks = task.subtasks.where((sub) => sub.isDone);
+        return '(${task.duration?.inMinutes ?? 0} min) - ${completedSubtasks.length}/${task.subtasks.length}';
       }
-      final endTime = task.startTime!.add(task.duration ?? Duration.zero);
-      return '${DateFormat('HH:mm').format(task.startTime!)} - ${DateFormat('HH:mm').format(endTime)} (${task.duration?.inMinutes ?? 0} min)';
+      return '(${task.duration?.inMinutes ?? 0} min)';
     }
     return '';
   }

@@ -1,3 +1,4 @@
+import 'package:anchor/features/tasks/domain/entities/subtask.dart';
 import 'package:anchor/features/tasks/domain/entities/task.dart';
 import 'package:flutter/material.dart';
 
@@ -9,15 +10,15 @@ import 'task_time_column.dart';
 class TaskCard extends StatefulWidget {
   final Task task;
   final VoidCallback onLongPress;
-  final VoidCallback onComplete;
-  final VoidCallback? onUndoComplete;
+  final VoidCallback onToggleTaskCompletion;
+  final void Function(Subtask subtask) onToggleSubtaskCompletion;
 
   const TaskCard({
     super.key,
     required this.task,
-    required this.onComplete,
     required this.onLongPress,
-    this.onUndoComplete,
+    required this.onToggleTaskCompletion,
+    required this.onToggleSubtaskCompletion,
   });
 
   @override
@@ -48,7 +49,7 @@ class _TaskCardState extends State<TaskCard>
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                widget.onUndoComplete?.call();
+                widget.onToggleTaskCompletion();
               },
               child: const Text('Undo'),
             ),
@@ -111,11 +112,15 @@ class _TaskCardState extends State<TaskCard>
                                     task: task,
                                     onComplete: () {
                                       setState(() => _isExpanded = false);
-                                      widget.onComplete();
+                                      widget.onToggleTaskCompletion();
                                     },
                                     showUndoDialog: () =>
                                         _showUndoConfirmationDialog(context),
-                                    onUndoComplete: widget.onUndoComplete,
+                                    onUndoComplete:
+                                        widget.onToggleTaskCompletion,
+                                    onToggleSubtaskCompletion: (subtask) =>
+                                        widget
+                                            .onToggleSubtaskCompletion(subtask),
                                   )
                                 : const SizedBox.shrink(),
                           ),

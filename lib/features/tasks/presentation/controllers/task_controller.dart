@@ -1,5 +1,6 @@
 import 'package:anchor/core/utils/date_utils.dart';
 import 'package:anchor/features/shared/confetti/confetti_provider.dart';
+import 'package:anchor/features/tasks/domain/entities/subtask.dart';
 import 'package:anchor/features/tasks/domain/entities/task.dart';
 import 'package:anchor/features/tasks/presentation/providers/task_provider.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/task_actions_modal.dart';
@@ -58,12 +59,18 @@ class TaskController {
     );
   }
 
-  void completeTask(Task task) {
+  void toggleTaskCompletion(Task task) {
     final taskNotifier = ref.read(taskProvider.notifier);
     final confettiController = ref.read(confettiProvider);
 
     final wasDone = task.isDone;
     taskNotifier.toggleTaskCompletion(task.id);
     if (!wasDone) confettiController.play();
+  }
+
+  void toggleSubtaskCompletion(Subtask subtask) {
+    final taskNotifier = ref.read(taskProvider.notifier);
+    taskNotifier.toggleSubtaskCompletion(
+        taskId: subtask.taskId, subtaskId: subtask.id);
   }
 }
