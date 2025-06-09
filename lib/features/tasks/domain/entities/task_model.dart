@@ -1,7 +1,8 @@
-import 'package:anchor/features/tasks/domain/entities/subtask.dart';
+import 'package:anchor/features/tasks/domain/entities/notification_model.dart';
+import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:flutter/material.dart';
 
-class Task {
+class TaskModel {
   final String id;
   final String title;
   final bool isDone;
@@ -10,9 +11,10 @@ class Task {
   final Duration? duration;
   final Color color;
   final IconData icon;
-  final List<Subtask> subtasks;
+  final List<SubtaskModel> subtasks;
+  final List<NotificationModel> notifications;
 
-  Task({
+  TaskModel({
     required this.id,
     required this.title,
     required this.isDone,
@@ -22,9 +24,10 @@ class Task {
     required this.color,
     required this.icon,
     this.subtasks = const [],
+    this.notifications = const [],
   });
 
-  Task copyWith({
+  TaskModel copyWith({
     String? id,
     String? title,
     bool? isDone,
@@ -34,9 +37,10 @@ class Task {
     Color? color,
     IconData? icon,
     String? parentTaskId,
-    List<Subtask>? subtasks,
+    List<SubtaskModel>? subtasks,
+    List<NotificationModel>? notifications,
   }) {
-    return Task(
+    return TaskModel(
       id: id ?? this.id,
       title: title ?? this.title,
       isDone: isDone ?? this.isDone,
@@ -46,6 +50,7 @@ class Task {
       color: color ?? this.color,
       icon: icon ?? this.icon,
       subtasks: subtasks ?? this.subtasks,
+      notifications: notifications ?? this.notifications,
     );
   }
 }

@@ -1,15 +1,15 @@
-import 'package:anchor/features/tasks/domain/entities/task.dart';
+import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
 
 class SuggestedTasksList extends StatefulWidget {
-  final void Function(Task task) onTap;
+  final void Function(TaskModel task) onTap;
 
   const SuggestedTasksList({super.key, required this.onTap});
 
-  static List<Task> get suggestions {
+  static List<TaskModel> get suggestions {
     final now = DateTime.now();
     return [
-      Task(
+      TaskModel(
         id: 'suggestion-1',
         title: 'Workout',
         icon: Icons.fitness_center,
@@ -19,7 +19,7 @@ class SuggestedTasksList extends StatefulWidget {
         isDone: false,
         day: now,
       ),
-      Task(
+      TaskModel(
         id: 'suggestion-2',
         title: 'Read',
         icon: Icons.book,
@@ -29,7 +29,7 @@ class SuggestedTasksList extends StatefulWidget {
         isDone: false,
         day: now,
       ),
-      Task(
+      TaskModel(
         id: 'suggestion-3',
         title: 'Buy groceries',
         icon: Icons.shopping_cart,
@@ -39,7 +39,7 @@ class SuggestedTasksList extends StatefulWidget {
         isDone: false,
         day: now,
       ),
-      Task(
+      TaskModel(
         id: 'suggestion-4',
         title: 'Meditate',
         icon: Icons.self_improvement,
@@ -49,7 +49,7 @@ class SuggestedTasksList extends StatefulWidget {
         isDone: false,
         day: now,
       ),
-      Task(
+      TaskModel(
         id: 'suggestion-5',
         title: 'Walk dog',
         icon: Icons.pets,
@@ -59,7 +59,7 @@ class SuggestedTasksList extends StatefulWidget {
         isDone: false,
         day: now,
       ),
-      Task(
+      TaskModel(
         id: 'suggestion-6',
         title: 'Journal',
         icon: Icons.edit,
@@ -69,7 +69,7 @@ class SuggestedTasksList extends StatefulWidget {
         isDone: false,
         day: now,
       ),
-      Task(
+      TaskModel(
         id: 'suggestion-7',
         title: 'Clean room',
         icon: Icons.cleaning_services,

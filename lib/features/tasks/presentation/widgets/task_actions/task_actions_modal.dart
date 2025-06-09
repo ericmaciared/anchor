@@ -1,8 +1,9 @@
-import 'package:anchor/features/tasks/domain/entities/task.dart';
+import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/color_picker.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/duration_selector.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/footer_actions.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/icon_and_title.dart';
+import 'package:anchor/features/tasks/presentation/widgets/task_actions/notification_configurator.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/subtask_editor.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/suggested_tasks_list.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/time_picker.dart';
@@ -10,9 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class TaskActionsModal extends StatefulWidget {
-  final Task? initialTask;
-  final void Function(Task task) onSubmit;
-  final void Function(Task task)? onDelete;
+  final TaskModel? initialTask;
+  final void Function(TaskModel task) onSubmit;
+  final void Function(TaskModel task)? onDelete;
 
   const TaskActionsModal({
     super.key,
@@ -26,14 +27,14 @@ class TaskActionsModal extends StatefulWidget {
 }
 
 class _TaskActionsModalState extends State<TaskActionsModal> {
-  late Task _task;
+  late TaskModel _task;
 
   @override
   void initState() {
     super.initState();
     final now = DateTime.now();
     _task = widget.initialTask ??
-        Task(
+        TaskModel(
           id: const Uuid().v4(),
           title: '',
           isDone: false,
@@ -149,6 +150,17 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                             _task = _task.copyWith(subtasks: subtasks);
                           }),
                         ),
+                        const SizedBox(height: 24),
+                        NotificationConfigurator(
+                          notifications: _task.notifications,
+                          taskStartTime: _task.startTime,
+                          onChanged: (notifications) => setState(
+                            () {
+                              _task =
+                                  _task.copyWith(notifications: notifications);
+                            },
+                          ),
+                        )
                       ],
                     ],
                   ),
@@ -160,27 +172,30 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                   onDelete: () async {
                     final confirmed = await showDialog<bool>(
                       context: context,
-                      builder: (_) => AlertDialog(
+                      builder: (dialogContext) => AlertDialog(
                         title: const Text('Confirm Deletion'),
                         content: const Text(
                             'Are you sure you want to delete this task?'),
                         actions: [
                           TextButton(
-                            onPressed: () => Navigator.pop(context, false),
+                            onPressed: () =>
+                                Navigator.of(dialogContext).pop(false),
                             child: const Text('Cancel'),
                           ),
                           TextButton(
-                            onPressed: () => Navigator.pop(context, true),
+                            onPressed: () =>
+                                Navigator.of(dialogContext).pop(true),
                             child: const Text('Delete'),
                           ),
                         ],
                       ),
                     );
-                    if (confirmed == true &&
-                        widget.onDelete != null &&
-                        context.mounted) {
+
+                    if ((confirmed ?? false) && widget.onDelete != null) {
                       widget.onDelete!(widget.initialTask!);
-                      Navigator.of(context).pop();
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                      }
                     }
                   },
                   onSave: _submit,

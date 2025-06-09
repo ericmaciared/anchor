@@ -1,12 +1,12 @@
-import 'package:anchor/features/tasks/domain/entities/task.dart';
+import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
 
 class TaskHeaderRow extends StatelessWidget {
-  final Task task;
+  final TaskModel task;
 
   const TaskHeaderRow({super.key, required this.task});
 
-  String _buildSubtitle(Task task) {
+  String _buildSubtitle(TaskModel task) {
     if (task.duration != null) {
       if (task.subtasks.isNotEmpty) {
         final completedSubtasks = task.subtasks.where((sub) => sub.isDone);

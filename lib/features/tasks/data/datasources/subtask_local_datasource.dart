@@ -1,5 +1,5 @@
 import 'package:anchor/core/database/database_provider.dart';
-import 'package:anchor/features/tasks/domain/entities/subtask.dart';
+import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -10,13 +10,13 @@ class SubtaskLocalDataSource {
 
   Future<Database> get database async => ref.read(databaseProvider);
 
-  Future<List<Subtask>> getSubtasksForTask(String taskId) async {
+  Future<List<SubtaskModel>> getSubtasksForTask(String taskId) async {
     final db = await database;
     final maps =
         await db.query('subtasks', where: 'taskId = ?', whereArgs: [taskId]);
 
     return maps.map((map) {
-      return Subtask(
+      return SubtaskModel(
         id: map['id'] as String,
         taskId: map['taskId'] as String,
         title: map['title'] as String,
@@ -25,7 +25,7 @@ class SubtaskLocalDataSource {
     }).toList();
   }
 
-  Future<void> createSubtask(String taskId, Subtask subtask) async {
+  Future<void> createSubtask(String taskId, SubtaskModel subtask) async {
     final db = await database;
     await db.insert('subtasks', {
       'id': subtask.id,
@@ -35,7 +35,7 @@ class SubtaskLocalDataSource {
     });
   }
 
-  Future<void> updateSubtask(Subtask subtask) async {
+  Future<void> updateSubtask(SubtaskModel subtask) async {
     final db = await database;
     await db.update(
       'subtasks',

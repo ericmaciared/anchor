@@ -1,15 +1,15 @@
-import 'package:anchor/features/tasks/domain/entities/subtask.dart';
-import 'package:anchor/features/tasks/domain/entities/task.dart';
+import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
+import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_card/task_card.dart';
 import 'package:flutter/material.dart';
 
-typedef TaskCallback = void Function(Task task);
+typedef TaskCallback = void Function(TaskModel task);
 
 class TaskList extends StatelessWidget {
-  final List<Task> tasks;
+  final List<TaskModel> tasks;
   final String? label;
-  final void Function(Task task) onToggleTaskCompletion;
-  final void Function(Subtask subtask) onToggleSubtaskCompletion;
+  final void Function(TaskModel task) onToggleTaskCompletion;
+  final void Function(SubtaskModel subtask) onToggleSubtaskCompletion;
   final TaskCallback onLongPress;
 
   const TaskList({

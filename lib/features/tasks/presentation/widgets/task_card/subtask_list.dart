@@ -1,10 +1,10 @@
-import 'package:anchor/features/tasks/domain/entities/subtask.dart';
+import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:flutter/material.dart';
 
 class SubtaskList extends StatelessWidget {
-  final List<Subtask> subtasks;
+  final List<SubtaskModel> subtasks;
   final Color baseColor;
-  final void Function(Subtask) onToggleSubtaskCompletion;
+  final void Function(SubtaskModel) onToggleSubtaskCompletion;
 
   const SubtaskList({
     super.key,

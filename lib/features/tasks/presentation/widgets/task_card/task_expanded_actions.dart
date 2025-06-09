@@ -1,15 +1,15 @@
-import 'package:anchor/features/tasks/domain/entities/subtask.dart';
-import 'package:anchor/features/tasks/domain/entities/task.dart';
+import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
+import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
 
 import 'subtask_list.dart';
 
 class TaskExpandedActions extends StatelessWidget {
-  final Task task;
+  final TaskModel task;
   final VoidCallback onComplete;
   final VoidCallback onUndoComplete;
   final VoidCallback showUndoDialog;
-  final void Function(Subtask subtask) onToggleSubtaskCompletion;
+  final void Function(SubtaskModel subtask) onToggleSubtaskCompletion;
 
   const TaskExpandedActions({
     super.key,

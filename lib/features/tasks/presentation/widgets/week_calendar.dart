@@ -1,4 +1,4 @@
-import 'package:anchor/features/tasks/domain/entities/task.dart';
+import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -18,7 +18,7 @@ class WeekCalendar extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: TableCalendar<Task>(
+      child: TableCalendar<TaskModel>(
         focusedDay: selectedDay,
         firstDay: DateTime.utc(now.year - 1, 1, 1),
         lastDay: DateTime.utc(now.year + 1, 12, 31),

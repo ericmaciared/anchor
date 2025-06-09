@@ -5,9 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'features/shared/confetti/confetti_provider.dart';
+import 'features/shared/notifications/notification_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final container = ProviderContainer();
+  final notificationService = container.read(notificationServiceProvider);
+  await notificationService.init();
+
   runApp(const ProviderScope(child: AnchorApp()));
 }
 

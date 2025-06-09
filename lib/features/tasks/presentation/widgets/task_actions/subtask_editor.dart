@@ -1,10 +1,10 @@
-import 'package:anchor/features/tasks/domain/entities/subtask.dart';
+import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class SubtaskEditor extends StatefulWidget {
-  final List<Subtask> subtasks;
-  final ValueChanged<List<Subtask>> onChanged;
+  final List<SubtaskModel> subtasks;
+  final ValueChanged<List<SubtaskModel>> onChanged;
 
   const SubtaskEditor({
     super.key,
@@ -17,7 +17,7 @@ class SubtaskEditor extends StatefulWidget {
 }
 
 class _SubtaskEditorState extends State<SubtaskEditor> {
-  late List<Subtask> _localSubtasks;
+  late List<SubtaskModel> _localSubtasks;
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
   void _addSubtask() {
     setState(() {
       _localSubtasks.add(
-        Subtask(
+        SubtaskModel(
           id: const Uuid().v4(),
           taskId: '',
           title: '',

@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 
 final databaseProvider = Provider<Future<Database>>((ref) async {
   final dbPath = await getDatabasesPath();
-  final path = join(dbPath, 'tasks.db');
+  final path = join(dbPath, 'anchor.db');
 
   return openDatabase(
     path,
@@ -13,6 +13,7 @@ final databaseProvider = Provider<Future<Database>>((ref) async {
     onCreate: (db, version) async {
       await db.execute(createTasksTable);
       await db.execute(createSubtasksTable);
+      await db.execute(createNotificationsTable);
     },
   );
 });

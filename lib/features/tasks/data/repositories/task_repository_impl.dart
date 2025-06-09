@@ -1,5 +1,5 @@
 import 'package:anchor/features/tasks/data/datasources/task_local_datasource.dart';
-import 'package:anchor/features/tasks/domain/entities/task.dart';
+import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:anchor/features/tasks/domain/repositories/task_repository.dart';
 
 class TaskRepositoryImpl implements TaskRepository {
@@ -8,17 +8,17 @@ class TaskRepositoryImpl implements TaskRepository {
   TaskRepositoryImpl(this.taskLocalDataSource);
 
   @override
-  Future<List<Task>> getAllTasks() {
+  Future<List<TaskModel>> getAllTasks() {
     return taskLocalDataSource.getAllTasks();
   }
 
   @override
-  Future<void> createTask(Task task) {
+  Future<void> createTask(TaskModel task) {
     return taskLocalDataSource.createTask(task);
   }
 
   @override
-  Future<void> updateTask(Task task) {
+  Future<void> updateTask(TaskModel task) {
     return taskLocalDataSource.updateTask(task);
   }
 

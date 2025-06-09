@@ -1,5 +1,5 @@
-import 'package:anchor/features/tasks/domain/entities/subtask.dart';
-import 'package:anchor/features/tasks/domain/entities/task.dart';
+import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
+import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
 
 import 'task_expanded_actions.dart';
@@ -8,10 +8,10 @@ import 'task_progress_bar.dart';
 import 'task_time_column.dart';
 
 class TaskCard extends StatefulWidget {
-  final Task task;
+  final TaskModel task;
   final VoidCallback onLongPress;
   final VoidCallback onToggleTaskCompletion;
-  final void Function(Subtask subtask) onToggleSubtaskCompletion;
+  final void Function(SubtaskModel subtask) onToggleSubtaskCompletion;
 
   const TaskCard({
     super.key,

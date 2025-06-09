@@ -1,7 +1,7 @@
 import 'package:anchor/core/utils/date_utils.dart';
 import 'package:anchor/features/shared/confetti/confetti_provider.dart';
-import 'package:anchor/features/tasks/domain/entities/subtask.dart';
-import 'package:anchor/features/tasks/domain/entities/task.dart';
+import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
+import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:anchor/features/tasks/presentation/providers/task_provider.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/task_actions_modal.dart';
 import 'package:flutter/material.dart';
@@ -13,15 +13,16 @@ class TaskController {
 
   TaskController(this.ref, this.context);
 
-  List<Task> getTasksForDay(DateTime day) {
+  List<TaskModel> getTasksForDay(DateTime day) {
     final tasks = ref.watch(taskProvider);
     return tasks.where((t) => isSameDay(t.day, day)).toList();
   }
 
-  void showEditTaskModal(Task task) {
+  void showEditTaskModal(TaskModel task) {
     final taskNotifier = ref.read(taskProvider.notifier);
     showModalBottomSheet(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => TaskActionsModal(
@@ -51,6 +52,7 @@ class TaskController {
     final taskNotifier = ref.read(taskProvider.notifier);
     showModalBottomSheet(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => TaskActionsModal(
@@ -59,7 +61,7 @@ class TaskController {
     );
   }
 
-  void toggleTaskCompletion(Task task) {
+  void toggleTaskCompletion(TaskModel task) {
     final taskNotifier = ref.read(taskProvider.notifier);
     final confettiController = ref.read(confettiProvider);
 
@@ -68,7 +70,7 @@ class TaskController {
     if (!wasDone) confettiController.play();
   }
 
-  void toggleSubtaskCompletion(Subtask subtask) {
+  void toggleSubtaskCompletion(SubtaskModel subtask) {
     final taskNotifier = ref.read(taskProvider.notifier);
     taskNotifier.toggleSubtaskCompletion(
         taskId: subtask.taskId, subtaskId: subtask.id);
