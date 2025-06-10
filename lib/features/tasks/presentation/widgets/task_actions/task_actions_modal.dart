@@ -44,6 +44,7 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
           color: Colors.blue,
           icon: Icons.check_circle_outline,
           subtasks: [],
+          notifications: [],
         );
   }
 

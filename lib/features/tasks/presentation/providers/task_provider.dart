@@ -72,7 +72,7 @@ class TaskNotifier extends StateNotifier<List<TaskModel>> {
 
     // Cancel old notifications
     for (final notification in oldTask.notifications) {
-      await notificationService.cancelNotification(notification.notificationId);
+      await notificationService.cancelNotification(notification.id);
     }
 
     await repository.updateTask(updatedTask);
@@ -96,8 +96,7 @@ class TaskNotifier extends StateNotifier<List<TaskModel>> {
 
       // Cancel notifications
       for (final notification in taskToDelete.notifications) {
-        await notificationService
-            .cancelNotification(notification.notificationId);
+        await notificationService.cancelNotification(notification.id);
       }
 
       await repository.deleteTask(taskId);

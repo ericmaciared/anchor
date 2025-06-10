@@ -19,7 +19,6 @@ class NotificationLocalDataSource {
       return NotificationModel(
         id: map['id'] as int,
         taskId: map['taskId'] as String,
-        notificationId: map['notificationId'] as int,
         triggerType: map['triggerType'] as String,
         triggerValue: map['triggerValue'] as int,
         scheduledTime:
@@ -34,7 +33,6 @@ class NotificationLocalDataSource {
     await db.insert('notifications', {
       'id': entry.id,
       'taskId': taskId,
-      'notificationId': entry.notificationId,
       'triggerType': entry.triggerType,
       'triggerValue': entry.triggerValue,
       'scheduledTime': entry.scheduledTime.toIso8601String(),

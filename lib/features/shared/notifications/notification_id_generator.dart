@@ -1,11 +1,8 @@
-import 'dart:math';
-
 class NotificationIdGenerator {
-  static const _max = 0x7FFFFFFF;
-  static var random = Random();
+  static var current = 0;
 
   static Future<int> next() async {
-    var id = random.nextInt(_max);
-    return id;
+    current += 1;
+    return current;
   }
 }

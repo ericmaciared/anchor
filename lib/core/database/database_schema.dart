@@ -24,7 +24,6 @@ const String createNotificationsTable = '''
   CREATE TABLE notifications (
     id INTEGER PRIMARY KEY,
     taskId TEXT REFERENCES tasks(id) ON DELETE CASCADE,
-    notificationId INTEGER,
     triggerType TEXT, 
     triggerValue INTEGER, 
     scheduledTime TEXT

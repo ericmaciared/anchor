@@ -36,7 +36,6 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
     final newNotification = NotificationModel(
       id: safeId,
       taskId: 't',
-      notificationId: DateTime.now().millisecondsSinceEpoch,
       triggerType: 'minutesBefore',
       triggerValue: minutesBefore,
       scheduledTime: scheduledTime,

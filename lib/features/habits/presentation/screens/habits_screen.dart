@@ -19,7 +19,6 @@ class HabitsScreen extends ConsumerWidget {
       final notification = NotificationModel(
         id: safeId,
         taskId: 'demo-task-id',
-        notificationId: 1001,
         // must be unique per notification
         triggerType: 'test',
         triggerValue: 10,
