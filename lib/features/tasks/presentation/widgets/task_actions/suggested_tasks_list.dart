@@ -114,10 +114,8 @@ class _SuggestedTasksListState extends State<SuggestedTasksList> {
       children: [
         Text(
           'Some suggestions?',
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium!
-              .copyWith(color: Colors.grey),
+          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
         ),
         const SizedBox(height: 12),
         ...SuggestedTasksList.suggestions.asMap().entries.map((entry) {
@@ -146,7 +144,11 @@ class _SuggestedTasksListState extends State<SuggestedTasksList> {
                     subtitle: task.startTime != null
                         ? Text(
                             '${TimeOfDay.fromDateTime(task.startTime!).format(context)} · ${task.duration?.inMinutes ?? 0} min',
-                            style: TextStyle(color: Colors.grey.shade600),
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurface
+                                    .withAlpha(100)),
                           )
                         : null,
                     horizontalTitleGap: 12,

@@ -8,29 +8,21 @@ class EmptyTaskState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-          child: DailyQuoteCard(),
-        ),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'No tasks for this day.',
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 8),
-              TextButton(
-                onPressed: onAdd,
-                child: const Text('Try adding one!'),
-              ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextButton(
+            onPressed: onAdd,
+            child: const Text('Add Task'),
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            child: DailyQuoteCard(),
+          ),
+        ],
+      ),
     );
   }
 }

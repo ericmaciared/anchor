@@ -4,11 +4,13 @@ import 'package:table_calendar/table_calendar.dart';
 
 class WeekCalendar extends StatelessWidget {
   final DateTime selectedDay;
+  final CalendarFormat calendarFormat;
   final Function(DateTime) onDaySelected;
 
   const WeekCalendar({
     super.key,
     required this.selectedDay,
+    required this.calendarFormat,
     required this.onDaySelected,
   });
 
@@ -16,29 +18,40 @@ class WeekCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     final now = DateTime.now();
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TableCalendar<TaskModel>(
-        focusedDay: selectedDay,
-        firstDay: DateTime.utc(now.year - 1, 1, 1),
-        lastDay: DateTime.utc(now.year + 1, 12, 31),
-        calendarFormat: CalendarFormat.week,
-        startingDayOfWeek: StartingDayOfWeek.monday,
-        headerVisible: false,
-        availableGestures: AvailableGestures.horizontalSwipe,
-        selectedDayPredicate: (day) => isSameDay(day, selectedDay),
-        onDaySelected: (selected, _) => onDaySelected(selected),
-        calendarStyle: const CalendarStyle(
-          todayDecoration: BoxDecoration(
-            color: Colors.blueAccent,
-            shape: BoxShape.circle,
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+      ),
+      child: Column(
+        children: [
+          TableCalendar<TaskModel>(
+            focusedDay: selectedDay,
+            firstDay: DateTime.utc(now.year - 1, 1, 1),
+            lastDay: DateTime.utc(now.year + 1, 12, 31),
+            calendarFormat: calendarFormat,
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            headerVisible: false,
+            availableGestures: AvailableGestures.horizontalSwipe,
+            selectedDayPredicate: (day) => isSameDay(day, selectedDay),
+            onDaySelected: (selected, _) => onDaySelected(selected),
+            calendarStyle: CalendarStyle(
+              todayDecoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                shape: BoxShape.circle,
+              ),
+              selectedDecoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainer,
+                shape: BoxShape.circle,
+              ),
+              selectedTextStyle:
+                  TextStyle(color: Theme.of(context).colorScheme.onSurface),
+            ),
           ),
-          selectedDecoration: BoxDecoration(
-            color: Colors.black87,
-            shape: BoxShape.circle,
-          ),
-          selectedTextStyle: TextStyle(color: Colors.white),
-        ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Divider(),
+          )
+        ],
       ),
     );
   }

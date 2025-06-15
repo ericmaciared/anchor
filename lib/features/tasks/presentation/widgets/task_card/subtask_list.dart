@@ -21,12 +21,12 @@ class SubtaskList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 12),
-        const Text(
+        Text(
           'Subtasks',
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: Colors.grey,
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
           ),
         ),
         const SizedBox(height: 8),
@@ -41,7 +41,12 @@ class SubtaskList extends StatelessWidget {
                           ? Icons.check_circle
                           : Icons.radio_button_unchecked,
                       size: 18,
-                      color: subtask.isDone ? Colors.grey : baseColor,
+                      color: subtask.isDone
+                          ? Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withAlpha(100)
+                          : baseColor,
                     ),
                     const SizedBox(width: 8),
                     Expanded(
@@ -49,7 +54,12 @@ class SubtaskList extends StatelessWidget {
                         subtask.title,
                         style: TextStyle(
                           fontSize: 14,
-                          color: subtask.isDone ? Colors.grey : null,
+                          color: subtask.isDone
+                              ? Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withAlpha(100)
+                              : null,
                           decoration: subtask.isDone
                               ? TextDecoration.lineThrough
                               : null,

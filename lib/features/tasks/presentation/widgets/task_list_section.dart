@@ -31,7 +31,6 @@ class TaskListSection extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       children: [
-        DailyQuoteCard(),
         TaskList(
           tasks: unscheduledTasks,
           label: 'Unscheduled Tasks',
@@ -46,6 +45,12 @@ class TaskListSection extends StatelessWidget {
           onToggleSubtaskCompletion: onToggleSubtaskCompletion,
           onLongPress: onLongPress,
         ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+          child: Divider(),
+        ),
+        DailyQuoteCard(),
+        const SizedBox(height: 112),
       ],
     );
   }

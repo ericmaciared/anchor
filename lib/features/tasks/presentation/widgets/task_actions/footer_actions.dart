@@ -30,7 +30,9 @@ class FooterActions extends StatelessWidget {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: isSaveEnabled ? null : Colors.grey,
+              backgroundColor: isSaveEnabled
+                  ? null
+                  : Theme.of(context).colorScheme.onSurface.withAlpha(100),
             ),
             onPressed: isSaveEnabled ? onSave : null,
             child: Text(isEdit ? 'Update' : 'Create'),

@@ -19,7 +19,9 @@ class DailyQuoteCard extends ConsumerWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Icon(Icons.format_quote, size: 20, color: Colors.grey),
+            Icon(Icons.format_quote,
+                size: 20,
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
             const SizedBox(width: 8),
             Expanded(
               child: Column(
@@ -37,9 +39,12 @@ class DailyQuoteCard extends ConsumerWidget {
                   Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      '- ${quote.author}',
+                      'Today\'s quote by ${quote.author.isEmpty ? 'someone' : quote.author}.',
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: Colors.grey[600],
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withAlpha(100),
                             fontWeight: FontWeight.w500,
                           ),
                     ),

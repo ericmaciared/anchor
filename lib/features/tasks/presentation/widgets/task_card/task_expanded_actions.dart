@@ -40,12 +40,11 @@ class TaskExpandedActions extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Task completed!',
                 style: TextStyle(
                   fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey,
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
                 ),
               ),
               TextButton(
@@ -70,7 +69,6 @@ class TaskExpandedActions extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  fontWeight: FontWeight.bold,
                   color: textColor,
                 ),
               ),

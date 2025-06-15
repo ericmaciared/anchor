@@ -6,6 +6,7 @@ import 'package:anchor/features/tasks/presentation/widgets/tasks_screen_app_bar.
 import 'package:anchor/features/tasks/presentation/widgets/week_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table_calendar/table_calendar.dart' show CalendarFormat;
 
 class TasksScreen extends ConsumerStatefulWidget {
   const TasksScreen({super.key});
@@ -16,6 +17,7 @@ class TasksScreen extends ConsumerStatefulWidget {
 
 class _TasksScreenState extends ConsumerState<TasksScreen> {
   DateTime _selectedDay = normalizeDate(DateTime.now());
+  final CalendarFormat _calendarFormat = CalendarFormat.week;
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +29,13 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
         onAddTask: controller.showCreateTaskModal,
       ),
       body: SafeArea(
-        child: Column(
+        bottom: false,
+        child: Stack(
           children: [
-            WeekCalendar(
-              selectedDay: _selectedDay,
-              onDaySelected: (day) => setState(() {
-                _selectedDay = normalizeDate(day);
-              }),
-            ),
-            Expanded(
+            // Scrollable content
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: 96), // Adjust this height as needed
               child: todayTasks.isEmpty
                   ? EmptyTaskState(onAdd: controller.showCreateTaskModal)
                   : TaskListSection(
@@ -45,7 +45,21 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
                           controller.toggleSubtaskCompletion,
                       onLongPress: controller.showEditTaskModal,
                     ),
-            )
+            ),
+
+            // Positioned Week Calendar on top
+            Positioned(
+              top: 8,
+              left: 0,
+              right: 0,
+              child: WeekCalendar(
+                selectedDay: _selectedDay,
+                calendarFormat: _calendarFormat,
+                onDaySelected: (day) => setState(() {
+                  _selectedDay = normalizeDate(day);
+                }),
+              ),
+            ),
           ],
         ),
       ),

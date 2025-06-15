@@ -17,11 +17,20 @@ class TaskTimeColumn extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(DateFormat('HH:mm').format(startTime!),
-              textAlign: TextAlign.center),
+          Text(
+            DateFormat('HH:mm').format(startTime!),
+            textAlign: TextAlign.center,
+            style:
+                Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
+          ),
+          if (duration != null) const SizedBox(height: 12),
           if (duration != null)
-            Text(DateFormat('HH:mm').format(endTime),
-                textAlign: TextAlign.center),
+            Text(
+              DateFormat('HH:mm').format(endTime),
+              textAlign: TextAlign.center,
+              style:
+                  Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
+            ),
         ],
       ),
     );

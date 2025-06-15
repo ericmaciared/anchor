@@ -44,10 +44,8 @@ class _TimePickerState extends State<TimePicker> {
       children: [
         Text(
           'When?',
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge!
-              .copyWith(color: Colors.grey),
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
         ),
         const SizedBox(height: 12),
         if (!_hasTime)

@@ -25,8 +25,10 @@ class TaskHeaderRow extends StatelessWidget {
       children: [
         Icon(
           task.icon,
-          color: task.isDone ? Colors.grey : null,
-          size: 30,
+          color: task.isDone
+              ? Theme.of(context).colorScheme.onSurface.withAlpha(100)
+              : Theme.of(context).colorScheme.onSurface.withAlpha(100),
+          size: 24,
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -38,21 +40,30 @@ class TaskHeaderRow extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  color: task.isDone ? Colors.grey : null,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  color: task.isDone
+                      ? Theme.of(context).colorScheme.onSurface.withAlpha(100)
+                      : null,
+                  fontSize: 14,
                   decoration: task.isDone ? TextDecoration.lineThrough : null,
                 ),
               ),
               if (subtitle.isNotEmpty)
-                Text(subtitle, style: const TextStyle(fontSize: 13)),
+                Text(subtitle,
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withAlpha(100))),
             ],
           ),
         ),
         const SizedBox(width: 12),
         Icon(
           task.isDone ? Icons.check_circle : Icons.circle_outlined,
-          color: !task.isDone ? task.color : Colors.grey,
+          color: !task.isDone
+              ? task.color
+              : Theme.of(context).colorScheme.onSurface.withAlpha(100),
         ),
       ],
     );

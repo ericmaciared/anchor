@@ -43,7 +43,8 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
   }
 
   void _openCustomColorPicker() {
-    Color tempColor = _customColor ?? Colors.grey;
+    Color tempColor =
+        _customColor ?? Theme.of(context).colorScheme.onSurface.withAlpha(100);
 
     showDialog(
       context: context,
@@ -113,10 +114,13 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.transparent,
-          border: Border.all(color: Colors.grey),
+          border: Border.all(
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
         ),
-        child: const Center(
-          child: Icon(Icons.add, size: 18, color: Colors.grey),
+        child: Center(
+          child: Icon(Icons.add,
+              size: 18,
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
         ),
       ),
     );
@@ -129,10 +133,8 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
       children: [
         Text(
           'Task Color',
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium!
-              .copyWith(color: Colors.grey),
+          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
         ),
         const SizedBox(height: 8),
         Card(

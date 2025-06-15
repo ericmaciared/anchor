@@ -29,10 +29,8 @@ class DurationSelector extends StatelessWidget {
       children: [
         Text(
           'How long?',
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium!
-              .copyWith(color: Colors.grey),
+          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
         ),
         const SizedBox(height: 12),
         Wrap(
