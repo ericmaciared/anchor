@@ -21,10 +21,6 @@ class TasksScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       title: Text(_getGreeting()),
-      leading: IconButton(
-        onPressed: () {},
-        icon: const Icon(Icons.calendar_month),
-      ),
       actions: [
         IconButton(
           onPressed: onAddTask,
