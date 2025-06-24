@@ -38,30 +38,32 @@ class NotificationService {
     final scheduledTime =
         tz.TZDateTime.from(notification.scheduledTime, tz.local);
 
-    const androidDetails = AndroidNotificationDetails(
-      'scheduled_channel_id',
-      'Scheduled',
-      channelDescription: 'Scheduled task reminders',
-      importance: Importance.max,
-      priority: Priority.high,
-    );
+    if (scheduledTime.isAfter(tz.TZDateTime.now(tz.local))) {
+      const androidDetails = AndroidNotificationDetails(
+        'scheduled_channel_id',
+        'Scheduled',
+        channelDescription: 'Scheduled task reminders',
+        importance: Importance.max,
+        priority: Priority.high,
+      );
 
-    const iosDetails = DarwinNotificationDetails();
+      const iosDetails = DarwinNotificationDetails();
 
-    const notificationDetails = NotificationDetails(
-      android: androidDetails,
-      iOS: iosDetails,
-    );
+      const notificationDetails = NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails,
+      );
 
-    var safeId = notification.id;
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      safeId,
-      title,
-      subtitle,
-      scheduledTime,
-      notificationDetails,
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-    );
+      var safeId = notification.id;
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        safeId,
+        title,
+        subtitle,
+        scheduledTime,
+        notificationDetails,
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      );
+    }
   }
 
   /// Immediately show a local notification (optional helper)
