@@ -1,0 +1,103 @@
+import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
+import 'package:anchor/features/tasks/domain/entities/task_model.dart';
+import 'package:flutter/material.dart';
+
+import 'minimal_task_time_column.dart'; // Ensure this import is correct
+
+class MinimalTaskCard extends StatelessWidget {
+  final TaskModel task;
+  final VoidCallback onLongPress;
+  final VoidCallback onToggleTaskCompletion;
+  final void Function(SubtaskModel subtask) onToggleSubtaskCompletion;
+
+  const MinimalTaskCard({
+    super.key,
+    required this.task,
+    required this.onLongPress,
+    required this.onToggleTaskCompletion,
+    required this.onToggleSubtaskCompletion,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  MinimalTaskTimeColumn(
+                      startTime: task.startTime, duration: task.duration),
+                  const SizedBox(width: 8),
+                  // Main task card
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: GestureDetector(
+                      onTap: onToggleTaskCompletion,
+                      onLongPress: onLongPress,
+                      behavior: HitTestBehavior.opaque,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Text(
+                          task.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: task.isDone
+                                ? colorScheme.onSurface.withAlpha(100)
+                                : null,
+                            fontSize: 14,
+                            decoration:
+                                task.isDone ? TextDecoration.lineThrough : null,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // Subtasks section
+              if (task.subtasks.isNotEmpty)
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 64.0, vertical: 8.0),
+                      child: Column(
+                        spacing: 16,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: task.subtasks.map((subtask) {
+                          return Text(
+                            subtask.title,
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      decoration: subtask.isDone
+                                          ? TextDecoration.lineThrough
+                                          : null,
+                                      color: subtask.isDone
+                                          ? colorScheme.onSurface.withAlpha(100)
+                                          : null,
+                                    ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
