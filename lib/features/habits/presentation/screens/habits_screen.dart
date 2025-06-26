@@ -1,47 +1,43 @@
-import 'package:anchor/features/shared/notifications/notification_id_generator.dart';
-import 'package:anchor/features/shared/notifications/notification_service.dart';
-import 'package:anchor/features/tasks/domain/entities/notification_model.dart';
+import 'package:anchor/features/habits/presentation/controllers/habit_controller.dart';
+import 'package:anchor/features/habits/presentation/widgets/habit_list_section.dart';
+import 'package:anchor/features/habits/presentation/widgets/habits_screen_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HabitsScreen extends ConsumerWidget {
+import '../widgets/empty_habit_state.dart';
+
+class HabitsScreen extends ConsumerStatefulWidget {
   const HabitsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final notificationService = ref.read(notificationServiceProvider);
+  ConsumerState<HabitsScreen> createState() => _HabitsScreenState();
+}
 
-    void _scheduleNotification() async {
-      final scheduledTime = DateTime.now().add(const Duration(seconds: 10));
-
-      final safeId = await NotificationIdGenerator.next();
-
-      final notification = NotificationModel(
-        id: safeId,
-        taskId: 'demo-task-id',
-        // must be unique per notification
-        triggerType: 'test',
-        triggerValue: 10,
-        scheduledTime: scheduledTime,
-      );
-
-      notificationService.scheduleNotification(
-          notification, 'Test Title', 'Test subtitle');
-    }
+class _HabitsScreenState extends ConsumerState<HabitsScreen> {
+  @override
+  Widget build(BuildContext context) {
+    final controller = HabitController(ref, context);
+    final todayHabits = controller.getAllSelectedHabits();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Immediate Notification')),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+      appBar: HabitsScreenAppBar(
+        onAddHabit: () {},
+      ),
+      body: SafeArea(
+        bottom: false,
+        child: Stack(
           children: [
-            ElevatedButton(
-              onPressed: () => notificationService.showNow(),
-              child: const Text('Trigger Notification Now'),
-            ),
-            ElevatedButton(
-              onPressed: () => _scheduleNotification(),
-              child: const Text('Schedule Notification in 10 Seconds'),
+            // Scrollable content
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: 96), // Adjust this height as needed
+              child: todayHabits.isEmpty
+                  ? EmptyHabitState(onAdd: () {})
+                  : HabitListSection(
+                      habits: todayHabits,
+                      onToggleHabitCompletion: (habit) {},
+                      onLongPress: (habit) {},
+                    ),
             ),
           ],
         ),

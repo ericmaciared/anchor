@@ -14,6 +14,8 @@ final databaseProvider = Provider<Future<Database>>((ref) async {
       await db.execute(createTasksTable);
       await db.execute(createSubtasksTable);
       await db.execute(createNotificationsTable);
+      await db.execute(createHabitsTable);
+      await db.execute(populateHabitsTable);
     },
   );
 });
