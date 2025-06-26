@@ -45,6 +45,11 @@ class FloatingNavBar extends StatelessWidget {
                 isActive: currentIndex == 1,
                 onTap: () => onTap(1),
               ),
+              _IconNavItem(
+                icon: Icons.account_circle_outlined,
+                isActive: currentIndex == 2,
+                onTap: () => onTap(2),
+              ),
             ],
           ),
         ),

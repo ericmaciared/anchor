@@ -1,4 +1,5 @@
 import 'package:anchor/features/habits/presentation/screens/habits_screen.dart';
+import 'package:anchor/features/profile/presentation/screens/profile_screen.dart';
 import 'package:anchor/features/shared/main/main_scaffold.dart';
 import 'package:anchor/features/tasks/presentation/screens/tasks_screen.dart';
 import 'package:anchor/features/welcome/welcome_screen.dart';
@@ -36,6 +37,17 @@ final router = GoRouter(
               path: '/habits',
               name: 'habits',
               builder: (context, state) => const HabitsScreen(),
+            ),
+          ],
+        ),
+
+        // Profile branch
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/profile',
+              name: 'profile',
+              builder: (context, state) => const ProfileScreen(),
             ),
           ],
         ),
