@@ -14,31 +14,24 @@ class DisplayDensitySettingTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      children: [
-        ListTile(
-          leading: Icon(Icons.density_medium, color: iconColor),
-          title: const Text('Display Density', style: TextStyle(fontSize: 12)),
-          trailing: DropdownButton<String>(
-            value: currentDensity,
-            onChanged: (String? newValue) {
-              if (newValue != null) {
-                ref
-                    .read(settingsProvider.notifier)
-                    .updateDisplayDensity(newValue);
-              }
-            },
-            items: <String>['Compact', 'Normal', 'Spacious']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value, style: const TextStyle(fontSize: 12)),
-              );
-            }).toList(),
-          ),
-        ),
-        const Divider(indent: 16, endIndent: 16),
-      ],
+    return ListTile(
+      leading: Icon(Icons.density_medium, color: iconColor),
+      title: const Text('Display Density', style: TextStyle(fontSize: 12)),
+      trailing: DropdownButton<String>(
+        value: currentDensity,
+        onChanged: (String? newValue) {
+          if (newValue != null) {
+            ref.read(settingsProvider.notifier).updateDisplayDensity(newValue);
+          }
+        },
+        items: <String>['Compact', 'Normal', 'Spacious']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value, style: const TextStyle(fontSize: 12)),
+          );
+        }).toList(),
+      ),
     );
   }
 }

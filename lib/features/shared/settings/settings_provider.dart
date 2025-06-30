@@ -1,5 +1,3 @@
-import 'dart:math'; // Import for Random class
-
 import 'package:anchor/features/shared/settings/settings_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,22 +35,8 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
         _prefs.getString('displayDensity') ?? 'Normal';
     final bool dailyQuotesEnabled =
         _prefs.getBool('dailyQuotesEnabled') ?? true;
-
-    // Load profile color, or generate and save if not found
-    int? storedColorValue = _prefs.getInt('profileColor');
-    int profileColor;
-    if (storedColorValue == null) {
-      final Random random = Random();
-      profileColor = Color.fromARGB(
-        255, // Opacity
-        random.nextInt(200) + 55, // Red (avoid too dark or too light)
-        random.nextInt(200) + 55, // Green
-        random.nextInt(200) + 55, // Blue
-      ).toARGB32(); // Get the integer representation of the color
-      await _prefs.setInt('profileColor', profileColor);
-    } else {
-      profileColor = storedColorValue;
-    }
+    final bool visualEffectsEnabled =
+        _prefs.getBool('visualEffectsEnabled') ?? true;
 
     return SettingsState(
       profileName: profileName,
@@ -60,18 +44,13 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
       bedTime: bedTime,
       displayDensity: displayDensity,
       dailyQuotesEnabled: dailyQuotesEnabled,
-      profileColor: profileColor, // Pass the loaded/generated color
+      visualEffectsEnabled: visualEffectsEnabled,
     );
   }
 
   Future<void> updateProfileName(String newName) async {
     state = AsyncValue.data(state.value!.copyWith(profileName: newName));
     await _prefs.setString('profileName', newName);
-  }
-
-  Future<void> updateProfileColor(int newColorValue) async {
-    state = AsyncValue.data(state.value!.copyWith(profileColor: newColorValue));
-    await _prefs.setInt('profileColor', newColorValue);
   }
 
   Future<void> updateWakeUpTime(TimeOfDay newTime) async {
@@ -92,6 +71,12 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
   Future<void> updateDailyQuotesEnabled(bool enabled) async {
     state = AsyncValue.data(state.value!.copyWith(dailyQuotesEnabled: enabled));
     await _prefs.setBool('dailyQuotesEnabled', enabled);
+  }
+
+  Future<void> updateVisualEffectsEnabled(bool enabled) async {
+    state =
+        AsyncValue.data(state.value!.copyWith(visualEffectsEnabled: enabled));
+    await _prefs.setBool('visualEffectsEnabled', enabled);
   }
 }
 

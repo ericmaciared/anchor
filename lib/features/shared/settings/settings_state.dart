@@ -6,7 +6,7 @@ class SettingsState {
   final TimeOfDay bedTime;
   final String displayDensity;
   final bool dailyQuotesEnabled;
-  final int profileColor;
+  final bool visualEffectsEnabled;
 
   SettingsState({
     required this.profileName,
@@ -14,7 +14,7 @@ class SettingsState {
     required this.bedTime,
     required this.displayDensity,
     required this.dailyQuotesEnabled,
-    required this.profileColor,
+    this.visualEffectsEnabled = true,
   });
 
   SettingsState copyWith({
@@ -23,7 +23,7 @@ class SettingsState {
     TimeOfDay? bedTime,
     String? displayDensity,
     bool? dailyQuotesEnabled,
-    int? profileColor,
+    bool? visualEffectsEnabled,
   }) {
     return SettingsState(
       profileName: profileName ?? this.profileName,
@@ -31,7 +31,7 @@ class SettingsState {
       bedTime: bedTime ?? this.bedTime,
       displayDensity: displayDensity ?? this.displayDensity,
       dailyQuotesEnabled: dailyQuotesEnabled ?? this.dailyQuotesEnabled,
-      profileColor: profileColor ?? this.profileColor,
+      visualEffectsEnabled: visualEffectsEnabled ?? this.visualEffectsEnabled,
     );
   }
 }
