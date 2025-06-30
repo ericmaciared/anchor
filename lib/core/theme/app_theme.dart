@@ -5,7 +5,7 @@ class AppTheme {
     return ThemeData(
       fontFamily: 'Sora',
       colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.blueAccent,
+        seedColor: Color.fromARGB(255, 228, 58, 58),
         brightness: Brightness.light,
       ),
       useMaterial3: true,
@@ -40,7 +40,7 @@ class AppTheme {
     return ThemeData(
       fontFamily: 'Sora',
       colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.blueAccent,
+        seedColor: Color.fromARGB(255, 108, 15, 15),
         brightness: Brightness.dark,
       ),
       useMaterial3: true,
