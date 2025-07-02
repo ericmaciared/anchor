@@ -15,6 +15,9 @@ class EmptyTaskState extends StatelessWidget {
           onPressed: onAdd,
           child: const Text('Add Task'),
         ),
+        const SizedBox(
+          height: 8,
+        ),
         DailyQuoteCard()
       ],
     );

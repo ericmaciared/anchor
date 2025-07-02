@@ -26,7 +26,7 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
 
     return Scaffold(
       appBar: TasksScreenAppBar(
-        onAddTask: controller.showCreateTaskModal,
+        onAddTask: () => controller.showCreateTaskModal(taskDay: _selectedDay),
       ),
       body: SafeArea(
         bottom: false,
@@ -34,10 +34,11 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
           children: [
             // Scrollable content
             Padding(
-              padding: const EdgeInsets.only(
-                  top: 96), // Adjust this height as needed
+              padding: const EdgeInsets.only(top: 96),
               child: todayTasks.isEmpty
-                  ? EmptyTaskState(onAdd: controller.showCreateTaskModal)
+                  ? EmptyTaskState(
+                      onAdd: () =>
+                          controller.showCreateTaskModal(taskDay: _selectedDay))
                   : TaskListSection(
                       selectedDayTasks: todayTasks,
                       onToggleTaskCompletion: controller.toggleTaskCompletion,

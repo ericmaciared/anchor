@@ -21,7 +21,7 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
             hour: int.parse(wakeUpTimeString.split(':')[0]),
             minute: int.parse(wakeUpTimeString.split(':')[1]),
           )
-        : TimeOfDay.now();
+        : TimeOfDay(hour: 8, minute: 0);
 
     final String? bedTimeString = _prefs.getString('bedTime');
     final TimeOfDay bedTime = bedTimeString != null

@@ -27,6 +27,7 @@ class TaskController {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => TaskActionsModal(
+        taskDay: task.day,
         initialTask: task,
         onSubmit: (updatedTask) => taskNotifier.updateTask(updatedTask),
         onDelete: (deletedTask) async {
@@ -49,7 +50,7 @@ class TaskController {
     );
   }
 
-  void showCreateTaskModal() {
+  void showCreateTaskModal({required DateTime taskDay}) {
     final taskNotifier = ref.read(taskProvider.notifier);
     showModalBottomSheet(
       context: context,
@@ -57,6 +58,7 @@ class TaskController {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => TaskActionsModal(
+        taskDay: taskDay,
         onSubmit: (task) => taskNotifier.createTask(task),
       ),
     );

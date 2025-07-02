@@ -11,12 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class TaskActionsModal extends StatefulWidget {
+  final DateTime taskDay;
   final TaskModel? initialTask;
   final void Function(TaskModel task) onSubmit;
   final void Function(TaskModel task)? onDelete;
 
   const TaskActionsModal({
     super.key,
+    required this.taskDay,
     this.initialTask,
     required this.onSubmit,
     this.onDelete,
@@ -32,13 +34,13 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
   @override
   void initState() {
     super.initState();
-    final now = DateTime.now();
+    final day = widget.initialTask?.startTime ?? widget.taskDay;
     _task = widget.initialTask ??
         TaskModel(
           id: const Uuid().v4(),
           title: '',
           isDone: false,
-          day: DateTime(now.year, now.month, now.day),
+          day: DateTime(day.year, day.month, day.day),
           startTime: null,
           duration: null,
           color: Colors.blue,
