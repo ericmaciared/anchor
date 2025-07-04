@@ -38,25 +38,24 @@ class HabitCard extends StatelessWidget {
                       children: [
                         Text(
                           habit.name,
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style:
+                              Theme.of(context).textTheme.titleMedium!.copyWith(
+                                    fontSize: 14,
+                                  ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                // --- Streak Indicator ---
                 if (habit.currentStreak > 0) ...[
-                  const SizedBox(
-                      width:
-                          12), // Spacing between the card and the streak indicator
+                  const SizedBox(width: 12),
                   Row(
-                    mainAxisSize: MainAxisSize
-                        .min, // Make the column as small as its children
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
                         Icons.local_fire_department,
                         color: colorScheme.secondary,
-                        size: 24,
+                        size: 20,
                       ),
                       const SizedBox(
                         width: 4,
@@ -67,7 +66,7 @@ class HabitCard extends StatelessWidget {
                             Theme.of(context).textTheme.headlineSmall?.copyWith(
                                   color: colorScheme.primary,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                 ),
                       ),
                     ],

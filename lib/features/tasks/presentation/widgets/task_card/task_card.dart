@@ -73,7 +73,6 @@ class _TaskCardState extends State<TaskCard>
               TaskTimeColumn(
                   startTime: task.startTime, duration: task.duration),
               const SizedBox(width: 8),
-              // Match card height using LayoutBuilder
               Builder(builder: (context) {
                 return ConstrainedBox(
                   constraints: BoxConstraints(
