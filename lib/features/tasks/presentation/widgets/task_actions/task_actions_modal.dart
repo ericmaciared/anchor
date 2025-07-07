@@ -1,11 +1,11 @@
+import 'package:anchor/features/shared/widgets/icon_and_title.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/color_picker.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/duration_selector.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/footer_actions.dart';
-import 'package:anchor/features/tasks/presentation/widgets/task_actions/icon_and_title.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/notification_configurator.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/subtask_editor.dart';
-import 'package:anchor/features/tasks/presentation/widgets/task_actions/suggested_tasks_list.dart';
+import 'package:anchor/features/tasks/presentation/widgets/task_actions/suggested_tasks_chips.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -72,104 +72,98 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
         ),
         child: SafeArea(
           top: false,
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: 24,
-              left: 20,
-              right: 20,
-              bottom: MediaQuery.of(context).viewInsets.bottom + 20,
-            ),
-            child: Column(
-              children: [
-                Expanded(
-                  child: ListView(
-                    controller: controller,
-                    children: [
-                      Text(
-                        isEdit ? 'edit task' : 'new task',
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      const SizedBox(height: 24),
-                      IconAndTitle(
-                        title: _task.title,
-                        selectedIcon: _task.icon,
-                        onTitleChanged: (text) =>
-                            setState(() => _task = _task.copyWith(title: text)),
-                        onIconChanged: (icon) =>
-                            setState(() => _task = _task.copyWith(icon: icon)),
-                      ),
-                      const SizedBox(height: 36),
-                      if (_task.title.trim().isEmpty && !isEdit)
-                        SuggestedTasksList(
-                          onTap: (suggested) {
-                            setState(() {
-                              _task = _task.copyWith(
-                                title: suggested.title,
-                                icon: suggested.icon,
-                                color: suggested.color,
-                                startTime: suggested.startTime,
-                                duration: suggested.duration,
-                              );
-                            });
-                          },
-                        ),
-                      if (_task.title.trim().isNotEmpty || isEdit) ...[
-                        ColorPickerWidget(
-                          selectedColor: _task.color,
-                          onColorSelected: (color) => setState(
-                              () => _task = _task.copyWith(color: color)),
-                        ),
-                        const SizedBox(height: 36),
-                        TimePicker(
-                          selectedTime: _task.startTime != null
-                              ? TimeOfDay.fromDateTime(_task.startTime!)
-                              : null,
-                          onPick: (time) {
-                            setState(() => _task = _task.copyWith(
-                                startTime: time != null
-                                    ? DateTime(
-                                        DateTime.now().year,
-                                        DateTime.now().month,
-                                        DateTime.now().day,
-                                        time.hour,
-                                        time.minute,
-                                      )
-                                    : null));
-                          },
-                        ),
-                        const SizedBox(height: 24),
-                        DurationSelector(
-                          duration: _task.duration?.inMinutes,
-                          onChanged: (min) => setState(() => _task =
-                              _task.copyWith(
-                                  duration: min != null
-                                      ? Duration(minutes: min)
-                                      : null)),
-                        ),
-                        const SizedBox(height: 24),
-                        SubtaskEditor(
-                          subtasks: _task.subtasks,
-                          onChanged: (subtasks) => setState(() {
-                            _task = _task.copyWith(subtasks: subtasks);
-                          }),
-                        ),
-                        const SizedBox(height: 24),
-                        NotificationConfigurator(
-                          notifications: _task.notifications,
-                          taskStartTime: _task.startTime,
-                          onChanged: (notifications) => setState(
-                            () {
-                              _task =
-                                  _task.copyWith(notifications: notifications);
-                            },
-                          ),
-                        )
-                      ],
-                    ],
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  controller: controller,
+                  padding: const EdgeInsets.only(
+                    top: 24,
+                    left: 16,
+                    right: 16,
                   ),
+                  children: [
+                    Text(
+                      isEdit ? 'edit task' : 'new task',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    const SizedBox(height: 24),
+                    IconAndTitle(
+                      title: _task.title,
+                      selectedIcon: _task.icon,
+                      onTitleChanged: (text) =>
+                          setState(() => _task = _task.copyWith(title: text)),
+                      onIconChanged: (icon) =>
+                          setState(() => _task = _task.copyWith(icon: icon)),
+                    ),
+                    const SizedBox(height: 36),
+                    ColorPickerWidget(
+                      selectedColor: _task.color,
+                      onColorSelected: (color) =>
+                          setState(() => _task = _task.copyWith(color: color)),
+                    ),
+                    const SizedBox(height: 36),
+                    TimePicker(
+                      selectedTime: _task.startTime != null
+                          ? TimeOfDay.fromDateTime(_task.startTime!)
+                          : null,
+                      onPick: (time) {
+                        setState(() => _task = _task.copyWith(
+                            startTime: time != null
+                                ? DateTime(
+                                    DateTime.now().year,
+                                    DateTime.now().month,
+                                    DateTime.now().day,
+                                    time.hour,
+                                    time.minute,
+                                  )
+                                : null));
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    DurationSelector(
+                      duration: _task.duration?.inMinutes,
+                      onChanged: (min) => setState(() => _task = _task.copyWith(
+                          duration:
+                              min != null ? Duration(minutes: min) : null)),
+                    ),
+                    const SizedBox(height: 24),
+                    SubtaskEditor(
+                      subtasks: _task.subtasks,
+                      onChanged: (subtasks) => setState(() {
+                        _task = _task.copyWith(subtasks: subtasks);
+                      }),
+                    ),
+                    const SizedBox(height: 24),
+                    NotificationConfigurator(
+                      notifications: _task.notifications,
+                      taskStartTime: _task.startTime,
+                      onChanged: (notifications) => setState(
+                        () {
+                          _task = _task.copyWith(notifications: notifications);
+                        },
+                      ),
+                    )
+                  ],
                 ),
-                const SizedBox(height: 28),
-                FooterActions(
+              ),
+              if (!isEdit && _task.title.trim().isEmpty)
+                SuggestedTasksChips(
+                  onSuggestionSelected: (suggested) {
+                    setState(() {
+                      _task = _task.copyWith(
+                        title: suggested.title,
+                        icon: suggested.icon,
+                        color: suggested.color,
+                        startTime: suggested.startTime,
+                        duration: suggested.duration,
+                      );
+                    });
+                  },
+                ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: FooterActions(
                   isEdit: isEdit,
                   isSaveEnabled: _task.title.trim().isNotEmpty,
                   onDelete: () async {
@@ -203,8 +197,8 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                   },
                   onSave: _submit,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

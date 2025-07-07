@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'icon_picker.dart';
+import '../../tasks/presentation/widgets/task_actions/icon_picker.dart';
 
 class IconAndTitle extends StatefulWidget {
   final IconData selectedIcon;

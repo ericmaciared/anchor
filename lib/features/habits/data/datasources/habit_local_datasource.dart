@@ -37,7 +37,7 @@ class HabitLocalDataSource {
   Future<void> createHabit(HabitModel habit) async {
     final db = await database;
 
-    await db.insert('tasks', {
+    await db.insert('habits', {
       'id': habit.id,
       'name': habit.name,
       'isSelected': habit.isSelected ? 1 : 0,
@@ -51,7 +51,7 @@ class HabitLocalDataSource {
     final db = await database;
 
     await db.update(
-      'tasks',
+      'habits',
       {
         'id': habit.id,
         'name': habit.name,

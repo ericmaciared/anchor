@@ -21,7 +21,7 @@ class _HabitsScreenState extends ConsumerState<HabitsScreen> {
 
     return Scaffold(
       appBar: HabitsScreenAppBar(
-        onAddHabit: () {},
+        onAddHabit: () => controller.showCreateHabitModal(),
       ),
       body: SafeArea(
         bottom: false,
@@ -29,8 +29,7 @@ class _HabitsScreenState extends ConsumerState<HabitsScreen> {
           children: [
             // Scrollable content
             Padding(
-              padding: const EdgeInsets.only(
-                  top: 96), // Adjust this height as needed
+              padding: const EdgeInsets.only(top: 96),
               child: todayHabits.isEmpty
                   ? EmptyHabitState(onAdd: () {})
                   : HabitListSection(
