@@ -1,5 +1,5 @@
 name: anchor
-description: "A new Flutter project."
+description: "Task and habit tracker."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -43,6 +43,7 @@ dependencies:
   go_router: ^15.1.2
   intl: ^0.20.2
   path: ^1.9.0
+  rive: ^0.13.20
   shared_preferences: 2.5.3
   sqflite: ^2.4.1
   table_calendar: ^3.2.0
@@ -75,7 +76,7 @@ flutter_icons:
 # The following section is specific to Flutter packages.
 flutter:
 
-  # The following line ensures that the Material Icons font is
+  # The following line ensures that the Material Icons font i
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
@@ -85,6 +86,7 @@ flutter:
     - assets/quotes/quotes.csv
     - assets/icon/app_logo_white.png
     - assets/icon/app_logo_black.png
+    - assets/animations/welcome.riv
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
