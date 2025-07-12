@@ -29,7 +29,17 @@ class HabitModel {
       isSelected: isSelected ?? this.isSelected,
       isCustom: isCustom ?? this.isCustom,
       currentStreak: currentStreak ?? this.currentStreak,
-      lastCompletedDate: lastCompletedDate ?? this.lastCompletedDate,
+      lastCompletedDate: lastCompletedDate,
     );
+  }
+
+  bool isCompletedToday() {
+    if (lastCompletedDate == null) {
+      return false;
+    }
+    final now = DateTime.now();
+    return lastCompletedDate!.year == now.year &&
+        lastCompletedDate!.month == now.month &&
+        lastCompletedDate!.day == now.day;
   }
 }

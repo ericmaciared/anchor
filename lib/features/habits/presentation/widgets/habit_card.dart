@@ -20,8 +20,8 @@ class HabitCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: GestureDetector(
-        onTap: onToggleHabitCompletion, // This will toggle completion on tap
-        onLongPress: onLongPress, // This will handle long press events
+        onTap: onToggleHabitCompletion,
+        onLongPress: onLongPress,
         child: LayoutBuilder(
           builder: (context, constraints) {
             return Row(
@@ -41,6 +41,9 @@ class HabitCard extends StatelessWidget {
                           style:
                               Theme.of(context).textTheme.titleMedium!.copyWith(
                                     fontSize: 14,
+                                    decoration: habit.isCompletedToday()
+                                        ? TextDecoration.lineThrough
+                                        : TextDecoration.none,
                                   ),
                         ),
                       ],
@@ -54,7 +57,12 @@ class HabitCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.local_fire_department,
-                        color: colorScheme.secondary,
+                        color: habit.isCompletedToday()
+                            ? Theme.of(context).colorScheme.secondary
+                            : Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withAlpha(100),
                         size: 20,
                       ),
                       const SizedBox(

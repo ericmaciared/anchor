@@ -1,3 +1,4 @@
+import 'package:anchor/features/shared/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 
 import '../../tasks/presentation/widgets/task_actions/icon_picker.dart';
@@ -79,11 +80,11 @@ class _IconAndTitleState extends State<IconAndTitle> {
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: TextField(
-                controller: _controller,
-                decoration: const InputDecoration(labelText: 'Task Name'),
-              ),
-            ),
+                child: TextInput(
+              text: widget.title,
+              label: 'Task Name',
+              onTextChanged: (text) => widget.onTitleChanged(text),
+            )),
           ],
         ),
       ],

@@ -32,4 +32,8 @@ class HabitController {
       ),
     );
   }
+
+  void toggleHabitCompletion(HabitModel habit) {
+    ref.read(habitProvider.notifier).toggleHabitCompletion(habit);
+  }
 }

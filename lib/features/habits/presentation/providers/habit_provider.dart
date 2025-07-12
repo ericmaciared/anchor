@@ -56,4 +56,24 @@ class HabitNotifier extends StateNotifier<List<HabitModel>> {
 
     state = [...state, habit];
   }
+
+  Future<void> toggleHabitCompletion(HabitModel habit) async {
+    final now = DateTime.now();
+    HabitModel updatedHabit;
+
+    if (habit.isCompletedToday()) {
+      updatedHabit = habit.copyWith(
+        lastCompletedDate: null,
+        currentStreak: habit.currentStreak > 0 ? habit.currentStreak - 1 : 0,
+      );
+    } else {
+      updatedHabit = habit.copyWith(
+        lastCompletedDate: now,
+        currentStreak: habit.currentStreak + 1,
+      );
+    }
+    await repository.updateHabit(updatedHabit);
+    state =
+        state.map((h) => h.id == updatedHabit.id ? updatedHabit : h).toList();
+  }
 }

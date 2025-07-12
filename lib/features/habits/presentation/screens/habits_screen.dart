@@ -34,7 +34,9 @@ class _HabitsScreenState extends ConsumerState<HabitsScreen> {
                   ? EmptyHabitState(onAdd: () {})
                   : HabitListSection(
                       habits: todayHabits,
-                      onToggleHabitCompletion: (habit) {},
+                      onToggleHabitCompletion: (habit) {
+                        controller.toggleHabitCompletion(habit);
+                      },
                       onLongPress: (habit) {},
                     ),
             ),
