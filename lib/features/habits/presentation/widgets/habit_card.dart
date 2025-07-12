@@ -16,6 +16,26 @@ class HabitCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    // Determine if the habit is completed today for text styling
+    final isCompletedToday = habit.isCompletedToday();
+
+    // Determine if the streak should be shown
+    bool shouldShowStreak = false;
+    if (habit.currentStreak > 0 && habit.lastCompletedDate != null) {
+      final now = DateTime.now();
+      final lastCompletedDay = DateUtils.dateOnly(habit.lastCompletedDate!);
+      final today = DateUtils.dateOnly(now);
+      final yesterday =
+          DateUtils.dateOnly(now.subtract(const Duration(days: 1)));
+
+      // Show streak if completed today or yesterday
+      if (lastCompletedDay.isAtSameMomentAs(today) ||
+          lastCompletedDay.isAtSameMomentAs(yesterday)) {
+        shouldShowStreak = true;
+      }
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
@@ -38,26 +58,28 @@ class HabitCard extends StatelessWidget {
                       children: [
                         Text(
                           habit.name,
-                          style:
-                              Theme.of(context).textTheme.titleMedium!.copyWith(
-                                    fontSize: 14,
-                                    decoration: habit.isCompletedToday()
-                                        ? TextDecoration.lineThrough
-                                        : TextDecoration.none,
-                                  ),
+                          style: textTheme.titleMedium!.copyWith(
+                            fontSize: 14,
+                            decoration: isCompletedToday
+                                ? TextDecoration.lineThrough
+                                : TextDecoration.none,
+                            color: isCompletedToday
+                                ? textTheme.titleMedium!.color?.withAlpha(150)
+                                : textTheme.titleMedium!.color,
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                if (habit.currentStreak > 0) ...[
+                if (shouldShowStreak) ...[
                   const SizedBox(width: 12),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
                         Icons.local_fire_department,
-                        color: habit.isCompletedToday()
+                        color: isCompletedToday
                             ? Theme.of(context).colorScheme.secondary
                             : Theme.of(context)
                                 .colorScheme
@@ -70,12 +92,11 @@ class HabitCard extends StatelessWidget {
                       ),
                       Text(
                         '${habit.currentStreak}',
-                        style:
-                            Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                  color: colorScheme.primary,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
+                        style: textTheme.headlineSmall?.copyWith(
+                          color: colorScheme.primary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
                     ],
                   ),

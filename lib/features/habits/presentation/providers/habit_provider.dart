@@ -2,6 +2,7 @@ import 'package:anchor/features/habits/data/datasources/habit_local_datasource.d
 import 'package:anchor/features/habits/data/repositories/habit_repository_impl.dart';
 import 'package:anchor/features/habits/domain/entities/habit_model.dart';
 import 'package:anchor/features/habits/domain/repositories/habit_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final habitProvider = StateNotifierProvider<HabitNotifier, List<HabitModel>>(
@@ -67,11 +68,30 @@ class HabitNotifier extends StateNotifier<List<HabitModel>> {
         currentStreak: habit.currentStreak > 0 ? habit.currentStreak - 1 : 0,
       );
     } else {
+      int newStreak;
+
+      if (habit.lastCompletedDate != null) {
+        final lastCompletionDay = DateUtils.dateOnly(habit.lastCompletedDate!);
+        final yesterday =
+            DateUtils.dateOnly(now.subtract(const Duration(days: 1)));
+
+        if (lastCompletionDay.isAtSameMomentAs(yesterday)) {
+          newStreak = habit.currentStreak + 1;
+        } else if (lastCompletionDay.isBefore(yesterday)) {
+          newStreak = 1;
+        } else {
+          newStreak = 1;
+        }
+      } else {
+        newStreak = 1;
+      }
+
       updatedHabit = habit.copyWith(
         lastCompletedDate: now,
-        currentStreak: habit.currentStreak + 1,
+        currentStreak: newStreak,
       );
     }
+
     await repository.updateHabit(updatedHabit);
     state =
         state.map((h) => h.id == updatedHabit.id ? updatedHabit : h).toList();
