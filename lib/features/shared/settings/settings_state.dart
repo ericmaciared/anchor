@@ -7,6 +7,7 @@ class SettingsState {
   final String displayDensity;
   final bool dailyQuotesEnabled;
   final bool visualEffectsEnabled;
+  final bool statusMessageEnabled;
 
   SettingsState({
     required this.profileName,
@@ -14,7 +15,8 @@ class SettingsState {
     required this.bedTime,
     required this.displayDensity,
     required this.dailyQuotesEnabled,
-    this.visualEffectsEnabled = true,
+    required this.visualEffectsEnabled,
+    required this.statusMessageEnabled,
   });
 
   SettingsState copyWith({
@@ -24,6 +26,7 @@ class SettingsState {
     String? displayDensity,
     bool? dailyQuotesEnabled,
     bool? visualEffectsEnabled,
+    bool? statusMessageEnabled,
   }) {
     return SettingsState(
       profileName: profileName ?? this.profileName,
@@ -32,6 +35,7 @@ class SettingsState {
       displayDensity: displayDensity ?? this.displayDensity,
       dailyQuotesEnabled: dailyQuotesEnabled ?? this.dailyQuotesEnabled,
       visualEffectsEnabled: visualEffectsEnabled ?? this.visualEffectsEnabled,
+      statusMessageEnabled: statusMessageEnabled ?? this.statusMessageEnabled,
     );
   }
 }

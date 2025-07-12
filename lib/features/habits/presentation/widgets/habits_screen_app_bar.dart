@@ -6,22 +6,11 @@ class HabitsScreenAppBar extends StatelessWidget
 
   const HabitsScreenAppBar({super.key, required this.onAddHabit});
 
-  String _getGreeting() {
-    final hour = DateTime.now().hour;
-    if (hour < 12) {
-      return 'good morning.';
-    } else if (hour < 18) {
-      return 'good afternoon.';
-    } else {
-      return 'good evening.';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
-      title: Text(_getGreeting()),
+      title: Text('habits'),
       scrolledUnderElevation: 0.0,
       actions: [
         IconButton(

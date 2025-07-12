@@ -32,11 +32,13 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
         : TimeOfDay(hour: 22, minute: 0);
 
     final String displayDensity =
-        _prefs.getString('displayDensity') ?? 'Normal';
+        _prefs.getString('displayDensity') ?? 'Compact';
     final bool dailyQuotesEnabled =
         _prefs.getBool('dailyQuotesEnabled') ?? true;
     final bool visualEffectsEnabled =
         _prefs.getBool('visualEffectsEnabled') ?? true;
+    final bool statusMessageEnabled =
+        _prefs.getBool('statusMessageEnabled') ?? true;
 
     return SettingsState(
       profileName: profileName,
@@ -45,6 +47,7 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
       displayDensity: displayDensity,
       dailyQuotesEnabled: dailyQuotesEnabled,
       visualEffectsEnabled: visualEffectsEnabled,
+      statusMessageEnabled: statusMessageEnabled,
     );
   }
 
@@ -77,6 +80,12 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
     state =
         AsyncValue.data(state.value!.copyWith(visualEffectsEnabled: enabled));
     await _prefs.setBool('visualEffectsEnabled', enabled);
+  }
+
+  Future<void> updateStatusMessageEnabled(bool enabled) async {
+    state =
+        AsyncValue.data(state.value!.copyWith(statusMessageEnabled: enabled));
+    await _prefs.setBool('statusMessageEnabled', enabled);
   }
 }
 

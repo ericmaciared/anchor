@@ -1,3 +1,4 @@
+import 'package:anchor/features/shared/greetings/presentation/widgets/greeting_card.dart';
 import 'package:anchor/features/shared/quotes/presentation/widgets/daily_quote_card.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
@@ -31,6 +32,7 @@ class TaskListSection extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       children: [
+        GreetingCard(),
         TaskList(
           tasks: unscheduledTasks,
           label: 'Unscheduled Tasks',

@@ -1,6 +1,7 @@
 import 'package:anchor/features/habits/presentation/controllers/habit_controller.dart';
 import 'package:anchor/features/habits/presentation/widgets/habit_list.dart'; // Needed for HabitList
 import 'package:anchor/features/habits/presentation/widgets/habits_screen_app_bar.dart';
+import 'package:anchor/features/shared/greetings/presentation/widgets/greeting_card.dart';
 import 'package:anchor/features/shared/quotes/presentation/widgets/daily_quote_card.dart'; // Needed for DailyQuoteCard
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,12 +29,12 @@ class _HabitsScreenState extends ConsumerState<HabitsScreen> {
         bottom: false,
         child: Stack(
           children: [
-            // Scrollable content
             selectedHabits.isEmpty
                 ? EmptyHabitState(onAdd: () {})
                 : ListView(
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                     children: [
+                      GreetingCard(),
                       HabitList(
                         habits: selectedHabits,
                         label: 'Habits',

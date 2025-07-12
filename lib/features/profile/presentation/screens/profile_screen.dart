@@ -1,6 +1,7 @@
 import 'package:anchor/features/profile/presentation/widgets/daily_quotes_setting.dart';
 import 'package:anchor/features/profile/presentation/widgets/display_density_setting_tile.dart';
 import 'package:anchor/features/profile/presentation/widgets/profile_name_section.dart';
+import 'package:anchor/features/profile/presentation/widgets/status_message_setting_tile.dart';
 import 'package:anchor/features/profile/presentation/widgets/time_setting_tile.dart';
 import 'package:anchor/features/profile/presentation/widgets/visual_effects_setting_tile.dart';
 import 'package:anchor/features/shared/settings/settings_provider.dart';
@@ -27,6 +28,7 @@ class ProfileScreen extends ConsumerWidget {
           final displayDensity = settings.displayDensity;
           final dailyQuotesEnabled = settings.dailyQuotesEnabled;
           final visualEffectsEnabled = settings.visualEffectsEnabled;
+          final statusMessageEnabled = settings.statusMessageEnabled;
 
           return SafeArea(
             child: SingleChildScrollView(
@@ -43,7 +45,6 @@ class ProfileScreen extends ConsumerWidget {
                     children: [
                       TimeSettingTile(
                         icon: Icons.wb_sunny_outlined,
-                        iconColor: colorScheme.secondary,
                         title: 'Wake-up Time',
                         currentTime: wakeUpTime,
                         updateFunction: (newTime) => ref
@@ -53,7 +54,6 @@ class ProfileScreen extends ConsumerWidget {
                       const Divider(indent: 16, endIndent: 16),
                       TimeSettingTile(
                         icon: Icons.nights_stay_outlined,
-                        iconColor: colorScheme.tertiary,
                         title: 'Bedtime',
                         currentTime: bedTime,
                         updateFunction: (newTime) => ref
@@ -63,21 +63,18 @@ class ProfileScreen extends ConsumerWidget {
                       const Divider(indent: 16, endIndent: 16),
                       DisplayDensitySettingTile(
                         currentDensity: displayDensity,
-                        iconColor: colorScheme.secondaryContainer,
                       ),
                       const Divider(indent: 16, endIndent: 16),
                       DailyQuotesSettingTile(
                         isEnabled: dailyQuotesEnabled,
-                        activeColor: colorScheme.primary,
-                        iconColor: colorScheme.tertiaryContainer,
                       ),
                       const Divider(indent: 16, endIndent: 16),
                       VisualEffectsSettingTile(
                         isEnabled: visualEffectsEnabled,
-                        activeColor: colorScheme
-                            .primary, // Using primary for consistency
-                        iconColor: colorScheme
-                            .primaryContainer, // Using another color from colorScheme
+                      ),
+                      const Divider(indent: 16, endIndent: 16),
+                      StatusMessageSettingTile(
+                        isEnabled: statusMessageEnabled,
                       ),
                     ],
                   ),
