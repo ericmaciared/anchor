@@ -64,7 +64,7 @@ class HabitNotifier extends StateNotifier<List<HabitModel>> {
 
     if (habit.isCompletedToday()) {
       updatedHabit = habit.copyWith(
-        lastCompletedDate: null,
+        lastCompletedDate: DateTime.utc(now.year, now.month, now.day - 2),
         currentStreak: habit.currentStreak > 0 ? habit.currentStreak - 1 : 0,
       );
     } else {

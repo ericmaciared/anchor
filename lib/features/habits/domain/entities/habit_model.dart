@@ -29,7 +29,7 @@ class HabitModel {
       isSelected: isSelected ?? this.isSelected,
       isCustom: isCustom ?? this.isCustom,
       currentStreak: currentStreak ?? this.currentStreak,
-      lastCompletedDate: lastCompletedDate,
+      lastCompletedDate: lastCompletedDate ?? this.lastCompletedDate,
     );
   }
 
