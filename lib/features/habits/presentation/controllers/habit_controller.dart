@@ -33,6 +33,36 @@ class HabitController {
     );
   }
 
+  void showEditHabitModal(HabitModel habit) {
+    final habitNotifier = ref.read(habitProvider.notifier);
+    showModalBottomSheet(
+      context: context,
+      useRootNavigator: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => HabitActionsModal(
+        initialHabit: habit,
+        onSubmit: (habit) => habitNotifier.updateHabit(habit),
+        onDelete: (habit) async {
+          final deleted = await habitNotifier.deleteHabit(habit.id);
+          if (deleted != null && context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Habit "${deleted.name}" deleted'),
+                action: SnackBarAction(
+                  label: 'Undo',
+                  onPressed: () {
+                    habitNotifier.undoDelete(deleted);
+                  },
+                ),
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+
   void toggleHabitCompletion(HabitModel habit) {
     ref.read(habitProvider.notifier).toggleHabitCompletion(habit);
   }

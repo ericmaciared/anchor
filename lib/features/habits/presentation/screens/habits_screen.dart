@@ -37,7 +37,9 @@ class _HabitsScreenState extends ConsumerState<HabitsScreen> {
                       onToggleHabitCompletion: (habit) {
                         controller.toggleHabitCompletion(habit);
                       },
-                      onLongPress: (habit) {},
+                      onLongPress: (habit) {
+                        controller.showEditHabitModal(habit);
+                      },
                     ),
             ),
           ],
