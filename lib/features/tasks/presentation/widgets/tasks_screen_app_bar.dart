@@ -20,6 +20,7 @@ class TasksScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
+      scrolledUnderElevation: 0.0,
       title: Text(_getGreeting()),
       actions: [
         IconButton(

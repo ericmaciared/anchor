@@ -22,6 +22,7 @@ class HabitsScreenAppBar extends StatelessWidget
     return AppBar(
       backgroundColor: Colors.transparent,
       title: Text(_getGreeting()),
+      scrolledUnderElevation: 0.0,
       actions: [
         IconButton(
           onPressed: onAddHabit,

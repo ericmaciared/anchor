@@ -29,33 +29,30 @@ class _HabitsScreenState extends ConsumerState<HabitsScreen> {
         child: Stack(
           children: [
             // Scrollable content
-            Padding(
-              padding: const EdgeInsets.only(top: 96),
-              child: selectedHabits.isEmpty
-                  ? EmptyHabitState(onAdd: () {})
-                  : ListView(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                      children: [
-                        HabitList(
-                          habits: selectedHabits,
-                          label: 'Habits',
-                          onToggleHabitCompletion: (habit) {
-                            controller.toggleHabitCompletion(habit);
-                          },
-                          onLongPress: (habit) {
-                            controller.showEditHabitModal(habit);
-                          },
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 16),
-                          child: Divider(),
-                        ),
-                        DailyQuoteCard(),
-                        const SizedBox(height: 112),
-                      ],
-                    ),
-            ),
+            selectedHabits.isEmpty
+                ? EmptyHabitState(onAdd: () {})
+                : ListView(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    children: [
+                      HabitList(
+                        habits: selectedHabits,
+                        label: 'Habits',
+                        onToggleHabitCompletion: (habit) {
+                          controller.toggleHabitCompletion(habit);
+                        },
+                        onLongPress: (habit) {
+                          controller.showEditHabitModal(habit);
+                        },
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 16),
+                        child: Divider(),
+                      ),
+                      DailyQuoteCard(),
+                      const SizedBox(height: 112),
+                    ],
+                  ),
           ],
         ),
       ),
