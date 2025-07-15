@@ -1,3 +1,5 @@
+import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
+import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,20 +26,25 @@ class TimeSettingTile extends ConsumerWidget {
       trailing: Text(currentTime.format(context),
           style: const TextStyle(fontSize: 14)),
       onTap: () async {
-        final newTime = await showTimePicker(
-          context: context,
-          initialTime: currentTime,
-          builder: (BuildContext context, Widget? child) {
-            return MediaQuery(
-              data:
-                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-              child: child!,
-            );
-          },
+        Navigator.of(context).push(
+          showPicker(
+            context: context,
+            value: Time(
+              hour: currentTime.hour,
+              minute: currentTime.minute,
+            ),
+            is24HrFormat: true,
+            sunrise: TimeOfDay(hour: 6, minute: 0),
+            sunset: TimeOfDay(hour: 18, minute: 0),
+            sunAsset: Image.asset('assets/images/sun.png'),
+            moonAsset: Image.asset('assets/images/moon.png'),
+            accentColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
+            okText: 'Save',
+            duskSpanInMinutes: 120,
+            onChange: (time) => updateFunction(time),
+          ),
         );
-        if (newTime != null) {
-          updateFunction(newTime);
-        }
       },
     );
   }
