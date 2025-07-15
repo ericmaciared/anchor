@@ -70,21 +70,22 @@ class _GreetingCardState extends ConsumerState<GreetingCard>
 
     final colorScheme = Theme.of(context).colorScheme;
 
-    const double commonLineHeight = 1.5;
+    const double commonLineHeight = 1.8;
 
     final baseTextStyle = Theme.of(context).textTheme.titleLarge!.copyWith(
           color: colorScheme.onSurface,
-          height: commonLineHeight, // Apply consistent height
+          fontWeight: FontWeight.normal,
+          height: commonLineHeight,
         );
     final highlightStyle = baseTextStyle.copyWith(
       color: colorScheme.secondary,
       fontWeight: FontWeight.bold,
-      fontSize: baseTextStyle.fontSize! * 1.1,
+      fontSize: baseTextStyle.fontSize! * 1.2,
       height: commonLineHeight,
     );
     final numberHighlightStyle = highlightStyle.copyWith(
       color: colorScheme.primary,
-      fontSize: baseTextStyle.fontSize! * 1.2,
+      fontSize: baseTextStyle.fontSize! * 1.3,
       height: commonLineHeight,
     );
 

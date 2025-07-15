@@ -40,6 +40,7 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
                       onAdd: () =>
                           controller.showCreateTaskModal(taskDay: _selectedDay))
                   : TaskListSection(
+                      selectedDay: _selectedDay,
                       selectedDayTasks: todayTasks,
                       onToggleTaskCompletion: controller.toggleTaskCompletion,
                       onToggleSubtaskCompletion:
