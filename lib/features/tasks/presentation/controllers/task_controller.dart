@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/date_utils.dart';
 import 'package:anchor/features/shared/confetti/confetti_provider.dart';
 import 'package:anchor/features/shared/settings/settings_provider.dart';
@@ -35,9 +36,16 @@ class TaskController {
           if (deleted != null && context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Task "${deleted.title}" deleted'),
+                content: Text(
+                  'Task "${deleted.title}" deleted',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(fontSize: TextSizes.M),
+                ),
                 action: SnackBarAction(
                   label: 'Undo',
+                  textColor: Theme.of(context).colorScheme.primary,
                   onPressed: () {
                     taskNotifier.undoDelete(deleted);
                   },

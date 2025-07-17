@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
@@ -38,20 +39,37 @@ class _TaskCardState extends State<TaskCard>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Undo Completion'),
-          content:
-              const Text('Are you sure you want to undo this task completion?'),
+          title: Text('Undo Completion',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(fontSize: TextSizes.XL)),
+          content: Text('Are you sure you want to undo this task completion?',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(fontSize: TextSizes.M)),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(
+                'Cancel',
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontSize: TextSizes.M,
+                    ),
+              ),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 widget.onToggleTaskCompletion();
               },
-              child: const Text('Undo'),
+              child: Text(
+                'Undo',
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontSize: TextSizes.M,
+                    color: Theme.of(context).colorScheme.error),
+              ),
             ),
           ],
         );

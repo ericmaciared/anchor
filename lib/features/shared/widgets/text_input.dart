@@ -52,11 +52,33 @@ class _TextInputState extends State<TextInput> {
       controller: _controller,
       decoration: InputDecoration(
         hintText: widget.label,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+        hintStyle: Theme.of(context)
+            .textTheme
+            .bodyMedium!
+            .copyWith(color: Theme.of(context).colorScheme.primary),
         isDense: true,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(60),
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 2.0,
+          ),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context)
+                .colorScheme
+                .onSurface
+                .withAlpha(60), // Fallback default
+          ),
+        ),
+        contentPadding: EdgeInsets.zero,
       ),
-      cursorColor: Theme.of(context).primaryColorLight,
+      cursorColor: Theme.of(context).colorScheme.primary,
     );
   }
 }

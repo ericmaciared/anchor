@@ -35,7 +35,7 @@ class FooterActions extends StatelessWidget {
                   : Theme.of(context).colorScheme.onSurface.withAlpha(100),
             ),
             onPressed: isSaveEnabled ? onSave : null,
-            child: Text(isEdit ? 'Update' : 'Create'),
+            child: Text(isEdit ? 'I confirm again' : 'I confirm'),
           ),
         ),
       ],

@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/features/habits/domain/entities/habit_model.dart';
 import 'package:anchor/features/shared/widgets/text_input.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/footer_actions.dart';
@@ -72,14 +73,29 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
                   children: [
                     Text(
                       isEdit ? 'edit habit' : 'new habit',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style:
+                          Theme.of(context).textTheme.headlineMedium!.copyWith(
+                                fontSize: TextSizes.XXL,
+                              ),
                     ),
                     const SizedBox(height: 24),
-                    TextInput(
-                      text: _habit.name,
-                      label: 'habit name',
-                      onTextChanged: (text) =>
-                          setState(() => _habit = _habit.copyWith(name: text)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      spacing: 8,
+                      children: [
+                        Text('I will '),
+                        SizedBox(
+                          width: 200,
+                          child: TextInput(
+                            text: _habit.name,
+                            label: 'habit name',
+                            onTextChanged: (text) => setState(
+                                () => _habit = _habit.copyWith(name: text)),
+                          ),
+                        ),
+                        Text('everyday'),
+                      ],
                     )
                   ],
                 ),
@@ -93,19 +109,44 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
                     final confirmed = await showDialog<bool>(
                       context: context,
                       builder: (dialogContext) => AlertDialog(
-                        title: const Text('Confirm Deletion'),
-                        content: const Text(
-                            'Are you sure you want to delete this habit?'),
+                        title: Text('Confirm Deletion',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(fontSize: TextSizes.XL)),
+                        content: Text(
+                            'Are you sure you want to delete this habit?',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(fontSize: TextSizes.M)),
                         actions: [
                           TextButton(
                             onPressed: () =>
                                 Navigator.of(dialogContext).pop(false),
-                            child: const Text('Cancel'),
+                            child: Text(
+                              'Cancel',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                    fontSize: TextSizes.M,
+                                  ),
+                            ),
                           ),
                           TextButton(
                             onPressed: () =>
                                 Navigator.of(dialogContext).pop(true),
-                            child: const Text('Delete'),
+                            child: Text(
+                              'Delete',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                      fontSize: TextSizes.M,
+                                      color:
+                                          Theme.of(context).colorScheme.error),
+                            ),
                           ),
                         ],
                       ),

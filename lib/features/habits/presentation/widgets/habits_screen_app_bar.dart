@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:flutter/material.dart';
 
 class HabitsScreenAppBar extends StatelessWidget
@@ -10,7 +11,7 @@ class HabitsScreenAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
-      title: Text('habits'),
+      title: Text('habits', style: TextStyle(fontSize: TextSizes.XL)),
       scrolledUnderElevation: 0.0,
       actions: [
         IconButton(

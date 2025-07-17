@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/features/shared/quotes/presentation/providers/quotes_provider.dart';
 import 'package:anchor/features/shared/settings/settings_provider.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,8 @@ class DailyQuoteCard extends ConsumerWidget {
                         quote.text,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               fontStyle: FontStyle.italic,
-                              fontSize: 13,
+                              fontSize: TextSizes.M,
+                              fontWeight: FontWeight.w400,
                               height: 1.3,
                             ),
                       ),
@@ -68,8 +70,8 @@ class DailyQuoteCard extends ConsumerWidget {
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSurface
-                                        .withAlpha(100),
-                                    fontWeight: FontWeight.w500,
+                                        .withAlpha(150),
+                                    fontSize: TextSizes.S,
                                   ),
                         ),
                       ),

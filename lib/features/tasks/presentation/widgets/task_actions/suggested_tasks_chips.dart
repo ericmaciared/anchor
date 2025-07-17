@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
 
@@ -98,8 +99,12 @@ class SuggestedTasksChips extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: ActionChip(
-                  avatar: Icon(suggested.icon, size: 18),
-                  label: Text(suggested.title),
+                  avatar: Icon(suggested.icon, size: 16),
+                  label: Text(suggested.title,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(fontSize: TextSizes.S)),
                   onPressed: () => onSuggestionSelected(suggested),
                 ),
               );

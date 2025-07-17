@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:flutter/material.dart';
 
 class TasksScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -10,7 +11,7 @@ class TasksScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       scrolledUnderElevation: 0.0,
-      title: Text('tasks'),
+      title: Text('tasks', style: TextStyle(fontSize: TextSizes.XL)),
       actions: [
         IconButton(
           onPressed: onAddTask,

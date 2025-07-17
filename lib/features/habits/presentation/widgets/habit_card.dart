@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/features/habits/domain/entities/habit_model.dart';
 import 'package:flutter/material.dart';
 
@@ -58,8 +59,8 @@ class HabitCard extends StatelessWidget {
                       children: [
                         Text(
                           habit.name,
-                          style: textTheme.titleMedium!.copyWith(
-                            fontSize: 14,
+                          style: textTheme.bodyMedium!.copyWith(
+                            fontSize: TextSizes.M,
                             decoration: isCompletedToday
                                 ? TextDecoration.lineThrough
                                 : TextDecoration.none,
@@ -92,10 +93,10 @@ class HabitCard extends StatelessWidget {
                       ),
                       Text(
                         '${habit.currentStreak}',
-                        style: textTheme.headlineSmall?.copyWith(
+                        style: textTheme.titleMedium?.copyWith(
                           color: colorScheme.primary,
                           fontWeight: FontWeight.bold,
-                          fontSize: 14,
+                          fontSize: TextSizes.M,
                         ),
                       ),
                     ],

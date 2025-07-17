@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/features/shared/widgets/icon_and_title.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/color_picker.dart';
@@ -85,7 +86,10 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                   children: [
                     Text(
                       isEdit ? 'edit task' : 'new task',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style:
+                          Theme.of(context).textTheme.headlineMedium!.copyWith(
+                                fontSize: TextSizes.XXL,
+                              ),
                     ),
                     const SizedBox(height: 24),
                     IconAndTitle(
@@ -170,19 +174,44 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                     final confirmed = await showDialog<bool>(
                       context: context,
                       builder: (dialogContext) => AlertDialog(
-                        title: const Text('Confirm Deletion'),
-                        content: const Text(
-                            'Are you sure you want to delete this task?'),
+                        title: Text('Confirm Deletion',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(fontSize: TextSizes.XL)),
+                        content: Text(
+                            'Are you sure you want to delete this task?',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(fontSize: TextSizes.M)),
                         actions: [
                           TextButton(
                             onPressed: () =>
                                 Navigator.of(dialogContext).pop(false),
-                            child: const Text('Cancel'),
+                            child: Text(
+                              'Cancel',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                    fontSize: TextSizes.M,
+                                  ),
+                            ),
                           ),
                           TextButton(
                             onPressed: () =>
                                 Navigator.of(dialogContext).pop(true),
-                            child: const Text('Delete'),
+                            child: Text(
+                              'Delete',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                      fontSize: TextSizes.M,
+                                      color:
+                                          Theme.of(context).colorScheme.error),
+                            ),
                           ),
                         ],
                       ),
