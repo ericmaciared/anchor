@@ -50,8 +50,8 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
 
     return DraggableScrollableSheet(
       expand: false,
-      initialChildSize: 0.85,
-      minChildSize: 0.5,
+      initialChildSize: 0.4,
+      minChildSize: 0.3,
       maxChildSize: 0.95,
       builder: (_, controller) => Container(
         decoration: BoxDecoration(
@@ -79,22 +79,38 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
                               ),
                     ),
                     const SizedBox(height: 24),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      spacing: 8,
+                    Wrap(
+                      spacing: 16,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        Text('I will '),
-                        SizedBox(
-                          width: 200,
-                          child: TextInput(
-                            text: _habit.name,
-                            label: 'habit name',
-                            onTextChanged: (text) => setState(
-                                () => _habit = _habit.copyWith(name: text)),
+                        Text(
+                          'I will ',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(fontSize: TextSizes.L),
+                        ),
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minWidth: 50,
+                            maxWidth: MediaQuery.of(context).size.width * 0.7,
+                          ),
+                          child: IntrinsicWidth(
+                            child: TextInput(
+                              text: _habit.name,
+                              label: 'habit name',
+                              onTextChanged: (text) => setState(
+                                  () => _habit = _habit.copyWith(name: text)),
+                            ),
                           ),
                         ),
-                        Text('everyday'),
+                        Text(
+                          'everyday',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(fontSize: TextSizes.L),
+                        ),
                       ],
                     )
                   ],

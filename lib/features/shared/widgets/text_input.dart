@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:flutter/material.dart';
 
 class TextInput extends StatefulWidget {
@@ -50,16 +51,22 @@ class _TextInputState extends State<TextInput> {
   Widget build(BuildContext context) {
     return TextField(
       controller: _controller,
+      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            color: Theme.of(context).colorScheme.primary,
+            fontSize: TextSizes.XL,
+            fontWeight: FontWeight.w700,
+          ),
       decoration: InputDecoration(
         hintText: widget.label,
-        hintStyle: Theme.of(context)
-            .textTheme
-            .bodyMedium!
-            .copyWith(color: Theme.of(context).colorScheme.primary),
+        hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: Theme.of(context).colorScheme.primary.withAlpha(150),
+              fontSize: TextSizes.XL,
+              fontWeight: FontWeight.w500,
+            ),
         isDense: true,
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(60),
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(0),
           ),
         ),
         focusedBorder: UnderlineInputBorder(
@@ -70,10 +77,7 @@ class _TextInputState extends State<TextInput> {
         ),
         border: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Theme.of(context)
-                .colorScheme
-                .onSurface
-                .withAlpha(60), // Fallback default
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(60),
           ),
         ),
         contentPadding: EdgeInsets.zero,

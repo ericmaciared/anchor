@@ -30,7 +30,8 @@ class _HabitsScreenState extends ConsumerState<HabitsScreen> {
         child: Stack(
           children: [
             selectedHabits.isEmpty
-                ? EmptyHabitState(onAdd: () {})
+                ? EmptyHabitState(
+                    onAdd: () => controller.showCreateHabitModal())
                 : ListView(
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                     children: [
