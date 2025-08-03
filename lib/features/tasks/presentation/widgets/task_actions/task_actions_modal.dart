@@ -1,13 +1,9 @@
 import 'package:anchor/core/theme/text_sizes.dart';
-import 'package:anchor/features/shared/widgets/icon_and_title.dart';
+import 'package:anchor/features/shared/widgets/duration_input.dart';
+import 'package:anchor/features/shared/widgets/text_input.dart';
+import 'package:anchor/features/shared/widgets/time_input.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
-import 'package:anchor/features/tasks/presentation/widgets/task_actions/color_picker.dart';
-import 'package:anchor/features/tasks/presentation/widgets/task_actions/duration_selector.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/footer_actions.dart';
-import 'package:anchor/features/tasks/presentation/widgets/task_actions/notification_configurator.dart';
-import 'package:anchor/features/tasks/presentation/widgets/task_actions/subtask_editor.dart';
-import 'package:anchor/features/tasks/presentation/widgets/task_actions/suggested_tasks_chips.dart';
-import 'package:anchor/features/tasks/presentation/widgets/task_actions/time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -32,6 +28,11 @@ class TaskActionsModal extends StatefulWidget {
 class _TaskActionsModalState extends State<TaskActionsModal> {
   late TaskModel _task;
 
+  bool _showTimePicker = false;
+  bool _showDurationSelector = false;
+
+  // Add more booleans for other options if you plan to implement them
+
   @override
   void initState() {
     super.initState();
@@ -49,6 +50,10 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
           subtasks: [],
           notifications: [],
         );
+
+    // Initialize visibility based on existing task data
+    _showTimePicker = _task.startTime != null;
+    _showDurationSelector = _task.duration != null;
   }
 
   void _submit() {
@@ -92,79 +97,137 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                               ),
                     ),
                     const SizedBox(height: 24),
-                    IconAndTitle(
-                      title: _task.title,
-                      selectedIcon: _task.icon,
-                      onTitleChanged: (text) =>
-                          setState(() => _task = _task.copyWith(title: text)),
-                      onIconChanged: (icon) =>
-                          setState(() => _task = _task.copyWith(icon: icon)),
+                    Wrap(
+                      spacing: 8,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(
+                          'Today, I will ',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(fontSize: TextSizes.L),
+                        ),
+                        SizedBox(
+                          width: _task.title.isEmpty
+                              ? 140
+                              : (_task.title.length + 2) * 12,
+                          child: TextInput(
+                            text: _task.title,
+                            label: 'task name',
+                            onTextChanged: (text) => setState(
+                                () => _task = _task.copyWith(title: text)),
+                          ),
+                        ),
+                        if (_showTimePicker) ...[
+                          Text(
+                            'at ',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(fontSize: TextSizes.L),
+                          ),
+                          TimeInput(
+                            time: _task.startTime != null
+                                ? TimeOfDay(
+                                    hour: _task.startTime!.hour,
+                                    minute: _task.startTime!.minute)
+                                : TimeOfDay.now(),
+                            onTimeChanged: (time) {
+                              setState(() => _task = _task.copyWith(
+                                  startTime: time != null
+                                      ? DateTime(
+                                          widget.taskDay.year,
+                                          widget.taskDay.month,
+                                          widget.taskDay.day,
+                                          time.hour,
+                                          time.minute,
+                                        )
+                                      : null));
+                            },
+                          ),
+                        ],
+                        if (_showDurationSelector) ...[
+                          Text(
+                            'for ',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(fontSize: TextSizes.L),
+                          ),
+                          DurationInput(
+                              duration: _task.duration != null
+                                  ? _task.duration!.inMinutes
+                                  : const Duration(minutes: 15).inMinutes,
+                              onDurationChanged: (min) => setState(() => _task =
+                                  _task.copyWith(
+                                      duration: min != null
+                                          ? Duration(minutes: min)
+                                          : null)))
+                        ],
+                      ],
                     ),
-                    const SizedBox(height: 36),
-                    ColorPickerWidget(
-                      selectedColor: _task.color,
-                      onColorSelected: (color) =>
-                          setState(() => _task = _task.copyWith(color: color)),
-                    ),
-                    const SizedBox(height: 36),
-                    TimePicker(
-                      selectedTime: _task.startTime != null
-                          ? TimeOfDay.fromDateTime(_task.startTime!)
-                          : null,
-                      onPick: (time) {
-                        setState(() => _task = _task.copyWith(
-                            startTime: time != null
-                                ? DateTime(
-                                    DateTime.now().year,
-                                    DateTime.now().month,
-                                    DateTime.now().day,
-                                    time.hour,
-                                    time.minute,
-                                  )
-                                : null));
-                      },
-                    ),
-                    const SizedBox(height: 24),
-                    DurationSelector(
-                      duration: _task.duration?.inMinutes,
-                      onChanged: (min) => setState(() => _task = _task.copyWith(
-                          duration:
-                              min != null ? Duration(minutes: min) : null)),
-                    ),
-                    const SizedBox(height: 24),
-                    SubtaskEditor(
-                      subtasks: _task.subtasks,
-                      onChanged: (subtasks) => setState(() {
-                        _task = _task.copyWith(subtasks: subtasks);
-                      }),
-                    ),
-                    const SizedBox(height: 24),
-                    NotificationConfigurator(
-                      notifications: _task.notifications,
-                      taskStartTime: _task.startTime,
-                      onChanged: (notifications) => setState(
-                        () {
-                          _task = _task.copyWith(notifications: notifications);
-                        },
-                      ),
-                    )
                   ],
                 ),
               ),
-              if (!isEdit && _task.title.trim().isEmpty)
-                SuggestedTasksChips(
-                  onSuggestionSelected: (suggested) {
-                    setState(() {
-                      _task = _task.copyWith(
-                        title: suggested.title,
-                        icon: suggested.icon,
-                        color: suggested.color,
-                        startTime: suggested.startTime,
-                        duration: suggested.duration,
-                      );
-                    });
-                  },
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      ActionChip(
+                        label: Text(_showTimePicker
+                            ? 'Remove Start Time'
+                            : 'Add Start Time'),
+                        onPressed: () {
+                          setState(() {
+                            _showTimePicker = !_showTimePicker;
+                            if (!_showTimePicker) {
+                              _task = _task.copyWith(startTime: null);
+                            }
+                          });
+                        },
+                      ),
+                      ActionChip(
+                        label: Text(_showDurationSelector
+                            ? 'Remove Duration'
+                            : 'Add Duration'),
+                        onPressed: () {
+                          setState(() {
+                            _showDurationSelector = !_showDurationSelector;
+                            if (!_showDurationSelector) {
+                              // If toggled off, also clear the value
+                              _task = _task.copyWith(duration: null);
+                            }
+                          });
+                        },
+                      ),
+                      ActionChip(
+                        label: const Text('Add Color'),
+                        onPressed: () {
+                          // Implement toggle logic for color picker
+                        },
+                      ),
+                      ActionChip(
+                        label: const Text('Add Subtasks'),
+                        onPressed: () {
+                          // Implement toggle logic for subtask editor
+                        },
+                      ),
+                      ActionChip(
+                        label: const Text('Add Notifications'),
+                        onPressed: () {
+                          // Implement toggle logic for notifications
+                        },
+                      ),
+                    ],
+                  ),
                 ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: FooterActions(

@@ -80,7 +80,7 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
                     ),
                     const SizedBox(height: 24),
                     Wrap(
-                      spacing: 16,
+                      spacing: 8,
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(
@@ -90,18 +90,15 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
                               .bodyMedium!
                               .copyWith(fontSize: TextSizes.L),
                         ),
-                        ConstrainedBox(
-                          constraints: BoxConstraints(
-                            minWidth: 50,
-                            maxWidth: MediaQuery.of(context).size.width * 0.7,
-                          ),
-                          child: IntrinsicWidth(
-                            child: TextInput(
-                              text: _habit.name,
-                              label: 'habit name',
-                              onTextChanged: (text) => setState(
-                                  () => _habit = _habit.copyWith(name: text)),
-                            ),
+                        SizedBox(
+                          width: _habit.name.isEmpty
+                              ? 140
+                              : (_habit.name.length + 2) * 12,
+                          child: TextInput(
+                            text: _habit.name,
+                            label: 'habit name',
+                            onTextChanged: (text) => setState(
+                                () => _habit = _habit.copyWith(name: text)),
                           ),
                         ),
                         Text(

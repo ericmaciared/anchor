@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/features/habits/domain/entities/habit_model.dart';
 import 'package:flutter/material.dart';
 
@@ -29,10 +30,11 @@ class HabitList extends StatelessWidget {
         if (label != null)
           Padding(
             padding: const EdgeInsets.only(top: 16, bottom: 8),
-            child: Text(
-              label!,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
+            child: Text(label!,
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontSize: TextSizes.L,
+                      fontWeight: FontWeight.w700,
+                    )),
           ),
         ...habits.map(
           (habit) => HabitCard(

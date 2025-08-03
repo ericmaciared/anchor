@@ -51,16 +51,17 @@ class _TextInputState extends State<TextInput> {
   Widget build(BuildContext context) {
     return TextField(
       controller: _controller,
+      textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
             color: Theme.of(context).colorScheme.primary,
-            fontSize: TextSizes.XL,
+            fontSize: TextSizes.XXL,
             fontWeight: FontWeight.w700,
           ),
       decoration: InputDecoration(
         hintText: widget.label,
         hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
               color: Theme.of(context).colorScheme.primary.withAlpha(150),
-              fontSize: TextSizes.XL,
+              fontSize: TextSizes.XXL,
               fontWeight: FontWeight.w500,
             ),
         isDense: true,
