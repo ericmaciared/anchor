@@ -24,47 +24,41 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
     final controller = TaskController(ref, context);
     final todayTasks = controller.getTasksForDay(_selectedDay);
 
-    return Scaffold(
-      appBar: TasksScreenAppBar(
-        onAddTask: () => controller.showCreateTaskModal(taskDay: _selectedDay),
-      ),
-      body: SafeArea(
-        bottom: false,
-        child: Stack(
-          children: [
-            // Scrollable content
-            Padding(
-              padding: const EdgeInsets.only(top: 96),
-              child: todayTasks.isEmpty
-                  ? EmptyTaskState(
-                      onAdd: () =>
-                          controller.showCreateTaskModal(taskDay: _selectedDay))
-                  : TaskListSection(
-                      selectedDay: _selectedDay,
-                      selectedDayTasks: todayTasks,
-                      onToggleTaskCompletion: controller.toggleTaskCompletion,
-                      onToggleSubtaskCompletion:
-                          controller.toggleSubtaskCompletion,
-                      onLongPress: controller.showEditTaskModal,
-                    ),
-            ),
-
-            // Positioned Week Calendar on top
-            Positioned(
-              top: 8,
-              left: 0,
-              right: 0,
-              child: WeekCalendar(
+    return Stack(
+      children: [
+        todayTasks.isEmpty
+            ? EmptyTaskState(
+                onAdd: () =>
+                    controller.showCreateTaskModal(taskDay: _selectedDay))
+            : TaskListSection(
                 selectedDay: _selectedDay,
-                calendarFormat: _calendarFormat,
-                onDaySelected: (day) => setState(() {
-                  _selectedDay = normalizeDate(day);
-                }),
+                selectedDayTasks: todayTasks,
+                onToggleTaskCompletion: controller.toggleTaskCompletion,
+                onToggleSubtaskCompletion: controller.toggleSubtaskCompletion,
+                onLongPress: controller.showEditTaskModal,
               ),
-            ),
-          ],
+        Positioned(
+          top: 120,
+          left: 0,
+          right: 0,
+          child: WeekCalendar(
+            selectedDay: _selectedDay,
+            calendarFormat: _calendarFormat,
+            onDaySelected: (day) => setState(() {
+              _selectedDay = normalizeDate(day);
+            }),
+          ),
         ),
-      ),
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: TasksScreenAppBar(
+            onAddTask: () =>
+                controller.showCreateTaskModal(taskDay: _selectedDay),
+          ),
+        )
+      ],
     );
   }
 }

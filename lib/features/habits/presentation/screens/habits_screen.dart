@@ -21,42 +21,44 @@ class _HabitsScreenState extends ConsumerState<HabitsScreen> {
     final controller = HabitController(ref, context);
     final selectedHabits = controller.getAllSelectedHabits();
 
-    return Scaffold(
-      appBar: HabitsScreenAppBar(
-        onAddHabit: () => controller.showCreateHabitModal(),
-      ),
-      body: SafeArea(
-        bottom: false,
-        child: Stack(
-          children: [
-            selectedHabits.isEmpty
-                ? EmptyHabitState(
-                    onAdd: () => controller.showCreateHabitModal())
-                : ListView(
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                    children: [
-                      GreetingCard(),
-                      HabitList(
-                        habits: selectedHabits,
-                        label: 'Habits',
-                        onToggleHabitCompletion: (habit) {
-                          controller.toggleHabitCompletion(habit);
-                        },
-                        onLongPress: (habit) {
-                          controller.showEditHabitModal(habit);
-                        },
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 16),
-                        child: Divider(),
-                      ),
-                      DailyQuoteCard(),
-                      const SizedBox(height: 112),
-                    ],
-                  ),
-          ],
-        ),
+    return SafeArea(
+      bottom: false,
+      child: Stack(
+        children: [
+          selectedHabits.isEmpty
+              ? EmptyHabitState(onAdd: () => controller.showCreateHabitModal())
+              : ListView(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  children: [
+                    GreetingCard(),
+                    HabitList(
+                      habits: selectedHabits,
+                      label: 'Habits',
+                      onToggleHabitCompletion: (habit) {
+                        controller.toggleHabitCompletion(habit);
+                      },
+                      onLongPress: (habit) {
+                        controller.showEditHabitModal(habit);
+                      },
+                    ),
+                    const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+                      child: Divider(),
+                    ),
+                    DailyQuoteCard(),
+                    const SizedBox(height: 112),
+                  ],
+                ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: HabitsScreenAppBar(
+              onAddHabit: () => controller.showCreateHabitModal(),
+            ),
+          )
+        ],
       ),
     );
   }

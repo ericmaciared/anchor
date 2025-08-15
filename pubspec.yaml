@@ -91,6 +91,7 @@ flutter:
     - assets/animations/welcome.riv
     - assets/images/sun.png
     - assets/images/moon.png
+    - assets/images/back.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

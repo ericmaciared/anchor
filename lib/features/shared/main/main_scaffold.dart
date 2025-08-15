@@ -1,3 +1,4 @@
+import 'package:anchor/features/shared/gradients/dynamic_gradient.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,21 +12,23 @@ class MainScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(child: navigationShell),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 24,
-            child: Center(
-              child: FloatingNavBar(
-                currentIndex: navigationShell.currentIndex,
-                onTap: (index) => navigationShell.goBranch(index),
+      body: DynamicGradient(
+        child: Stack(
+          children: [
+            Positioned.fill(child: navigationShell),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 36,
+              child: Center(
+                child: FloatingNavBar(
+                  currentIndex: navigationShell.currentIndex,
+                  onTap: (index) => navigationShell.goBranch(index),
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

@@ -35,6 +35,7 @@ class TaskListSection extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       children: [
+        const SizedBox(height: 216),
         if (selectedDay == normalizeDate(DateTime.now())) GreetingCard(),
         TaskList(
           tasks: unscheduledTasks,
@@ -50,8 +51,8 @@ class TaskListSection extends StatelessWidget {
           onToggleSubtaskCompletion: onToggleSubtaskCompletion,
           onLongPress: onLongPress,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
           child: Divider(),
         ),
         DailyQuoteCard(),
