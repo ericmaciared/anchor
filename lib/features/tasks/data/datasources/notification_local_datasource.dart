@@ -8,12 +8,11 @@ class NotificationLocalDataSource {
 
   NotificationLocalDataSource(this.ref);
 
-  Future<Database> get database async => ref.read(databaseProvider);
+  Future<Database> get database async => ref.read(databaseProvider.future);
 
   Future<List<NotificationModel>> getNotificationsForTask(String taskId) async {
     final db = await database;
-    final maps = await db
-        .query('notifications', where: 'taskId = ?', whereArgs: [taskId]);
+    final maps = await db.query('notifications', where: 'taskId = ?', whereArgs: [taskId]);
 
     return maps.map((map) {
       return NotificationModel(
@@ -21,14 +20,12 @@ class NotificationLocalDataSource {
         taskId: map['taskId'] as String,
         triggerType: map['triggerType'] as String,
         triggerValue: map['triggerValue'] as int,
-        scheduledTime:
-            DateTime.tryParse(map['scheduledTime'] as String) ?? DateTime.now(),
+        scheduledTime: DateTime.tryParse(map['scheduledTime'] as String) ?? DateTime.now(),
       );
     }).toList();
   }
 
-  Future<void> createNotification(
-      String taskId, NotificationModel entry) async {
+  Future<void> createNotification(String taskId, NotificationModel entry) async {
     final db = await database;
     await db.insert('notifications', {
       'id': entry.id,

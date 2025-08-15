@@ -11,6 +11,11 @@ const String createTasksTable = '''
   )
 ''';
 
+const String createTasksTableIndexes = '''
+  CREATE INDEX idx_tasks_day ON tasks(day);
+  CREATE INDEX idx_tasks_start_time ON tasks(startTime);
+''';
+
 const String createSubtasksTable = '''
   CREATE TABLE subtasks (
     id TEXT PRIMARY KEY,
@@ -18,6 +23,10 @@ const String createSubtasksTable = '''
     title TEXT,
     isDone INTEGER
   )
+''';
+
+const String createSubtasksTableIndexes = '''
+  CREATE INDEX idx_subtasks_task_id ON subtasks(taskId);
 ''';
 
 const String createNotificationsTable = '''

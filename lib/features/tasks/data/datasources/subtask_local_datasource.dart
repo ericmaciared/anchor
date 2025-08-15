@@ -8,12 +8,11 @@ class SubtaskLocalDataSource {
 
   SubtaskLocalDataSource(this.ref);
 
-  Future<Database> get database async => ref.read(databaseProvider);
+  Future<Database> get database async => ref.read(databaseProvider.future);
 
   Future<List<SubtaskModel>> getSubtasksForTask(String taskId) async {
     final db = await database;
-    final maps =
-        await db.query('subtasks', where: 'taskId = ?', whereArgs: [taskId]);
+    final maps = await db.query('subtasks', where: 'taskId = ?', whereArgs: [taskId]);
 
     return maps.map((map) {
       return SubtaskModel(

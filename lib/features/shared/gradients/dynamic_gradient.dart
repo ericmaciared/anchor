@@ -1,3 +1,4 @@
+import 'package:anchor/core/mixins/safe_animation_mixin.dart';
 import 'package:flutter/material.dart';
 
 class DynamicGradient extends StatefulWidget {
@@ -28,24 +29,27 @@ class DynamicGradient extends StatefulWidget {
   State<DynamicGradient> createState() => _DynamicGradientState();
 }
 
-class _DynamicGradientState extends State<DynamicGradient>
-    with TickerProviderStateMixin {
-  late AnimationController _angleController;
-  late AnimationController _colorController;
-  late AnimationController _centerController;
-  late Animation<double> _angleAnimation;
-  late Animation<double> _colorAnimation;
-  late Animation<Alignment> _centerAnimation;
+class _DynamicGradientState extends State<DynamicGradient> with TickerProviderStateMixin, SafeAnimationMixin {
+  late final AnimationController _angleController;
+  late final AnimationController _colorController;
+  late final AnimationController _centerController;
+  late final Animation<double> _angleAnimation;
+  late final Animation<double> _colorAnimation;
+  late final Animation<Alignment> _centerAnimation;
 
   int _currentColorIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    _initializeAnimations();
+    _startAnimations();
+  }
 
-    _angleController = AnimationController(
+  void _initializeAnimations() {
+    _angleController = createController(
       duration: widget.duration * 2,
-      vsync: this,
+      debugLabel: 'DynamicGradient_Angle',
     );
 
     _angleAnimation = Tween<double>(
@@ -56,9 +60,9 @@ class _DynamicGradientState extends State<DynamicGradient>
       curve: Curves.linear,
     ));
 
-    _colorController = AnimationController(
+    _colorController = createController(
       duration: widget.duration,
-      vsync: this,
+      debugLabel: 'DynamicGradient_Color',
     );
 
     _colorAnimation = Tween<double>(
@@ -69,9 +73,9 @@ class _DynamicGradientState extends State<DynamicGradient>
       curve: Curves.easeInOut,
     ));
 
-    _centerController = AnimationController(
+    _centerController = createController(
       duration: widget.duration * 3,
-      vsync: this,
+      debugLabel: 'DynamicGradient_Center',
     );
 
     _centerAnimation = TweenSequence<Alignment>([
@@ -104,40 +108,46 @@ class _DynamicGradientState extends State<DynamicGradient>
         weight: 25,
       ),
     ]).animate(_centerController);
+  }
 
-    _angleController.repeat();
-    _centerController.repeat();
+  void _startAnimations() {
+    safeAnimate(_angleController, () async {
+      _angleController.repeat();
+    });
+
+    safeAnimate(_centerController, () async {
+      _centerController.repeat();
+    });
+
     _startColorCycle();
   }
 
   void _startColorCycle() {
-    _colorController.forward().then((_) {
-      setState(() {
-        _currentColorIndex =
-            (_currentColorIndex + 1) % widget.accentColors.length;
-      });
-      _colorController.reset();
-      _startColorCycle();
-    });
-  }
+    safeAnimate(_colorController, () async {
+      await _colorController.forward();
 
-  @override
-  void dispose() {
-    _angleController.dispose();
-    _colorController.dispose();
-    _centerController.dispose();
-    super.dispose();
+      if (mounted) {
+        safSetState(() {
+          _currentColorIndex = (_currentColorIndex + 1) % widget.accentColors.length;
+        });
+
+        _colorController.reset();
+        _startColorCycle();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: Listenable.merge(
-          [_angleAnimation, _colorAnimation, _centerAnimation]),
+      animation: Listenable.merge([
+        _angleAnimation,
+        _colorAnimation,
+        _centerAnimation,
+      ]),
       builder: (context, child) {
         final currentAccentColor = widget.accentColors[_currentColorIndex];
-        final nextAccentColor = widget.accentColors[
-            (_currentColorIndex + 1) % widget.accentColors.length];
+        final nextAccentColor = widget.accentColors[(_currentColorIndex + 1) % widget.accentColors.length];
 
         final animatedAccentColor = Color.lerp(
           currentAccentColor,

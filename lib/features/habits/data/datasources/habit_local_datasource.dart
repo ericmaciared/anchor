@@ -8,7 +8,7 @@ class HabitLocalDataSource {
 
   HabitLocalDataSource(this.ref);
 
-  Future<Database> get database async => ref.read(databaseProvider);
+  Future<Database> get database async => ref.read(databaseProvider.future);
 
   Future<List<HabitModel>> getAllHabits() async {
     final db = await database;
@@ -23,9 +23,7 @@ class HabitLocalDataSource {
         isSelected: (map['isSelected'] as int) == 1,
         isCustom: (map['isCustom'] as int) == 1,
         currentStreak: map['currentStreak'] as int,
-        lastCompletedDate: map['lastCompletedDate'] != null
-            ? DateTime.parse(map['lastCompletedDate'] as String)
-            : null,
+        lastCompletedDate: map['lastCompletedDate'] != null ? DateTime.parse(map['lastCompletedDate'] as String) : null,
       );
 
       habits.add(habit);

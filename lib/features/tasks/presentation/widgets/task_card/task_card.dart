@@ -1,3 +1,4 @@
+import 'package:anchor/core/mixins/safe_animation_mixin.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
@@ -26,32 +27,126 @@ class TaskCard extends StatefulWidget {
   State<TaskCard> createState() => _TaskCardState();
 }
 
-class _TaskCardState extends State<TaskCard>
-    with SingleTickerProviderStateMixin {
+class _TaskCardState extends State<TaskCard> with TickerProviderStateMixin, SafeAnimationMixin {
+  late final AnimationController _expansionController;
+  late final AnimationController _completionController;
+  late final Animation<double> _expansionAnimation;
+  late final Animation<double> _completionAnimation;
+
   bool _isExpanded = false;
+  bool _isAnimating = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeAnimations();
+  }
+
+  void _initializeAnimations() {
+    // Expansion animation for when card is tapped
+    _expansionController = createController(
+      duration: const Duration(milliseconds: 250),
+      debugLabel: 'TaskCard_Expansion',
+    );
+
+    // Completion animation for visual feedback
+    _completionController = createController(
+      duration: const Duration(milliseconds: 150),
+      debugLabel: 'TaskCard_Completion',
+    );
+
+    _expansionAnimation = CurvedAnimation(
+      parent: _expansionController,
+      curve: Curves.easeInOut,
+    );
+
+    _completionAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.95,
+    ).animate(CurvedAnimation(
+      parent: _completionController,
+      curve: Curves.easeInOut,
+    ));
+
+    // Set initial state based on task completion
+    if (widget.task.isDone) {
+      _completionController.value = 1.0;
+    }
+  }
+
+  @override
+  void didUpdateWidget(TaskCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Handle task completion state changes
+    if (oldWidget.task.isDone != widget.task.isDone) {
+      _handleCompletionStateChange();
+    }
+  }
+
+  void _handleCompletionStateChange() {
+    safeAnimate(_completionController, () async {
+      if (widget.task.isDone) {
+        await _completionController.forward();
+      } else {
+        await _completionController.reverse();
+      }
+    });
+  }
 
   void _toggleExpanded() {
-    setState(() => _isExpanded = !_isExpanded);
+    if (_isAnimating) return;
+
+    safSetState(() {
+      _isExpanded = !_isExpanded;
+      _isAnimating = true;
+    });
+
+    safeAnimate(_expansionController, () async {
+      if (_isExpanded) {
+        await _expansionController.forward();
+      } else {
+        await _expansionController.reverse();
+      }
+
+      safSetState(() {
+        _isAnimating = false;
+      });
+    });
+  }
+
+  Future<void> _handleTaskCompletion() async {
+    // Close expansion first
+    if (_isExpanded) {
+      safSetState(() => _isExpanded = false);
+
+      await safeAnimate(_expansionController, () async {
+        await _expansionController.reverse();
+      });
+    }
+
+    // Then trigger completion
+    widget.onToggleTaskCompletion();
   }
 
   Future<void> _showUndoConfirmationDialog(BuildContext context) async {
+    if (!mounted) return;
+
     return showDialog<void>(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('Undo Completion',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(fontSize: TextSizes.XL)),
-          content: Text('Are you sure you want to undo this task completion?',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(fontSize: TextSizes.M)),
+          title: Text(
+            'Undo Completion',
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: TextSizes.XL),
+          ),
+          content: Text(
+            'Are you sure you want to undo this task completion?',
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: TextSizes.M),
+          ),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.of(dialogContext).pop(),
               child: Text(
                 'Cancel',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -61,14 +156,17 @@ class _TaskCardState extends State<TaskCard>
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
-                widget.onToggleTaskCompletion();
+                Navigator.of(dialogContext).pop();
+                if (mounted) {
+                  widget.onToggleTaskCompletion();
+                }
               },
               child: Text(
                 'Undo',
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: TextSizes.M,
-                    color: Theme.of(context).colorScheme.error),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(fontSize: TextSizes.M, color: Theme.of(context).colorScheme.error),
               ),
             ),
           ],
@@ -85,69 +183,80 @@ class _TaskCardState extends State<TaskCard>
       padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              TaskTimeColumn(
-                  startTime: task.startTime, duration: task.duration),
-              const SizedBox(width: 8),
-              Builder(builder: (context) {
-                return ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: 50,
-                    // Let height be dynamic based on card height
-                    maxHeight: constraints.maxHeight,
-                  ),
-                  child: TaskProgressBar(
-                    color: task.color,
-                  ),
-                );
-              }),
-              const SizedBox(width: 12),
-              // Main task card
-              Expanded(
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  child: GestureDetector(
-                    onTap: _toggleExpanded,
-                    onLongPress: widget.onLongPress,
-                    behavior: HitTestBehavior.opaque,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TaskHeaderRow(task: task),
-                          AnimatedSize(
-                            duration: const Duration(milliseconds: 250),
-                            curve: Curves.easeInOut,
-                            child: _isExpanded
-                                ? TaskExpandedActions(
-                                    task: task,
-                                    onComplete: () {
-                                      setState(() => _isExpanded = false);
-                                      widget.onToggleTaskCompletion();
-                                    },
-                                    showUndoDialog: () =>
-                                        _showUndoConfirmationDialog(context),
-                                    onUndoComplete:
-                                        widget.onToggleTaskCompletion,
-                                    onToggleSubtaskCompletion: (subtask) =>
-                                        widget
-                                            .onToggleSubtaskCompletion(subtask),
-                                  )
-                                : const SizedBox.shrink(),
+          return AnimatedBuilder(
+            animation: _completionAnimation,
+            builder: (context, child) {
+              return Transform.scale(
+                scale: _completionAnimation.value,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TaskTimeColumn(
+                      startTime: task.startTime,
+                      duration: task.duration,
+                    ),
+                    const SizedBox(width: 8),
+                    Builder(
+                      builder: (context) {
+                        return ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: 50,
+                            maxHeight: constraints.maxHeight,
                           ),
-                        ],
+                          child: TaskProgressBar(color: task.color),
+                        );
+                      },
+                    ),
+                    const SizedBox(width: 12),
+                    // Main task card
+                    Expanded(
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        clipBehavior: Clip.antiAlias,
+                        child: GestureDetector(
+                          onTap: _isAnimating ? null : _toggleExpanded,
+                          onLongPress: widget.onLongPress,
+                          behavior: HitTestBehavior.opaque,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TaskHeaderRow(task: task),
+                                AnimatedSize(
+                                  duration: const Duration(milliseconds: 250),
+                                  curve: Curves.easeInOut,
+                                  child: AnimatedBuilder(
+                                    animation: _expansionAnimation,
+                                    builder: (context, child) {
+                                      return SizeTransition(
+                                        sizeFactor: _expansionAnimation,
+                                        child: _isExpanded
+                                            ? TaskExpandedActions(
+                                                task: task,
+                                                onComplete: _handleTaskCompletion,
+                                                showUndoDialog: () => _showUndoConfirmationDialog(context),
+                                                onUndoComplete: widget.onToggleTaskCompletion,
+                                                onToggleSubtaskCompletion: (subtask) =>
+                                                    widget.onToggleSubtaskCompletion(subtask),
+                                              )
+                                            : const SizedBox.shrink(),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ),
-            ],
+              );
+            },
           );
         },
       ),

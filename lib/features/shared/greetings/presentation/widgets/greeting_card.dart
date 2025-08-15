@@ -1,3 +1,4 @@
+import 'package:anchor/core/mixins/safe_animation_mixin.dart';
 import 'package:anchor/features/habits/presentation/controllers/habit_controller.dart';
 import 'package:anchor/features/shared/settings/settings_provider.dart';
 import 'package:anchor/features/tasks/presentation/controllers/task_controller.dart';
@@ -11,10 +12,9 @@ class GreetingCard extends ConsumerStatefulWidget {
   ConsumerState<GreetingCard> createState() => _GreetingCardState();
 }
 
-class _GreetingCardState extends ConsumerState<GreetingCard>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
+class _GreetingCardState extends ConsumerState<GreetingCard> with TickerProviderStateMixin, SafeAnimationMixin {
+  late final AnimationController _fadeController;
+  late final Animation<double> _fadeAnimation;
 
   String? _lastGreeting;
   String? _lastName;
@@ -23,26 +23,32 @@ class _GreetingCardState extends ConsumerState<GreetingCard>
   int _lastCompletedHabits = -1;
   int _lastTotalHabits = -1;
 
+  // Cache for expensive computations
+  String _cacheKey = '';
+  List<TextSpan>? _cachedSpans;
+
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 700),
-    );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeIn,
-      ),
-    );
-    _animationController.forward();
+    _initializeAnimations();
   }
 
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
+  void _initializeAnimations() {
+    _fadeController = createController(
+      duration: const Duration(milliseconds: 700),
+      debugLabel: 'GreetingCard_Fade',
+    );
+
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _fadeController,
+      curve: Curves.easeIn,
+    ));
+
+    // Start initial animation
+    safeAnimate(_fadeController, () => _fadeController.forward());
   }
 
   String _getGreeting() {
@@ -56,6 +62,17 @@ class _GreetingCardState extends ConsumerState<GreetingCard>
     }
   }
 
+  String _generateCacheKey(
+    String userName,
+    int totalTasks,
+    int completedTasks,
+    int totalHabits,
+    int completedHabits,
+  ) {
+    final greeting = _getGreeting();
+    return '$greeting-$userName-$completedTasks-$totalTasks-$completedHabits-$totalHabits';
+  }
+
   List<TextSpan> _getCustomMessageSpans(
     BuildContext context,
     String userName,
@@ -64,6 +81,19 @@ class _GreetingCardState extends ConsumerState<GreetingCard>
     int totalHabits,
     int completedHabits,
   ) {
+    final cacheKey = _generateCacheKey(
+      userName,
+      totalTasks,
+      completedTasks,
+      totalHabits,
+      completedHabits,
+    );
+
+    // Return cached result if available
+    if (_cacheKey == cacheKey && _cachedSpans != null) {
+      return _cachedSpans!;
+    }
+
     final remainingTasks = totalTasks - completedTasks;
     final remainingHabits = totalHabits - completedHabits;
     final totalRemainingGoals = remainingTasks + remainingHabits;
@@ -97,27 +127,20 @@ class _GreetingCardState extends ConsumerState<GreetingCard>
     if (totalTasks == 0 && totalHabits == 0) {
       messageSpans.addAll([
         TextSpan(text: 'you have ', style: baseTextStyle),
-        TextSpan(
-            text: 'no goals',
-            style: highlightStyle.copyWith(color: colorScheme.error)),
-        TextSpan(
-            text: ' set for today. Time to add some!', style: baseTextStyle),
+        TextSpan(text: 'no goals', style: highlightStyle.copyWith(color: colorScheme.error)),
+        TextSpan(text: ' set for today. Time to add some!', style: baseTextStyle),
       ]);
     } else if (totalRemainingGoals == 0) {
       messageSpans.addAll([
         TextSpan(text: 'awesome! ', style: highlightStyle),
         TextSpan(text: 'All your goals are ', style: baseTextStyle),
-        TextSpan(
-            text: 'completed',
-            style: highlightStyle.copyWith(color: colorScheme.tertiary)),
+        TextSpan(text: 'completed', style: highlightStyle.copyWith(color: colorScheme.tertiary)),
         TextSpan(text: ' for today.', style: baseTextStyle),
       ]);
     } else if (remainingTasks == 0 && remainingHabits > 0) {
       messageSpans.addAll([
         TextSpan(text: 'great job', style: highlightStyle),
-        TextSpan(
-            text: ' on your tasks! Keep up the habit building. ',
-            style: baseTextStyle),
+        TextSpan(text: ' on your tasks! Keep up the habit building. ', style: baseTextStyle),
         TextSpan(text: '$remainingHabits', style: numberHighlightStyle),
         TextSpan(text: ' habits remaining.', style: baseTextStyle),
       ]);
@@ -135,8 +158,7 @@ class _GreetingCardState extends ConsumerState<GreetingCard>
         TextSpan(text: '$totalRemainingGoals', style: numberHighlightStyle),
         TextSpan(text: ' goals left.', style: baseTextStyle),
       ]);
-    } else if (totalRemainingGoals > 0 &&
-        totalRemainingGoals == (totalTasks + totalHabits)) {
+    } else if (totalRemainingGoals > 0 && totalRemainingGoals == (totalTasks + totalHabits)) {
       messageSpans.addAll([
         TextSpan(text: 'time to get started', style: highlightStyle),
         TextSpan(text: ' on your goals for today! ', style: baseTextStyle),
@@ -151,7 +173,18 @@ class _GreetingCardState extends ConsumerState<GreetingCard>
         TextSpan(text: ' goals to go.', style: baseTextStyle),
       ]);
     }
+
+    // Cache the result
+    _cacheKey = cacheKey;
+    _cachedSpans = messageSpans;
+
     return messageSpans;
+  }
+
+  void _triggerMessageChangeAnimation() {
+    safeAnimate(_fadeController, () async {
+      await _fadeController.forward(from: 0.0);
+    });
   }
 
   @override
@@ -167,15 +200,15 @@ class _GreetingCardState extends ConsumerState<GreetingCard>
     final completedTasks = allTodayTasks.where((task) => task.isDone).length;
     final totalTasks = allTodayTasks.length;
 
-    final completedHabits =
-        allTodayHabits.where((habit) => habit.isCompletedToday()).length;
+    final completedHabits = allTodayHabits.where((habit) => habit.isCompletedToday()).length;
     final totalHabits = allTodayHabits.length;
 
     return settingsAsyncValue.when(
       loading: () => const SizedBox.shrink(),
       error: (err, stack) => const SizedBox.shrink(),
       data: (settings) {
-        if (!settings.statusMessageEnabled) return SizedBox.shrink();
+        if (!settings.statusMessageEnabled) return const SizedBox.shrink();
+
         final currentGreeting = _getGreeting();
         final currentUserName = settings.profileName;
 
@@ -196,7 +229,7 @@ class _GreetingCardState extends ConsumerState<GreetingCard>
         }
 
         if (hasMessageChanged) {
-          _animationController.forward(from: 0.0);
+          _triggerMessageChangeAnimation();
         }
 
         final customMessageSpans = _getCustomMessageSpans(
@@ -216,9 +249,7 @@ class _GreetingCardState extends ConsumerState<GreetingCard>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text.rich(
-                  TextSpan(
-                    children: customMessageSpans,
-                  ),
+                  TextSpan(children: customMessageSpans),
                 ),
               ],
             ),

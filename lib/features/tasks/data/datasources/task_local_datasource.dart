@@ -12,7 +12,7 @@ class TaskLocalDataSource {
 
   TaskLocalDataSource(this.ref);
 
-  Future<Database> get database async => ref.read(databaseProvider);
+  Future<Database> get database async => ref.read(databaseProvider.future);
 
   Future<List<TaskModel>> getAllTasks() async {
     final db = await database;
@@ -26,20 +26,15 @@ class TaskLocalDataSource {
       final taskId = map['id'] as String;
 
       final subtasks = await subtaskDataSource.getSubtasksForTask(taskId);
-      final notifications =
-          await notificationDataSource.getNotificationsForTask(taskId);
+      final notifications = await notificationDataSource.getNotificationsForTask(taskId);
 
       final task = TaskModel(
         id: taskId,
         title: map['title'] as String,
         isDone: (map['isDone'] as int) == 1,
         day: DateTime.parse(map['day'] as String),
-        startTime: map['startTime'] != null
-            ? DateTime.tryParse(map['startTime'] as String)
-            : null,
-        duration: map['duration'] != null
-            ? Duration(minutes: map['duration'] as int)
-            : null,
+        startTime: map['startTime'] != null ? DateTime.tryParse(map['startTime'] as String) : null,
+        duration: map['duration'] != null ? Duration(minutes: map['duration'] as int) : null,
         color: Color(map['color'] as int),
         icon: IconData(
           map['iconCodePoint'] as int,
