@@ -1,3 +1,4 @@
+import 'package:anchor/core/widgets/scroll_fade_overlay_widget.dart';
 import 'package:anchor/features/habits/presentation/controllers/habit_controller.dart';
 import 'package:anchor/features/habits/presentation/widgets/habit_list.dart'; // Needed for HabitList
 import 'package:anchor/features/habits/presentation/widgets/habits_screen_app_bar.dart';
@@ -21,44 +22,34 @@ class _HabitsScreenState extends ConsumerState<HabitsScreen> {
     final controller = HabitController(ref, context);
     final selectedHabits = controller.getAllSelectedHabits();
 
-    return SafeArea(
-      bottom: false,
-      child: Stack(
-        children: [
-          selectedHabits.isEmpty
-              ? EmptyHabitState(onAdd: () => controller.showCreateHabitModal())
-              : ListView(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                  children: [
-                    GreetingCard(),
-                    HabitList(
-                      habits: selectedHabits,
-                      label: 'Habits',
-                      onToggleHabitCompletion: (habit) {
-                        controller.toggleHabitCompletion(habit);
-                      },
-                      onLongPress: (habit) {
-                        controller.showEditHabitModal(habit);
-                      },
-                    ),
-                    const Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
-                      child: Divider(),
-                    ),
-                    DailyQuoteCard(),
-                    const SizedBox(height: 112),
-                  ],
+    return ScrollFadeOverlayPresets.appBar(
+      child: selectedHabits.isEmpty
+          ? EmptyHabitState(onAdd: () => controller.showCreateHabitModal())
+          : ListView(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              children: [
+                const SizedBox(height: 108),
+                GreetingCard(),
+                HabitList(
+                  habits: selectedHabits,
+                  label: 'Habits',
+                  onToggleHabitCompletion: (habit) {
+                    controller.toggleHabitCompletion(habit);
+                  },
+                  onLongPress: (habit) {
+                    controller.showEditHabitModal(habit);
+                  },
                 ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: HabitsScreenAppBar(
-              onAddHabit: () => controller.showCreateHabitModal(),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+                  child: Divider(),
+                ),
+                DailyQuoteCard(),
+                const SizedBox(height: 112),
+              ],
             ),
-          )
-        ],
+      appBar: HabitsScreenAppBar(
+        onAddHabit: () => controller.showCreateHabitModal(),
       ),
     );
   }

@@ -24,18 +24,15 @@ class TaskListSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheduledTasks = selectedDayTasks
-        .where((t) => t.startTime != null)
-        .toList()
+    final scheduledTasks = selectedDayTasks.where((t) => t.startTime != null).toList()
       ..sort((a, b) => a.startTime!.compareTo(b.startTime!));
 
-    final unscheduledTasks =
-        selectedDayTasks.where((t) => t.startTime == null).toList();
+    final unscheduledTasks = selectedDayTasks.where((t) => t.startTime == null).toList();
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       children: [
-        const SizedBox(height: 216),
+        const SizedBox(height: 228),
         if (selectedDay == normalizeDate(DateTime.now())) GreetingCard(),
         TaskList(
           tasks: unscheduledTasks,

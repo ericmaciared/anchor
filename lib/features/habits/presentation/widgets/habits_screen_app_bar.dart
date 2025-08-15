@@ -1,25 +1,31 @@
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:flutter/material.dart';
 
-class HabitsScreenAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
+import '../../../../core/widgets/regular_button_widget.dart';
+
+class HabitsScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback onAddHabit;
 
   const HabitsScreenAppBar({super.key, required this.onAddHabit});
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      title: Text('habits', style: TextStyle(fontSize: TextSizes.XL)),
-      scrolledUnderElevation: 0.0,
-      actions: [
-        IconButton(
-          onPressed: onAddHabit,
-          tooltip: 'Add Habit',
-          icon: const Icon(Icons.add),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('habits', style: TextStyle(fontSize: TextSizes.XL)),
+            RegularButtonWidget(
+              height: 36,
+              width: 36,
+              onPressed: onAddHabit,
+              child: const Icon(Icons.add),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 

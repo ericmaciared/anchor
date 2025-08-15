@@ -20,7 +20,7 @@ class WeekCalendar extends StatelessWidget {
     final now = DateTime.now();
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: LiquidGlass(
         glassContainsChild: false,
         settings: LiquidGlassSettings(
@@ -29,7 +29,7 @@ class WeekCalendar extends StatelessWidget {
         ),
         shape: LiquidRoundedSuperellipse(borderRadius: Radius.circular(16)),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
+          padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
           child: TableCalendar<TaskModel>(
             focusedDay: selectedDay,
             firstDay: DateTime.utc(now.year - 1, 1, 1),
@@ -50,18 +50,14 @@ class WeekCalendar extends StatelessWidget {
             ),
             calendarStyle: CalendarStyle(
               todayDecoration: BoxDecoration(
-                color: Theme.of(context)
-                    .colorScheme
-                    .surfaceContainerHighest
-                    .withAlpha(150),
+                color: Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(150),
                 shape: BoxShape.circle,
               ),
               selectedDecoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.primary.withAlpha(150),
                 shape: BoxShape.circle,
               ),
-              selectedTextStyle: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimaryContainer),
+              selectedTextStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer),
             ),
           ),
         ),

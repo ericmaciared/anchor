@@ -38,10 +38,7 @@ class TaskController {
               SnackBar(
                 content: Text(
                   'Task "${deleted.title}" deleted',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(fontSize: TextSizes.M),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: TextSizes.M),
                 ),
                 action: SnackBarAction(
                   label: 'Undo',
@@ -88,7 +85,6 @@ class TaskController {
 
   void toggleSubtaskCompletion(SubtaskModel subtask) {
     final taskNotifier = ref.read(taskProvider.notifier);
-    taskNotifier.toggleSubtaskCompletion(
-        taskId: subtask.taskId, subtaskId: subtask.id);
+    taskNotifier.toggleSubtaskCompletion(taskId: subtask.taskId, subtaskId: subtask.id);
   }
 }

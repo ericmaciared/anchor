@@ -1,4 +1,5 @@
 import 'package:anchor/core/utils/date_utils.dart';
+import 'package:anchor/core/widgets/scroll_fade_overlay_widget.dart';
 import 'package:anchor/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:anchor/features/tasks/presentation/widgets/empty_task_state.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_list_section.dart';
@@ -24,41 +25,35 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
     final controller = TaskController(ref, context);
     final todayTasks = controller.getTasksForDay(_selectedDay);
 
-    return Stack(
-      children: [
-        todayTasks.isEmpty
-            ? EmptyTaskState(
-                onAdd: () =>
-                    controller.showCreateTaskModal(taskDay: _selectedDay))
-            : TaskListSection(
-                selectedDay: _selectedDay,
-                selectedDayTasks: todayTasks,
-                onToggleTaskCompletion: controller.toggleTaskCompletion,
-                onToggleSubtaskCompletion: controller.toggleSubtaskCompletion,
-                onLongPress: controller.showEditTaskModal,
-              ),
-        Positioned(
-          top: 120,
-          left: 0,
-          right: 0,
-          child: WeekCalendar(
-            selectedDay: _selectedDay,
-            calendarFormat: _calendarFormat,
-            onDaySelected: (day) => setState(() {
-              _selectedDay = normalizeDate(day);
-            }),
+    return ScrollFadeOverlayPresets.appBar(
+      child: Stack(
+        children: [
+          todayTasks.isEmpty
+              ? EmptyTaskState(onAdd: () => controller.showCreateTaskModal(taskDay: _selectedDay))
+              : TaskListSection(
+                  selectedDay: _selectedDay,
+                  selectedDayTasks: todayTasks,
+                  onToggleTaskCompletion: controller.toggleTaskCompletion,
+                  onToggleSubtaskCompletion: controller.toggleSubtaskCompletion,
+                  onLongPress: controller.showEditTaskModal,
+                ),
+          Positioned(
+            top: 120,
+            left: 0,
+            right: 0,
+            child: WeekCalendar(
+              selectedDay: _selectedDay,
+              calendarFormat: _calendarFormat,
+              onDaySelected: (day) => setState(() {
+                _selectedDay = normalizeDate(day);
+              }),
+            ),
           ),
-        ),
-        Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: TasksScreenAppBar(
-            onAddTask: () =>
-                controller.showCreateTaskModal(taskDay: _selectedDay),
-          ),
-        )
-      ],
+        ],
+      ),
+      appBar: TasksScreenAppBar(
+        onAddTask: () => controller.showCreateTaskModal(taskDay: _selectedDay),
+      ),
     );
   }
 }
