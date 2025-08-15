@@ -1,5 +1,5 @@
 import 'package:anchor/core/theme/text_sizes.dart';
-import 'package:anchor/core/widgets/regular_button_widget.dart';
+import 'package:anchor/core/widgets/adaptive_button_widget.dart';
 import 'package:flutter/material.dart';
 
 class TasksScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -16,7 +16,7 @@ class TasksScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('tasks', style: TextStyle(fontSize: TextSizes.XL)),
-            RegularButtonWidget(
+            AdaptiveButtonWidget(
               height: 36,
               width: 36,
               onPressed: onAddTask,

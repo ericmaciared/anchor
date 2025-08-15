@@ -23,6 +23,7 @@ class _HabitsScreenState extends ConsumerState<HabitsScreen> {
     final selectedHabits = controller.getAllSelectedHabits();
 
     return ScrollFadeOverlayPresets.appBar(
+      fadeHeight: 120,
       child: selectedHabits.isEmpty
           ? EmptyHabitState(onAdd: () => controller.showCreateHabitModal())
           : ListView(

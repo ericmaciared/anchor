@@ -1,6 +1,7 @@
 import 'package:anchor/core/utils/context_extensions.dart';
-import 'package:anchor/core/widgets/regular_button_widget.dart';
+import 'package:anchor/core/widgets/adaptive_button_widget.dart';
 import 'package:anchor/features/shared/gradients/dynamic_gradient.dart';
+import 'package:anchor/features/welcome/policy_markdown_sheet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,18 +25,8 @@ class WelcomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      if (isDarkMode)
-                        Image.asset(
-                          'assets/icon/app_logo_white.png',
-                          width: 80,
-                          height: 80,
-                        ),
-                      if (!isDarkMode)
-                        Image.asset(
-                          'assets/icon/app_logo_black.png',
-                          width: 80,
-                          height: 80,
-                        ),
+                      if (isDarkMode) Image.asset('assets/icon/app_logo_white.png', width: 80, height: 80),
+                      if (!isDarkMode) Image.asset('assets/icon/app_logo_black.png', width: 80, height: 80),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -83,11 +74,8 @@ class WelcomeScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   TextButton(
-                                    onPressed: () {},
-                                    style: TextButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      minimumSize: Size.zero,
-                                    ),
+                                    onPressed: () => _showTermsOfService(context),
+                                    style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero),
                                     child: Text(
                                       'terms of service',
                                       style: context.textStyles.bodySmall?.copyWith(
@@ -97,11 +85,8 @@ class WelcomeScreen extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 16),
                                   TextButton(
-                                    onPressed: () {},
-                                    style: TextButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      minimumSize: Size.zero,
-                                    ),
+                                    onPressed: () => _showPrivacyPolicy(context),
+                                    style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero),
                                     child: Text(
                                       'privacy policy',
                                       style: context.textStyles.bodySmall?.copyWith(
@@ -115,14 +100,12 @@ class WelcomeScreen extends StatelessWidget {
                           ),
 
                           // Login button
-                          RegularButtonWidget(
-                            onPressed: () {
-                              context.go('/tasks');
-                            },
+                          AdaptiveButtonWidget(
+                            onPressed: () => context.go('/tasks'),
                             height: 56,
                             width: 56,
                             borderRadius: 28,
-                            child: Icon(Icons.arrow_forward),
+                            child: const Icon(Icons.arrow_forward),
                           ),
                         ],
                       ),
@@ -133,6 +116,36 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<void> _showTermsOfService(BuildContext context) async {
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => const TermsOfServiceModalWidget(
+        assetPath: 'assets/policies/terms_of_service.md',
+      ),
+    );
+  }
+
+  Future<void> _showPrivacyPolicy(BuildContext context) async {
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => const PrivacyPolicyModalWidget(
+        assetPath: 'assets/policies/privacy_policy.md',
       ),
     );
   }
