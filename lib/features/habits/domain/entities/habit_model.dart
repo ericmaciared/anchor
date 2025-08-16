@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class HabitModel {
   final String id;
   final String name;
@@ -33,6 +35,7 @@ class HabitModel {
     );
   }
 
+  /// Checks if the habit was completed today
   bool isCompletedToday() {
     if (lastCompletedDate == null) {
       return false;
@@ -41,5 +44,19 @@ class HabitModel {
     return lastCompletedDate!.year == now.year &&
         lastCompletedDate!.month == now.month &&
         lastCompletedDate!.day == now.day;
+  }
+
+  /// Checks if the habit should show a streak (completed today or yesterday)
+  bool shouldShowStreak() {
+    if (currentStreak <= 0 || lastCompletedDate == null) {
+      return false;
+    }
+
+    final now = DateTime.now();
+    final today = DateUtils.dateOnly(now);
+    final yesterday = DateUtils.dateOnly(now.subtract(const Duration(days: 1)));
+    final completedDay = DateUtils.dateOnly(lastCompletedDate!);
+
+    return completedDay.isAtSameMomentAs(today) || completedDay.isAtSameMomentAs(yesterday);
   }
 }

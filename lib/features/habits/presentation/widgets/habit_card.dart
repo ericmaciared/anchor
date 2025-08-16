@@ -25,18 +25,7 @@ class HabitCard extends StatelessWidget {
     final isCompletedToday = habit.isCompletedToday();
 
     // Determine if the streak should be shown
-    bool shouldShowStreak = false;
-    if (habit.currentStreak > 0 && habit.lastCompletedDate != null) {
-      final now = DateTime.now();
-      final lastCompletedDay = DateUtils.dateOnly(habit.lastCompletedDate!);
-      final today = DateUtils.dateOnly(now);
-      final yesterday = DateUtils.dateOnly(now.subtract(const Duration(days: 1)));
-
-      // Show streak if completed today or yesterday
-      if (lastCompletedDay.isAtSameMomentAs(today) || lastCompletedDay.isAtSameMomentAs(yesterday)) {
-        shouldShowStreak = true;
-      }
-    }
+    bool shouldShowStreak = habit.shouldShowStreak();
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),

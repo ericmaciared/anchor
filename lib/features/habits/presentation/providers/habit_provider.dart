@@ -63,37 +63,64 @@ class HabitNotifier extends StateNotifier<List<HabitModel>> {
     HabitModel updatedHabit;
 
     if (habit.isCompletedToday()) {
-      updatedHabit = habit.copyWith(
-        lastCompletedDate: DateTime.utc(now.year, now.month, now.day - 2),
-        currentStreak: habit.currentStreak > 0 ? habit.currentStreak - 1 : 0,
-      );
+      // User is cancelling today's completion
+      updatedHabit = _handleCancellation(habit, now);
     } else {
-      int newStreak;
-
-      if (habit.lastCompletedDate != null) {
-        final lastCompletionDay = DateUtils.dateOnly(habit.lastCompletedDate!);
-        final yesterday =
-            DateUtils.dateOnly(now.subtract(const Duration(days: 1)));
-
-        if (lastCompletionDay.isAtSameMomentAs(yesterday)) {
-          newStreak = habit.currentStreak + 1;
-        } else if (lastCompletionDay.isBefore(yesterday)) {
-          newStreak = 1;
-        } else {
-          newStreak = 1;
-        }
-      } else {
-        newStreak = 1;
-      }
-
-      updatedHabit = habit.copyWith(
-        lastCompletedDate: now,
-        currentStreak: newStreak,
-      );
+      // User is completing the habit today
+      updatedHabit = _handleCompletion(habit, now);
     }
 
     await repository.updateHabit(updatedHabit);
-    state =
-        state.map((h) => h.id == updatedHabit.id ? updatedHabit : h).toList();
+    state = state.map((h) => h.id == updatedHabit.id ? updatedHabit : h).toList();
+  }
+
+  /// Handles when a user marks a habit as complete
+  HabitModel _handleCompletion(HabitModel habit, DateTime now) {
+    final yesterday = DateUtils.dateOnly(now.subtract(const Duration(days: 1)));
+
+    int newStreak;
+
+    if (habit.lastCompletedDate == null) {
+      // First time completing this habit
+      newStreak = 1;
+    } else {
+      final lastCompletedDay = DateUtils.dateOnly(habit.lastCompletedDate!);
+
+      if (lastCompletedDay.isAtSameMomentAs(yesterday)) {
+        // Completed yesterday, continue the streak
+        newStreak = habit.currentStreak + 1;
+      } else {
+        // Gap in completion or first completion, start new streak
+        newStreak = 1;
+      }
+    }
+
+    return habit.copyWith(
+      lastCompletedDate: now,
+      currentStreak: newStreak,
+    );
+  }
+
+  /// Handles when a user cancels today's completion
+  HabitModel _handleCancellation(HabitModel habit, DateTime now) {
+    final yesterday = DateUtils.dateOnly(now.subtract(const Duration(days: 1)));
+
+    // Set last completion date to yesterday and subtract 1 from streak
+    final newStreak = habit.currentStreak - 1;
+
+    // Create yesterday's completion date (set to end of day to avoid timezone issues)
+    final newLastCompletedDate = DateTime(
+      yesterday.year,
+      yesterday.month,
+      yesterday.day,
+      23,
+      59,
+      59,
+    );
+
+    return habit.copyWith(
+      lastCompletedDate: newLastCompletedDate,
+      currentStreak: newStreak > 0 ? newStreak : 0,
+    );
   }
 }

@@ -53,6 +53,9 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
       ),
       appBar: TasksScreenAppBar(
         onAddTask: () => controller.showCreateTaskModal(taskDay: _selectedDay),
+        onTodayPressed: () => setState(() {
+          _selectedDay = normalizeDate(DateTime.now());
+        }),
       ),
     );
   }

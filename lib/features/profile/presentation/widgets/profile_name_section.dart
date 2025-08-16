@@ -1,10 +1,13 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/text_sizes.dart';
+import 'package:anchor/core/widgets/adaptive_button_widget.dart';
+import 'package:anchor/core/widgets/adaptive_card_widget.dart';
 import 'package:anchor/features/shared/settings/settings_provider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:anchor/features/shared/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfileNameSection extends ConsumerWidget {
+class ProfileNameSection extends ConsumerStatefulWidget {
   final String profileName;
   final Color onSurfaceColor;
 
@@ -15,66 +18,118 @@ class ProfileNameSection extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final TextStyle? nameTextStyle = Theme.of(context).textTheme.headlineMedium?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: onSurfaceColor,
-        );
+  ConsumerState<ProfileNameSection> createState() => _ProfileNameSectionState();
+}
 
-    return GestureDetector(
-      onTap: () async {
-        HapticService.light(); // Light feedback for opening edit dialog
+class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> {
+  bool _isEditing = false;
+  late String _currentName;
 
-        String? newName = await showCupertinoDialog<String>(
-          context: context,
-          builder: (context) {
-            final TextEditingController nameController = TextEditingController(text: profileName);
-            return CupertinoAlertDialog(
-              title: const Text('Edit Profile Name'),
-              content: Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: CupertinoTextField(
-                  controller: nameController,
-                  placeholder: 'Enter new name',
-                  autofocus: true,
-                  onSubmitted: (value) {
-                    HapticService.medium(); // Feedback for submission
-                    Navigator.of(context).pop(value);
+  @override
+  void initState() {
+    super.initState();
+    _currentName = widget.profileName;
+  }
+
+  void _toggleEditing() {
+    HapticService.light();
+    setState(() {
+      _isEditing = !_isEditing;
+      if (!_isEditing) {
+        // Save the name when stopping edit
+        if (_currentName.trim().isNotEmpty && _currentName != widget.profileName) {
+          ref.read(settingsProvider.notifier).updateProfileName(_currentName);
+        } else {
+          // Revert if empty or no change
+          _currentName = widget.profileName;
+        }
+      }
+    });
+  }
+
+  void _onNameChanged(String newName) {
+    setState(() {
+      _currentName = newName;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isEditing) {
+      return AdaptiveCardWidget(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            TextInput(
+              text: _currentName,
+              label: 'Your name',
+              onTextChanged: _onNameChanged,
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AdaptiveButtonWidget(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  onPressed: () {
+                    setState(() {
+                      _currentName = widget.profileName;
+                      _isEditing = false;
+                    });
                   },
-                  decoration: BoxDecoration(
-                    border: Border.all(color: CupertinoColors.systemGrey4),
-                    borderRadius: BorderRadius.circular(5.0),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontSize: TextSizes.M,
+                      color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+                    ),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 ),
-              ),
-              actions: [
-                CupertinoDialogAction(
-                  onPressed: () {
-                    HapticService.light(); // Cancel feedback
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-                CupertinoDialogAction(
-                  onPressed: () {
-                    HapticService.medium(); // Save feedback
-                    Navigator.of(context).pop(nameController.text);
-                  },
-                  isDefaultAction: true,
-                  child: const Text('Save'),
+                const SizedBox(width: 16),
+                AdaptiveButtonWidget(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  onPressed: _currentName.trim().isNotEmpty ? _toggleEditing : null,
+                  child: Text(
+                    'Save',
+                    style: TextStyle(
+                      fontSize: TextSizes.M,
+                      color: _currentName.trim().isNotEmpty
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.onSurface.withAlpha(100),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ],
-            );
-          },
-        );
-        if (newName != null && newName.isNotEmpty) {
-          ref.read(settingsProvider.notifier).updateProfileName(newName);
-        }
-      },
-      child: Text(
-        profileName,
-        style: nameTextStyle,
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: GestureDetector(
+        onTap: _toggleEditing,
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                widget.profileName,
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: widget.onSurfaceColor,
+                    ),
+              ),
+            ),
+            Icon(
+              Icons.edit_outlined,
+              size: 20,
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+            ),
+          ],
+        ),
       ),
     );
   }
