@@ -1,3 +1,4 @@
+import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/widgets/regular_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
@@ -18,6 +19,7 @@ class AdaptiveButtonWidget extends StatelessWidget {
   final BorderRadius? customBorderRadius;
   final LiquidRoundedSuperellipse? customShape;
   final Border? border;
+  final bool enableHaptics;
 
   const AdaptiveButtonWidget({
     super.key,
@@ -34,15 +36,25 @@ class AdaptiveButtonWidget extends StatelessWidget {
     this.customBorderRadius,
     this.customShape,
     this.border,
+    this.enableHaptics = true,
   });
 
   bool get _useLiquidGlass => true;
+
+  void _handlePress() {
+    if (onPressed != null && enabled) {
+      if (enableHaptics) {
+        HapticService.medium(); // Standard button press feedback
+      }
+      onPressed!();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     if (_useLiquidGlass) {
       return LiquidGlassButtonWidget(
-        onPressed: onPressed,
+        onPressed: _handlePress,
         width: width,
         height: height,
         padding: padding,
@@ -56,7 +68,7 @@ class AdaptiveButtonWidget extends StatelessWidget {
       );
     } else {
       return RegularButtonWidget(
-        onPressed: onPressed,
+        onPressed: _handlePress,
         width: width,
         height: height,
         padding: padding,

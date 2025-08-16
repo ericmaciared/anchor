@@ -1,3 +1,4 @@
+import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:flutter/material.dart';
 
 class TaskOptionsChips extends StatelessWidget {
@@ -22,7 +23,10 @@ class TaskOptionsChips extends StatelessWidget {
       label: Text(label),
       avatar: Icon(icon, size: 16),
       selected: isActive,
-      onSelected: (_) => onToggleSection(section),
+      onSelected: (_) {
+        HapticService.medium(); // Medium feedback for section toggle
+        onToggleSection(section);
+      },
       selectedColor: Theme.of(context).colorScheme.primary.withAlpha(50),
       checkmarkColor: Theme.of(context).colorScheme.primary,
     );

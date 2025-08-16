@@ -1,3 +1,4 @@
+import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/color_picker.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/icon_picker.dart';
@@ -14,6 +15,7 @@ class TaskColorIconSection extends StatelessWidget {
   });
 
   void _showIconPicker(BuildContext context) {
+    HapticService.light();
     showModalBottomSheet(
       context: context,
       builder: (_) => IconPicker(

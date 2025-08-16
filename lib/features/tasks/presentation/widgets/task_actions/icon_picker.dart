@@ -1,3 +1,4 @@
+import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:flutter/material.dart';
 
 class IconPicker extends StatelessWidget {
@@ -87,8 +88,7 @@ class IconPicker extends StatelessWidget {
               child: ListView(
                 children: _iconCategories.entries.map((entry) {
                   return Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -107,6 +107,7 @@ class IconPicker extends StatelessWidget {
                             final isSelected = icon == selectedIcon;
                             return GestureDetector(
                               onTap: () {
+                                HapticService.selection(); // Selection feedback for icon pick
                                 onIconSelected(icon);
                                 Navigator.pop(context);
                               },
@@ -114,10 +115,7 @@ class IconPicker extends StatelessWidget {
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   color: isSelected
-                                      ? Theme.of(context)
-                                          .colorScheme
-                                          .primary
-                                          .withAlpha(12)
+                                      ? Theme.of(context).colorScheme.primary.withAlpha(12)
                                       : Colors.transparent,
                                   shape: BoxShape.circle,
                                 ),

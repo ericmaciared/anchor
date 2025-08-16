@@ -1,3 +1,4 @@
+import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +19,7 @@ class DurationInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        HapticService.light(); // Light feedback for opening duration picker
         await _showDurationPickerDialog(context);
       },
       child: Text(
@@ -33,9 +35,7 @@ class DurationInput extends StatelessWidget {
 
   Future<void> _showDurationPickerDialog(BuildContext context) async {
     TextEditingController customDurationController = TextEditingController(
-      text: !predefinedDurations.contains(duration) && duration != null
-          ? duration.toString()
-          : '',
+      text: !predefinedDurations.contains(duration) && duration != null ? duration.toString() : '',
     );
 
     return showDialog<void>(
@@ -54,12 +54,11 @@ class DurationInput extends StatelessWidget {
                     return ActionChip(
                       label: Text('$d mins'),
                       onPressed: () {
+                        HapticService.selection(); // Selection feedback
                         onDurationChanged(d);
                         Navigator.of(dialogContext).pop();
                       },
-                      backgroundColor: duration == d
-                          ? Theme.of(context).colorScheme.primary.withAlpha(20)
-                          : null,
+                      backgroundColor: duration == d ? Theme.of(context).colorScheme.primary.withAlpha(20) : null,
                     );
                   }).toList(),
                 ),
@@ -71,14 +70,15 @@ class DurationInput extends StatelessWidget {
                     border: OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                   onSubmitted: (value) {
                     final int? customMin = int.tryParse(value);
                     if (customMin != null && customMin > 0) {
+                      HapticService.selection(); // Selection feedback
                       onDurationChanged(customMin);
                       Navigator.of(dialogContext).pop();
+                    } else {
+                      HapticService.error(); // Error feedback for invalid input
                     }
                   },
                 ),
@@ -89,22 +89,22 @@ class DurationInput extends StatelessWidget {
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {
+                HapticService.light(); // Cancel feedback
                 Navigator.of(dialogContext).pop();
               },
             ),
             TextButton(
               child: const Text('Set Custom'),
               onPressed: () {
-                final int? customMin =
-                    int.tryParse(customDurationController.text);
+                final int? customMin = int.tryParse(customDurationController.text);
                 if (customMin != null && customMin > 0) {
+                  HapticService.selection(); // Selection feedback
                   onDurationChanged(customMin);
                   Navigator.of(dialogContext).pop();
                 } else {
+                  HapticService.error(); // Error feedback
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text(
-                            'Please enter a valid positive number for custom duration.')),
+                    const SnackBar(content: Text('Please enter a valid positive number for custom duration.')),
                   );
                 }
               },

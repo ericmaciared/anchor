@@ -1,3 +1,4 @@
+import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +21,11 @@ class TimeSettingTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      leading:
-          Icon(icon, color: Theme.of(context).colorScheme.primaryContainer),
+      leading: Icon(icon, color: Theme.of(context).colorScheme.primaryContainer),
       title: Text(title, style: const TextStyle(fontSize: 14)),
-      trailing: Text(currentTime.format(context),
-          style: const TextStyle(fontSize: 14)),
+      trailing: Text(currentTime.format(context), style: const TextStyle(fontSize: 14)),
       onTap: () async {
+        HapticService.light(); // Light feedback for opening time picker
         Navigator.of(context).push(
           showPicker(
             context: context,

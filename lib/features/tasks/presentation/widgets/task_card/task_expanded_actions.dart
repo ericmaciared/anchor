@@ -1,3 +1,4 @@
+import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +33,7 @@ class TaskExpandedActions extends StatelessWidget {
           SubtaskList(
             subtasks: task.subtasks,
             baseColor: task.color,
-            onToggleSubtaskCompletion: (subtask) =>
-                onToggleSubtaskCompletion(subtask),
+            onToggleSubtaskCompletion: (subtask) => onToggleSubtaskCompletion(subtask),
           ),
         const SizedBox(height: 12),
         if (task.isDone)
@@ -48,14 +48,20 @@ class TaskExpandedActions extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: showUndoDialog,
+                onPressed: () {
+                  HapticService.medium(); // Undo button feedback
+                  showUndoDialog();
+                },
                 child: const Text('Undo'),
               ),
             ],
           )
         else
           GestureDetector(
-            onLongPress: onComplete,
+            onLongPress: () {
+              HapticService.heavy(); // Heavy feedback for task completion
+              onComplete();
+            },
             behavior: HitTestBehavior.opaque,
             child: Container(
               width: double.infinity,

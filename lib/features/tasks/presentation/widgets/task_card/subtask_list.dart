@@ -1,3 +1,4 @@
+import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:flutter/material.dart';
 
@@ -31,22 +32,23 @@ class SubtaskList extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         ...subtasks.map((subtask) => GestureDetector(
-              onTap: () => onToggleSubtaskCompletion(subtask),
+              onTap: () {
+                // Add haptic feedback for subtask toggle
+                if (subtask.isDone) {
+                  HapticService.light(); // Light feedback for unchecking
+                } else {
+                  HapticService.medium(); // Medium feedback for checking
+                }
+                onToggleSubtaskCompletion(subtask);
+              },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
                     Icon(
-                      subtask.isDone
-                          ? Icons.check_circle
-                          : Icons.radio_button_unchecked,
+                      subtask.isDone ? Icons.check_circle : Icons.radio_button_unchecked,
                       size: 18,
-                      color: subtask.isDone
-                          ? Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withAlpha(100)
-                          : baseColor,
+                      color: subtask.isDone ? Theme.of(context).colorScheme.onSurface.withAlpha(100) : baseColor,
                     ),
                     const SizedBox(width: 8),
                     Expanded(
@@ -54,15 +56,8 @@ class SubtaskList extends StatelessWidget {
                         subtask.title,
                         style: TextStyle(
                           fontSize: 14,
-                          color: subtask.isDone
-                              ? Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withAlpha(100)
-                              : null,
-                          decoration: subtask.isDone
-                              ? TextDecoration.lineThrough
-                              : null,
+                          color: subtask.isDone ? Theme.of(context).colorScheme.onSurface.withAlpha(100) : null,
+                          decoration: subtask.isDone ? TextDecoration.lineThrough : null,
                         ),
                       ),
                     ),

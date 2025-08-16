@@ -1,4 +1,5 @@
 import 'package:anchor/core/mixins/safe_animation_mixin.dart';
+import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
@@ -97,6 +98,9 @@ class _TaskCardState extends State<TaskCard> with TickerProviderStateMixin, Safe
   void _toggleExpanded() {
     if (_isAnimating) return;
 
+    // Add haptic feedback for card expansion
+    HapticService.medium();
+
     safSetState(() {
       _isExpanded = !_isExpanded;
       _isAnimating = true;
@@ -116,6 +120,9 @@ class _TaskCardState extends State<TaskCard> with TickerProviderStateMixin, Safe
   }
 
   Future<void> _handleTaskCompletion() async {
+    // Add success haptic feedback for task completion
+    HapticService.success();
+
     // Close expansion first
     if (_isExpanded) {
       safSetState(() => _isExpanded = false);
@@ -132,6 +139,9 @@ class _TaskCardState extends State<TaskCard> with TickerProviderStateMixin, Safe
   Future<void> _showUndoConfirmationDialog(BuildContext context) async {
     if (!mounted) return;
 
+    // Add medium haptic feedback for dialog appearance
+    HapticService.medium();
+
     return showDialog<void>(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -146,7 +156,10 @@ class _TaskCardState extends State<TaskCard> with TickerProviderStateMixin, Safe
           ),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
+              onPressed: () {
+                HapticService.light(); // Cancel feedback
+                Navigator.of(dialogContext).pop();
+              },
               child: Text(
                 'Cancel',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -156,6 +169,7 @@ class _TaskCardState extends State<TaskCard> with TickerProviderStateMixin, Safe
             ),
             TextButton(
               onPressed: () {
+                HapticService.heavy(); // Confirmation feedback
                 Navigator.of(dialogContext).pop();
                 if (mounted) {
                   widget.onToggleTaskCompletion();
@@ -217,7 +231,10 @@ class _TaskCardState extends State<TaskCard> with TickerProviderStateMixin, Safe
                         clipBehavior: Clip.antiAlias,
                         child: GestureDetector(
                           onTap: _isAnimating ? null : _toggleExpanded,
-                          onLongPress: widget.onLongPress,
+                          onLongPress: () {
+                            HapticService.longPress(); // Long press feedback
+                            widget.onLongPress();
+                          },
                           behavior: HitTestBehavior.opaque,
                           child: Padding(
                             padding: const EdgeInsets.all(12),

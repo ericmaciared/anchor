@@ -1,3 +1,6 @@
+// lib/features/shared/main/floating_navbar.dart
+
+import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 
@@ -32,17 +35,26 @@ class FloatingNavBar extends StatelessWidget {
               _IconNavItem(
                 icon: Icons.check_circle_outline,
                 isActive: currentIndex == 0,
-                onTap: () => onTap(0),
+                onTap: () {
+                  HapticService.navigation(); // Navigation feedback
+                  onTap(0);
+                },
               ),
               _IconNavItem(
                 icon: Icons.anchor,
                 isActive: currentIndex == 1,
-                onTap: () => onTap(1),
+                onTap: () {
+                  HapticService.navigation(); // Navigation feedback
+                  onTap(1);
+                },
               ),
               _IconNavItem(
                 icon: Icons.account_circle_outlined,
                 isActive: currentIndex == 2,
-                onTap: () => onTap(2),
+                onTap: () {
+                  HapticService.navigation(); // Navigation feedback
+                  onTap(2);
+                },
               ),
             ],
           ),
@@ -69,8 +81,7 @@ class _IconNavItem extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final activeColor = colorScheme.onSurface;
     final inactiveColor = colorScheme.onSurface.withAlpha(150);
-    final activeBackgroundColor =
-        colorScheme.surfaceContainerHighest.withAlpha(100);
+    final activeBackgroundColor = colorScheme.surfaceContainerHighest.withAlpha(100);
 
     return GestureDetector(
       onTap: onTap,
@@ -84,8 +95,7 @@ class _IconNavItem extends StatelessWidget {
             scale: scale,
             child: AnimatedContainer(
               duration: duration,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               decoration: BoxDecoration(
                 color: isActive ? activeBackgroundColor : Colors.transparent,
                 borderRadius: BorderRadius.circular(20),

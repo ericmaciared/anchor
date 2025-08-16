@@ -1,8 +1,11 @@
+// lib/features/tasks/presentation/widgets/task_card/minimal_task_card.dart
+
+import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
 
-import 'minimal_task_time_column.dart'; // Ensure this import is correct
+import 'minimal_task_time_column.dart';
 
 class MinimalTaskCard extends StatelessWidget {
   final TaskModel task;
@@ -31,8 +34,7 @@ class MinimalTaskCard extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  MinimalTaskTimeColumn(
-                      startTime: task.startTime, duration: task.duration),
+                  MinimalTaskTimeColumn(startTime: task.startTime, duration: task.duration),
                   const SizedBox(width: 8),
                   // Main task card
                   Card(
@@ -41,8 +43,19 @@ class MinimalTaskCard extends StatelessWidget {
                     ),
                     clipBehavior: Clip.antiAlias,
                     child: GestureDetector(
-                      onTap: onToggleTaskCompletion,
-                      onLongPress: onLongPress,
+                      onTap: () {
+                        // Add haptic feedback for task completion toggle
+                        if (task.isDone) {
+                          HapticService.medium(); // Undoing completion
+                        } else {
+                          HapticService.success(); // Completing task
+                        }
+                        onToggleTaskCompletion();
+                      },
+                      onLongPress: () {
+                        HapticService.longPress(); // Long press feedback
+                        onLongPress();
+                      },
                       behavior: HitTestBehavior.opaque,
                       child: Padding(
                         padding: const EdgeInsets.all(12),
@@ -51,12 +64,9 @@ class MinimalTaskCard extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            color: task.isDone
-                                ? colorScheme.onSurface.withAlpha(100)
-                                : null,
+                            color: task.isDone ? colorScheme.onSurface.withAlpha(100) : null,
                             fontSize: 14,
-                            decoration:
-                                task.isDone ? TextDecoration.lineThrough : null,
+                            decoration: task.isDone ? TextDecoration.lineThrough : null,
                           ),
                         ),
                       ),
@@ -69,25 +79,26 @@ class MinimalTaskCard extends StatelessWidget {
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 64.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 64.0, vertical: 8.0),
                       child: Column(
                         spacing: 16,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: task.subtasks.map((subtask) {
-                          return Text(
-                            subtask.title,
-                            style:
-                                Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      decoration: subtask.isDone
-                                          ? TextDecoration.lineThrough
-                                          : null,
-                                      color: subtask.isDone
-                                          ? colorScheme.onSurface.withAlpha(100)
-                                          : null,
-                                    ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
+                          return GestureDetector(
+                            onTap: () {
+                              // Add haptic feedback for subtask toggle
+                              HapticService.light();
+                              onToggleSubtaskCompletion(subtask);
+                            },
+                            child: Text(
+                              subtask.title,
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    decoration: subtask.isDone ? TextDecoration.lineThrough : null,
+                                    color: subtask.isDone ? colorScheme.onSurface.withAlpha(100) : null,
+                                  ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
                           );
                         }).toList(),
                       ),

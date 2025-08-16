@@ -1,3 +1,4 @@
+import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
@@ -43,8 +44,9 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
   }
 
   void _openCustomColorPicker() {
-    Color tempColor =
-        _customColor ?? Theme.of(context).colorScheme.onSurface.withAlpha(100);
+    HapticService.medium(); // Medium feedback for opening custom picker
+
+    Color tempColor = _customColor ?? Theme.of(context).colorScheme.onSurface.withAlpha(100);
 
     showDialog(
       context: context,
@@ -54,7 +56,10 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: tempColor,
-              onColorChanged: (color) => tempColor = color,
+              onColorChanged: (color) {
+                HapticService.light(); // Light feedback for color changes
+                tempColor = color;
+              },
               enableAlpha: false,
               pickerAreaHeightPercent: 0.8,
             ),
@@ -62,11 +67,15 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
           actions: [
             TextButton(
               child: const Text('Cancel'),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                HapticService.light(); // Cancel feedback
+                Navigator.of(context).pop();
+              },
             ),
             ElevatedButton(
               child: const Text('Select'),
               onPressed: () {
+                HapticService.medium(); // Selection confirmation feedback
                 setState(() => _customColor = tempColor);
                 widget.onColorSelected(tempColor);
                 Navigator.of(context).pop();
@@ -82,7 +91,10 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
     final isSelected = color == widget.selectedColor;
 
     return GestureDetector(
-      onTap: () => widget.onColorSelected(color),
+      onTap: () {
+        HapticService.selection(); // Selection feedback for color pick
+        widget.onColorSelected(color);
+      },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 4),
         width: 30,
@@ -114,13 +126,10 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.transparent,
-          border: Border.all(
-              color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
+          border: Border.all(color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
         ),
         child: Center(
-          child: Icon(Icons.add,
-              size: 18,
-              color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
+          child: Icon(Icons.add, size: 18, color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
         ),
       ),
     );
@@ -133,8 +142,10 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
       children: [
         Text(
           'Task Color',
-          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium!
+              .copyWith(color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
         ),
         const SizedBox(height: 8),
         Card(

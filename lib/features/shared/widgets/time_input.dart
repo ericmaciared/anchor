@@ -1,3 +1,4 @@
+import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
@@ -5,7 +6,6 @@ import 'package:flutter/material.dart';
 
 class TimeInput extends StatelessWidget {
   final TimeOfDay time;
-
   final ValueChanged<TimeOfDay?> onTimeChanged;
 
   const TimeInput({
@@ -18,6 +18,8 @@ class TimeInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        HapticService.light(); // Light feedback for opening time picker
+
         Navigator.of(context).push(
           showPicker(
             context: context,
@@ -34,7 +36,10 @@ class TimeInput extends StatelessWidget {
             backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
             okText: 'Save',
             duskSpanInMinutes: 120,
-            onChange: (time) => onTimeChanged(time),
+            onChange: (selectedTime) {
+              HapticService.selection(); // Selection feedback for time change
+              onTimeChanged(selectedTime);
+            },
           ),
         );
       },

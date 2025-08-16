@@ -1,3 +1,4 @@
+import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:flutter/material.dart';
 
 class FooterActions extends StatelessWidget {
@@ -22,20 +23,25 @@ class FooterActions extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: TextButton(
-              onPressed: onDelete,
-              child: Text('Delete',
-                  style: TextStyle(color: Theme.of(context).colorScheme.error)),
+              onPressed: () {
+                HapticService.heavy(); // Heavy feedback for delete action
+                onDelete();
+              },
+              child: Text('Delete', style: TextStyle(color: Theme.of(context).colorScheme.error)),
             ),
           ),
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: isSaveEnabled
-                  ? null
-                  : Theme.of(context).colorScheme.onSurface.withAlpha(100),
+              backgroundColor: isSaveEnabled ? null : Theme.of(context).colorScheme.onSurface.withAlpha(100),
             ),
-            onPressed: isSaveEnabled ? onSave : null,
-            child: Text(isEdit ? 'I confirm again' : 'I confirm'),
+            onPressed: isSaveEnabled
+                ? () {
+                    HapticService.success(); // Success feedback for save action
+                    onSave();
+                  }
+                : null,
+            child: Text(isEdit ? 'Save Changes' : 'Create Task'),
           ),
         ),
       ],
