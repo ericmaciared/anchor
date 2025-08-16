@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class ScrollFadeOverlayWidget extends StatefulWidget {
   /// The scrollable content widget
@@ -51,6 +52,7 @@ class ScrollFadeOverlayWidget extends StatefulWidget {
 
 class _ScrollFadeOverlayWidgetState extends State<ScrollFadeOverlayWidget> {
   double _scrollOffset = 0.0;
+  bool _isBuilding = false;
 
   double get _fadeOpacity {
     if (_scrollOffset <= widget.fadeStartOffset) return 0.0;
@@ -59,17 +61,46 @@ class _ScrollFadeOverlayWidgetState extends State<ScrollFadeOverlayWidget> {
     return (_scrollOffset - widget.fadeStartOffset) / (widget.fadeEndOffset - widget.fadeStartOffset);
   }
 
+  void _updateScrollOffset(double newOffset) {
+    if (_scrollOffset != newOffset) {
+      if (_isBuilding) {
+        // Schedule the update for after the current build phase
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            setState(() {
+              _scrollOffset = newOffset;
+            });
+          }
+        });
+      } else {
+        setState(() {
+          _scrollOffset = newOffset;
+        });
+      }
+    }
+  }
+
+  bool _isVerticalScroll(ScrollNotification notification) {
+    final scrollDirection = notification.metrics.axis;
+    return scrollDirection == Axis.vertical;
+  }
+
   @override
   Widget build(BuildContext context) {
+    _isBuilding = true;
+
+    // Schedule to reset the building flag after this build completes
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _isBuilding = false;
+    });
+
     return Stack(
       children: [
         // Scrollable content with listener
         NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification notification) {
-            if (notification is ScrollUpdateNotification) {
-              setState(() {
-                _scrollOffset = notification.metrics.pixels;
-              });
+            if (notification is ScrollUpdateNotification && _isVerticalScroll(notification)) {
+              _updateScrollOffset(notification.metrics.pixels);
             }
             return false;
           },
