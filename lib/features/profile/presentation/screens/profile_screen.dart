@@ -1,3 +1,5 @@
+import 'package:anchor/core/theme/text_sizes.dart';
+import 'package:anchor/core/widgets/scroll_fade_overlay_widget.dart';
 import 'package:anchor/features/profile/presentation/widgets/daily_quotes_setting.dart';
 import 'package:anchor/features/profile/presentation/widgets/display_density_setting_tile.dart';
 import 'package:anchor/features/profile/presentation/widgets/profile_name_section.dart';
@@ -18,8 +20,7 @@ class ProfileScreen extends ConsumerWidget {
 
     return settingsAsyncValue.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (err, stack) =>
-          Center(child: Text('Error loading settings: $err')),
+      error: (err, stack) => Center(child: Text('Error loading settings: $err')),
       data: (settings) {
         final profileName = settings.profileName;
         final wakeUpTime = settings.wakeUpTime;
@@ -29,59 +30,70 @@ class ProfileScreen extends ConsumerWidget {
         final visualEffectsEnabled = settings.visualEffectsEnabled;
         final statusMessageEnabled = settings.statusMessageEnabled;
 
-        return SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                ProfileNameSection(
-                  profileName: profileName,
-                  onSurfaceColor: colorScheme.onSurface,
-                ),
-                const SizedBox(height: 32),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    TimeSettingTile(
-                      icon: Icons.wb_sunny_outlined,
-                      title: 'Wake-up Time',
-                      currentTime: wakeUpTime,
-                      updateFunction: (newTime) => ref
-                          .read(settingsProvider.notifier)
-                          .updateWakeUpTime(newTime),
-                    ),
-                    const Divider(indent: 16, endIndent: 16),
-                    TimeSettingTile(
-                      icon: Icons.nights_stay_outlined,
-                      title: 'Bedtime',
-                      currentTime: bedTime,
-                      updateFunction: (newTime) => ref
-                          .read(settingsProvider.notifier)
-                          .updateBedTime(newTime),
-                    ),
-                    const Divider(indent: 16, endIndent: 16),
-                    DisplayDensitySettingTile(
-                      currentDensity: displayDensity,
-                    ),
-                    const Divider(indent: 16, endIndent: 16),
-                    DailyQuotesSettingTile(
-                      isEnabled: dailyQuotesEnabled,
-                    ),
-                    const Divider(indent: 16, endIndent: 16),
-                    VisualEffectsSettingTile(
-                      isEnabled: visualEffectsEnabled,
-                    ),
-                    const Divider(indent: 16, endIndent: 16),
-                    StatusMessageSettingTile(
-                      isEnabled: statusMessageEnabled,
-                    ),
-                  ],
-                ),
-              ],
-            ),
+        return ScrollFadeOverlayPresets.appBar(
+          fadeHeight: 120,
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            children: [
+              const SizedBox(height: 120),
+              ProfileNameSection(
+                profileName: profileName,
+                onSurfaceColor: colorScheme.onSurface,
+              ),
+              const SizedBox(height: 32),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  TimeSettingTile(
+                    icon: Icons.wb_sunny_outlined,
+                    title: 'Wake-up Time',
+                    currentTime: wakeUpTime,
+                    updateFunction: (newTime) => ref.read(settingsProvider.notifier).updateWakeUpTime(newTime),
+                  ),
+                  const Divider(indent: 16, endIndent: 16),
+                  TimeSettingTile(
+                    icon: Icons.nights_stay_outlined,
+                    title: 'Bedtime',
+                    currentTime: bedTime,
+                    updateFunction: (newTime) => ref.read(settingsProvider.notifier).updateBedTime(newTime),
+                  ),
+                  const Divider(indent: 16, endIndent: 16),
+                  DisplayDensitySettingTile(
+                    currentDensity: displayDensity,
+                  ),
+                  const Divider(indent: 16, endIndent: 16),
+                  DailyQuotesSettingTile(
+                    isEnabled: dailyQuotesEnabled,
+                  ),
+                  const Divider(indent: 16, endIndent: 16),
+                  VisualEffectsSettingTile(
+                    isEnabled: visualEffectsEnabled,
+                  ),
+                  const Divider(indent: 16, endIndent: 16),
+                  StatusMessageSettingTile(
+                    isEnabled: statusMessageEnabled,
+                  ),
+                ],
+              ),
+            ],
           ),
+          appBar: _buildAppBar(context, profileName),
         );
       },
+    );
+  }
+
+  Widget _buildAppBar(BuildContext context, String profileName) {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('profile & settings', style: TextStyle(fontSize: TextSizes.XL)),
+          ],
+        ),
+      ),
     );
   }
 }

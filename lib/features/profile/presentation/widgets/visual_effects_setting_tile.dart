@@ -14,10 +14,8 @@ class VisualEffectsSettingTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SwitchListTile(
       activeColor: Theme.of(context).colorScheme.primary,
-      secondary: Icon(Icons.star_half,
-          color: Theme.of(context).colorScheme.primaryContainer),
-      title:
-          const Text('Enable Visual Effects', style: TextStyle(fontSize: 14)),
+      secondary: Icon(Icons.star_half, color: Theme.of(context).colorScheme.primary),
+      title: const Text('Enable Visual Effects', style: TextStyle(fontSize: 14)),
       value: isEnabled,
       onChanged: (bool value) {
         ref.read(settingsProvider.notifier).updateVisualEffectsEnabled(value);

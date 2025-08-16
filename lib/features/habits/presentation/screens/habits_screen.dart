@@ -1,5 +1,6 @@
 import 'package:anchor/core/widgets/scroll_fade_overlay_widget.dart';
 import 'package:anchor/features/habits/presentation/controllers/habit_controller.dart';
+import 'package:anchor/features/habits/presentation/widgets/empty_habit_state.dart';
 import 'package:anchor/features/habits/presentation/widgets/habit_list.dart'; // Needed for HabitList
 import 'package:anchor/features/habits/presentation/widgets/habits_screen_app_bar.dart';
 import 'package:anchor/features/shared/greetings/presentation/widgets/greeting_card.dart';
@@ -7,18 +8,11 @@ import 'package:anchor/features/shared/quotes/presentation/widgets/daily_quote_c
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../widgets/empty_habit_state.dart';
-
-class HabitsScreen extends ConsumerStatefulWidget {
+class HabitsScreen extends ConsumerWidget {
   const HabitsScreen({super.key});
 
   @override
-  ConsumerState<HabitsScreen> createState() => _HabitsScreenState();
-}
-
-class _HabitsScreenState extends ConsumerState<HabitsScreen> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final controller = HabitController(ref, context);
     final selectedHabits = controller.getAllSelectedHabits();
 

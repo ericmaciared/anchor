@@ -17,7 +17,7 @@ class DisplayDensitySettingTile extends ConsumerWidget {
     final options = ['Compact', 'Spacious'];
 
     return ListTile(
-      leading: Icon(Icons.density_medium, color: Theme.of(context).colorScheme.primaryContainer),
+      leading: Icon(Icons.density_medium, color: Theme.of(context).colorScheme.primary),
       title: const Text('Display Density', style: TextStyle(fontSize: 14)),
       subtitle: Padding(
         padding: const EdgeInsets.only(top: 8.0),

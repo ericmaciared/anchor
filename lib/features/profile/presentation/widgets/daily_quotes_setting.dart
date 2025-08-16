@@ -15,10 +15,8 @@ class DailyQuotesSettingTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SwitchListTile(
       activeColor: Theme.of(context).colorScheme.primary,
-      secondary: Icon(Icons.format_quote,
-          color: Theme.of(context).colorScheme.primaryContainer),
-      title: const Text('Show Daily Quotes',
-          style: TextStyle(fontSize: TextSizes.M)),
+      secondary: Icon(Icons.format_quote, color: Theme.of(context).colorScheme.primary),
+      title: const Text('Show Daily Quotes', style: TextStyle(fontSize: TextSizes.M)),
       value: isEnabled,
       onChanged: (bool value) {
         ref.read(settingsProvider.notifier).updateDailyQuotesEnabled(value);

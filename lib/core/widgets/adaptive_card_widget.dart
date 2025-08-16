@@ -1,3 +1,4 @@
+import 'package:anchor/core/widgets/animated_fade_in_widget.dart';
 import 'package:anchor/core/widgets/regular_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
@@ -40,15 +41,17 @@ class AdaptiveCardWidget extends StatelessWidget {
         child: child,
       );
     } else {
-      return RegularCardWidget(
-        borderRadius: borderRadius,
-        elevation: effectIntensity / 2.5,
-        color: primaryColor,
-        padding: padding,
-        shadowColor: shadowColor,
-        useBackdropFilter: useBackdropFilter,
-        backdropBlur: effectIntensity * 2,
-        child: child,
+      return AnimatedFadeInWidget(
+        child: RegularCardWidget(
+          borderRadius: borderRadius,
+          elevation: effectIntensity / 2.5,
+          color: primaryColor,
+          padding: padding,
+          shadowColor: shadowColor,
+          useBackdropFilter: useBackdropFilter,
+          backdropBlur: effectIntensity * 2,
+          child: child,
+        ),
       );
     }
   }

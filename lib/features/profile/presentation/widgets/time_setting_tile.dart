@@ -21,7 +21,7 @@ class TimeSettingTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      leading: Icon(icon, color: Theme.of(context).colorScheme.primaryContainer),
+      leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
       title: Text(title, style: const TextStyle(fontSize: 14)),
       trailing: Text(currentTime.format(context), style: const TextStyle(fontSize: 14)),
       onTap: () async {

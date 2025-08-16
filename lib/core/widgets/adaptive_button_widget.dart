@@ -1,4 +1,5 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/widgets/animated_fade_in_widget.dart';
 import 'package:anchor/core/widgets/regular_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
@@ -67,19 +68,21 @@ class AdaptiveButtonWidget extends StatelessWidget {
         child: child,
       );
     } else {
-      return RegularButtonWidget(
-        onPressed: _handlePress,
-        width: width,
-        height: height,
-        padding: padding,
-        borderRadius: borderRadius,
-        backgroundColor: primaryColor,
-        shadowColor: secondaryColor,
-        shadowBlur: effectIntensity * 2.4,
-        enabled: enabled,
-        customBorderRadius: customBorderRadius,
-        border: border,
-        child: child,
+      return AnimatedFadeInWidget(
+        child: RegularButtonWidget(
+          onPressed: _handlePress,
+          width: width,
+          height: height,
+          padding: padding,
+          borderRadius: borderRadius,
+          backgroundColor: primaryColor,
+          shadowColor: secondaryColor,
+          shadowBlur: effectIntensity * 2.4,
+          enabled: enabled,
+          customBorderRadius: customBorderRadius,
+          border: border,
+          child: child,
+        ),
       );
     }
   }

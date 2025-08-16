@@ -1,4 +1,5 @@
 import 'package:anchor/core/utils/context_extensions.dart';
+import 'package:anchor/core/widgets/animated_fade_in_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 
@@ -39,7 +40,7 @@ class LiquidGlassCardWidget extends StatelessWidget {
       ),
       child: Padding(
         padding: padding,
-        child: child,
+        child: AnimatedFadeInWidget(child: child),
       ),
     );
   }
