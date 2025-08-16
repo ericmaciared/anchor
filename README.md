@@ -165,14 +165,44 @@ flutter test integration_test/
 
 We welcome contributions! Please see our [Contributing Guide] for details.
 
-### Development Workflow
+# 📋 Feedback & Roadmap
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Make your changes with tests
-4. Commit using conventional commits: `git commit -m "feat: add amazing feature"`
-5. Push to your branch: `git push origin feature/amazing-feature`
-6. Open a Pull Request
+We're constantly working to improve Anchor and would love to hear from you! Your feedback helps
+shape the future of the app.
+
+## 🗣️ Share Your Feedback
+
+Have suggestions, bug reports, or feature requests? We'd love to hear from you!
+
+**[Visit our Feedback Portal →](https://anchorapp.canny.io/)**
+
+### What you can do:
+
+- 🐛 **Report bugs** - Help us squash those pesky issues
+- 💡 **Request features** - Tell us what you'd like to see next
+- 🗳️ **Vote on ideas** - Support features you want prioritized
+- 💬 **Join discussions** - Share your thoughts with the community
+- 📈 **Track progress** - See what we're working on
+
+## 🚀 Current Roadmap Highlights
+
+Our roadmap is driven by community feedback. Some areas we're actively exploring:
+
+- **Enhanced Habit Tracking** - More detailed analytics and insights
+- **Team Collaboration** - Share goals with friends and family
+- **Smart Scheduling** - AI-powered task optimization
+- **Integration Ecosystem** - Connect with your favorite productivity tools
+- **Advanced Customization** - More themes, widgets, and personalization options
+
+## 🤝 How Your Input Shapes Anchor
+
+Every feature in Anchor exists because someone like you shared their vision. From the confetti
+animations when you complete tasks to the adaptive display density settings - it all started with
+community feedback.
+
+---
+
+**Ready to make Anchor better?** [Share your thoughts →](https://anchorapp.canny.io/)
 
 ## 🙏 Acknowledgments
 
