@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
+import 'package:anchor/core/widgets/adaptive_button_widget.dart';
 import 'package:flutter/material.dart';
 
 class TaskOptionsChips extends StatelessWidget {
@@ -19,69 +21,85 @@ class TaskOptionsChips extends StatelessWidget {
   }) {
     final isActive = expandedSections[section]!;
 
-    return FilterChip(
-      label: Text(label),
-      avatar: Icon(icon, size: 16),
-      selected: isActive,
-      onSelected: (_) {
-        HapticService.medium(); // Medium feedback for section toggle
-        onToggleSection(section);
-      },
-      selectedColor: Theme.of(context).colorScheme.primary.withAlpha(50),
-      checkmarkColor: Theme.of(context).colorScheme.primary,
-    );
+    return AdaptiveButtonWidget(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        primaryColor: isActive ? context.colors.primary.withAlpha(150) : null,
+        onPressed: () {
+          HapticService.medium(); // Medium feedback for section toggle
+          onToggleSection(section);
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Icon(icon),
+            const SizedBox(width: 8),
+            Text(label),
+          ],
+        ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Options',
-          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
-              ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        border: Border(
+          top: BorderSide(
+            color: Theme.of(context).colorScheme.outline.withAlpha(50),
+          ),
         ),
-        const SizedBox(height: 12),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            _buildOptionChip(
-              label: 'Time',
-              section: 'time',
-              icon: Icons.access_time,
-              context: context,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16.0),
+        child: SizedBox(
+          height: 48, // Fixed height for the scrollable row
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Row(
+              children: [
+                const SizedBox(width: 16),
+                _buildOptionChip(
+                  label: 'Time',
+                  section: 'time',
+                  icon: Icons.access_time,
+                  context: context,
+                ),
+                const SizedBox(width: 8),
+                _buildOptionChip(
+                  label: 'Duration',
+                  section: 'duration',
+                  icon: Icons.timer,
+                  context: context,
+                ),
+                const SizedBox(width: 8),
+                _buildOptionChip(
+                  label: 'Color & Icon',
+                  section: 'color',
+                  icon: Icons.palette,
+                  context: context,
+                ),
+                const SizedBox(width: 8),
+                _buildOptionChip(
+                  label: 'Subtasks',
+                  section: 'subtasks',
+                  icon: Icons.list,
+                  context: context,
+                ),
+                const SizedBox(width: 8),
+                _buildOptionChip(
+                  label: 'Notifications',
+                  section: 'notifications',
+                  icon: Icons.notifications,
+                  context: context,
+                ),
+                const SizedBox(width: 16),
+              ],
             ),
-            _buildOptionChip(
-              label: 'Duration',
-              section: 'duration',
-              icon: Icons.timer,
-              context: context,
-            ),
-            _buildOptionChip(
-              label: 'Color & Icon',
-              section: 'color',
-              icon: Icons.palette,
-              context: context,
-            ),
-            _buildOptionChip(
-              label: 'Subtasks',
-              section: 'subtasks',
-              icon: Icons.list,
-              context: context,
-            ),
-            _buildOptionChip(
-              label: 'Notifications',
-              section: 'notifications',
-              icon: Icons.notifications,
-              context: context,
-            ),
-          ],
+          ),
         ),
-      ],
+      ),
     );
   }
 }

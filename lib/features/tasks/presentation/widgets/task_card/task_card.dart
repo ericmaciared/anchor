@@ -1,6 +1,8 @@
 import 'package:anchor/core/mixins/safe_animation_mixin.dart';
 import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
+import 'package:anchor/core/widgets/adaptive_button_widget.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
@@ -148,40 +150,39 @@ class _TaskCardState extends State<TaskCard> with TickerProviderStateMixin, Safe
         return AlertDialog(
           title: Text(
             'Undo Completion',
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: TextSizes.XL),
+            style: context.textStyles.titleMedium!.copyWith(fontSize: TextSizes.XL),
           ),
           content: Text(
             'Are you sure you want to undo this task completion?',
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: TextSizes.M),
+            style: context.textStyles.bodyMedium!.copyWith(fontSize: TextSizes.M),
           ),
           actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                HapticService.light(); // Cancel feedback
-                Navigator.of(dialogContext).pop();
-              },
-              child: Text(
-                'Cancel',
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontSize: TextSizes.M,
-                    ),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                HapticService.heavy(); // Confirmation feedback
-                Navigator.of(dialogContext).pop();
-                if (mounted) {
-                  widget.onToggleTaskCompletion();
-                }
-              },
-              child: Text(
-                'Undo',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(fontSize: TextSizes.M, color: Theme.of(context).colorScheme.error),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AdaptiveButtonWidget(
+                  onPressed: () {
+                    HapticService.light(); // Cancel feedback
+                    Navigator.of(dialogContext).pop();
+                  },
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Text('Cancel', style: context.textStyles.bodyMedium),
+                ),
+                AdaptiveButtonWidget(
+                  onPressed: () {
+                    HapticService.heavy(); // Confirmation feedback
+                    Navigator.of(dialogContext).pop();
+                    if (mounted) {
+                      widget.onToggleTaskCompletion();
+                    }
+                  },
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Text(
+                    'Undo',
+                    style: context.textStyles.bodyMedium!.copyWith(color: context.colors.error),
+                  ),
+                ),
+              ],
             ),
           ],
         );

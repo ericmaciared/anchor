@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
+import 'package:anchor/core/widgets/adaptive_button_widget.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
@@ -44,14 +46,15 @@ class TaskExpandedActions extends StatelessWidget {
                 'Task completed!',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+                  color: context.colors.onSurface.withAlpha(100),
                 ),
               ),
-              TextButton(
+              AdaptiveButtonWidget(
                 onPressed: () {
                   HapticService.medium(); // Undo button feedback
                   showUndoDialog();
                 },
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: const Text('Undo'),
               ),
             ],
@@ -68,7 +71,7 @@ class TaskExpandedActions extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               decoration: BoxDecoration(
                 color: task.color,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(24),
               ),
               child: Text(
                 'Hold to Complete',

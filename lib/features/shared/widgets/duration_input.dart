@@ -1,5 +1,8 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
+import 'package:anchor/core/widgets/adaptive_button_widget.dart';
+import 'package:anchor/core/widgets/regular_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -24,11 +27,11 @@ class DurationInput extends StatelessWidget {
       },
       child: Text(
         duration != null ? '${duration.toString()} mins' : 'Set duration',
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-              fontSize: TextSizes.XXL,
-              fontWeight: FontWeight.w700,
-            ),
+        style: context.textStyles.bodyMedium!.copyWith(
+          color: context.colors.primary,
+          fontSize: TextSizes.XXL,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
@@ -51,18 +54,21 @@ class DurationInput extends StatelessWidget {
                   spacing: 8.0,
                   runSpacing: 8.0,
                   children: predefinedDurations.map((d) {
-                    return ActionChip(
-                      label: Text('$d mins'),
+                    return RegularButtonWidget(
+                      width: 80,
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       onPressed: () {
                         HapticService.selection(); // Selection feedback
                         onDurationChanged(d);
                         Navigator.of(dialogContext).pop();
                       },
-                      backgroundColor: duration == d ? Theme.of(context).colorScheme.primary.withAlpha(20) : null,
+                      backgroundColor: duration == d ? context.colors.primary.withAlpha(80) : null,
+                      child: Text('$d mins'),
                     );
                   }).toList(),
                 ),
                 const SizedBox(height: 20),
+                // TODO: Redo without material feel
                 TextField(
                   controller: customDurationController,
                   decoration: const InputDecoration(
@@ -86,28 +92,35 @@ class DurationInput extends StatelessWidget {
             ),
           ),
           actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                HapticService.light(); // Cancel feedback
-                Navigator.of(dialogContext).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Set Custom'),
-              onPressed: () {
-                final int? customMin = int.tryParse(customDurationController.text);
-                if (customMin != null && customMin > 0) {
-                  HapticService.selection(); // Selection feedback
-                  onDurationChanged(customMin);
-                  Navigator.of(dialogContext).pop();
-                } else {
-                  HapticService.error(); // Error feedback
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Please enter a valid positive number for custom duration.')),
-                  );
-                }
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AdaptiveButtonWidget(
+                  onPressed: () {
+                    HapticService.light(); // Cancel feedback
+                    Navigator.of(dialogContext).pop();
+                  },
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: const Text('Cancel'),
+                ),
+                AdaptiveButtonWidget(
+                  onPressed: () {
+                    final int? customMin = int.tryParse(customDurationController.text);
+                    if (customMin != null && customMin > 0) {
+                      HapticService.selection(); // Selection feedback
+                      onDurationChanged(customMin);
+                      Navigator.of(dialogContext).pop();
+                    } else {
+                      HapticService.error(); // Error feedback
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Please enter a valid positive number for custom duration.')),
+                      );
+                    }
+                  },
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: const Text('Set Custom'),
+                ),
+              ],
             ),
           ],
         );

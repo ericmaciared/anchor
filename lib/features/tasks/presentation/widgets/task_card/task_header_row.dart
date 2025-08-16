@@ -1,4 +1,5 @@
 import 'package:anchor/core/theme/text_sizes.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
 
@@ -26,9 +27,7 @@ class TaskHeaderRow extends StatelessWidget {
       children: [
         Icon(
           task.icon,
-          color: task.isDone
-              ? Theme.of(context).colorScheme.onSurface.withAlpha(150)
-              : Theme.of(context).colorScheme.onSurface.withAlpha(150),
+          color: task.isDone ? context.colors.onSurface.withAlpha(150) : context.colors.onSurface.withAlpha(150),
           size: 24,
         ),
         const SizedBox(width: 12),
@@ -40,35 +39,23 @@ class TaskHeaderRow extends StatelessWidget {
                 task.title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: task.isDone
-                          ? Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withAlpha(150)
-                          : null,
-                      fontSize: TextSizes.M,
-                      decoration:
-                          task.isDone ? TextDecoration.lineThrough : null,
-                    ),
+                style: context.textStyles.titleMedium!.copyWith(
+                  color: task.isDone ? context.colors.onSurface.withAlpha(150) : null,
+                  fontSize: TextSizes.M,
+                  decoration: task.isDone ? TextDecoration.lineThrough : null,
+                ),
               ),
               if (subtitle.isNotEmpty)
                 Text(subtitle,
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        fontSize: TextSizes.S,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withAlpha(150))),
+                    style: context.textStyles.titleMedium!
+                        .copyWith(fontSize: TextSizes.S, color: context.colors.onSurface.withAlpha(150))),
             ],
           ),
         ),
         const SizedBox(width: 12),
         Icon(
           task.isDone ? Icons.check_circle : Icons.circle_outlined,
-          color: !task.isDone
-              ? task.color
-              : Theme.of(context).colorScheme.onSurface.withAlpha(150),
+          color: !task.isDone ? task.color : context.colors.onSurface.withAlpha(150),
         ),
       ],
     );

@@ -1,4 +1,5 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/color_picker.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/icon_picker.dart';
@@ -44,9 +45,7 @@ class TaskColorIconSection extends StatelessWidget {
           children: [
             Text(
               'Icon',
-              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
-                  ),
+              style: context.textStyles.titleMedium,
             ),
             const SizedBox(height: 8),
             GestureDetector(

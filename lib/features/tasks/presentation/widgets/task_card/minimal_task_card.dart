@@ -1,6 +1,7 @@
 // lib/features/tasks/presentation/widgets/task_card/minimal_task_card.dart
 
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +24,6 @@ class MinimalTaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: LayoutBuilder(
@@ -64,7 +63,7 @@ class MinimalTaskCard extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            color: task.isDone ? colorScheme.onSurface.withAlpha(100) : null,
+                            color: task.isDone ? context.colors.onSurface.withAlpha(100) : null,
                             fontSize: 14,
                             decoration: task.isDone ? TextDecoration.lineThrough : null,
                           ),
@@ -92,10 +91,10 @@ class MinimalTaskCard extends StatelessWidget {
                             },
                             child: Text(
                               subtask.title,
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    decoration: subtask.isDone ? TextDecoration.lineThrough : null,
-                                    color: subtask.isDone ? colorScheme.onSurface.withAlpha(100) : null,
-                                  ),
+                              style: context.textStyles.bodySmall?.copyWith(
+                                decoration: subtask.isDone ? TextDecoration.lineThrough : null,
+                                color: subtask.isDone ? context.colors.onSurface.withAlpha(100) : null,
+                              ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                             ),

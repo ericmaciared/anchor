@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
+import 'package:anchor/core/widgets/adaptive_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
@@ -46,7 +48,7 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
   void _openCustomColorPicker() {
     HapticService.medium(); // Medium feedback for opening custom picker
 
-    Color tempColor = _customColor ?? Theme.of(context).colorScheme.onSurface.withAlpha(100);
+    Color tempColor = _customColor ?? context.colors.onSurface.withAlpha(100);
 
     showDialog(
       context: context,
@@ -54,6 +56,7 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
         return AlertDialog(
           title: const Text('Select a Custom Color'),
           content: SingleChildScrollView(
+            padding: EdgeInsetsGeometry.symmetric(vertical: 16),
             child: ColorPicker(
               pickerColor: tempColor,
               onColorChanged: (color) {
@@ -61,25 +64,36 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
                 tempColor = color;
               },
               enableAlpha: false,
-              pickerAreaHeightPercent: 0.8,
+              labelTypes: [],
+              pickerAreaHeightPercent: 0.7,
+              displayThumbColor: true,
+              pickerAreaBorderRadius: BorderRadius.circular(8),
+              paletteType: PaletteType.hslWithHue,
             ),
           ),
           actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                HapticService.light(); // Cancel feedback
-                Navigator.of(context).pop();
-              },
-            ),
-            ElevatedButton(
-              child: const Text('Select'),
-              onPressed: () {
-                HapticService.medium(); // Selection confirmation feedback
-                setState(() => _customColor = tempColor);
-                widget.onColorSelected(tempColor);
-                Navigator.of(context).pop();
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AdaptiveButtonWidget(
+                  onPressed: () {
+                    HapticService.light(); // Cancel feedback
+                    Navigator.of(context).pop();
+                  },
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: const Text('Cancel'),
+                ),
+                AdaptiveButtonWidget(
+                  onPressed: () {
+                    HapticService.medium(); // Selection confirmation feedback
+                    setState(() => _customColor = tempColor);
+                    widget.onColorSelected(tempColor);
+                    Navigator.of(context).pop();
+                  },
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: const Text('Select'),
+                ),
+              ],
             ),
           ],
         );
@@ -126,10 +140,10 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.transparent,
-          border: Border.all(color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
+          border: Border.all(color: context.colors.onSurface.withAlpha(100)),
         ),
         child: Center(
-          child: Icon(Icons.add, size: 18, color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
+          child: Icon(Icons.add, size: 18, color: context.colors.onSurface.withAlpha(100)),
         ),
       ),
     );
@@ -142,14 +156,11 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
       children: [
         Text(
           'Task Color',
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium!
-              .copyWith(color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
+          style: context.textStyles.titleMedium,
         ),
         const SizedBox(height: 8),
         Card(
-          color: Theme.of(context).colorScheme.surfaceContainerHigh,
+          color: context.colors.surfaceContainerHigh,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(

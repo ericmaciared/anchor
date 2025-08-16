@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
+import 'package:anchor/core/widgets/adaptive_button_widget.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -69,11 +71,21 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Subtasks', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-            TextButton.icon(
+            Text(
+              'Subtasks',
+              style: context.textStyles.titleMedium,
+            ),
+            AdaptiveButtonWidget(
               onPressed: _addSubtask,
-              icon: const Icon(Icons.add),
-              label: const Text('Add'),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.add, size: 16),
+                  SizedBox(width: 4),
+                  Text('Add'),
+                ],
+              ),
             ),
           ],
         ),

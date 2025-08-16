@@ -159,12 +159,6 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
 
                     const SizedBox(height: 24),
 
-                    // Options chips
-                    TaskOptionsChips(
-                      expandedSections: _expandedSections,
-                      onToggleSection: _toggleSection,
-                    ),
-
                     // Expandable sections
                     ExpandableSection(
                       isExpanded: _expandedSections['color']!,
@@ -200,7 +194,13 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                 ),
               ),
 
-              // Footer
+              // Options chips
+              TaskOptionsChips(
+                expandedSections: _expandedSections,
+                onToggleSection: _toggleSection,
+              ),
+              const SizedBox(height: 16),
+              const Divider(), // Footer
               TaskModalFooter(
                 task: _task,
                 isEdit: isEdit,

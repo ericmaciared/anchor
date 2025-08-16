@@ -1,4 +1,5 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class SubtaskList extends StatelessWidget {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+            color: context.colors.onSurface.withAlpha(100),
           ),
         ),
         const SizedBox(height: 8),
@@ -48,7 +49,7 @@ class SubtaskList extends StatelessWidget {
                     Icon(
                       subtask.isDone ? Icons.check_circle : Icons.radio_button_unchecked,
                       size: 18,
-                      color: subtask.isDone ? Theme.of(context).colorScheme.onSurface.withAlpha(100) : baseColor,
+                      color: subtask.isDone ? context.colors.onSurface.withAlpha(100) : baseColor,
                     ),
                     const SizedBox(width: 8),
                     Expanded(
@@ -56,7 +57,7 @@ class SubtaskList extends StatelessWidget {
                         subtask.title,
                         style: TextStyle(
                           fontSize: 14,
-                          color: subtask.isDone ? Theme.of(context).colorScheme.onSurface.withAlpha(100) : null,
+                          color: subtask.isDone ? context.colors.onSurface.withAlpha(100) : null,
                           decoration: subtask.isDone ? TextDecoration.lineThrough : null,
                         ),
                       ),

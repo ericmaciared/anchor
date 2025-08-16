@@ -1,3 +1,4 @@
+import 'package:anchor/core/widgets/adaptive_button_widget.dart';
 import 'package:anchor/features/shared/notifications/notification_id_generator.dart';
 import 'package:anchor/features/tasks/domain/entities/notification_model.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +17,7 @@ class NotificationConfigurator extends StatefulWidget {
   });
 
   @override
-  State<NotificationConfigurator> createState() =>
-      _NotificationConfiguratorState();
+  State<NotificationConfigurator> createState() => _NotificationConfiguratorState();
 }
 
 class _NotificationConfiguratorState extends State<NotificationConfigurator> {
@@ -51,8 +51,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
   }
 
   void _removeNotification(NotificationModel entry) {
-    final updatedList =
-        widget.notifications.where((n) => n.id != entry.id).toList();
+    final updatedList = widget.notifications.where((n) => n.id != entry.id).toList();
     widget.onChanged(updatedList);
   }
 
@@ -72,6 +71,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    // TODO: Adjust text inputs and dropdowns to match the feel
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -117,7 +117,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
           },
         ),
         if (_selectedValue == -1) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           Row(
             children: [
               Expanded(
@@ -131,13 +131,15 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
                 ),
               ),
               const SizedBox(width: 12),
-              ElevatedButton(
+              AdaptiveButtonWidget(
+                // TODO: This has no feedback
                 onPressed: () {
                   final val = int.tryParse(_customController.text);
                   if (val != null && val >= 0) {
                     _addNotification(val);
                   }
                 },
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: const Text('Add'),
               ),
             ],

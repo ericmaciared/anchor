@@ -1,4 +1,5 @@
 import 'package:anchor/core/theme/text_sizes.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/habits/domain/entities/habit_model.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +19,6 @@ class HabitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-
     // Determine if the habit is completed today for text styling
     final isCompletedToday = habit.isCompletedToday();
 
@@ -59,12 +57,12 @@ class HabitCard extends StatelessWidget {
                       children: [
                         Text(
                           habit.name,
-                          style: textTheme.bodyMedium!.copyWith(
+                          style: context.textStyles.bodyMedium!.copyWith(
                             fontSize: TextSizes.M,
                             decoration: isCompletedToday ? TextDecoration.lineThrough : TextDecoration.none,
                             color: isCompletedToday
-                                ? textTheme.titleMedium!.color?.withAlpha(150)
-                                : textTheme.titleMedium!.color,
+                                ? context.textStyles.titleMedium!.color?.withAlpha(150)
+                                : context.textStyles.titleMedium!.color,
                           ),
                         ),
                       ],
@@ -78,9 +76,7 @@ class HabitCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.local_fire_department,
-                        color: isCompletedToday
-                            ? Theme.of(context).colorScheme.secondary
-                            : Theme.of(context).colorScheme.onSurface.withAlpha(100),
+                        color: isCompletedToday ? context.colors.secondary : context.colors.onSurface.withAlpha(100),
                         size: 20,
                       ),
                       const SizedBox(
@@ -88,8 +84,8 @@ class HabitCard extends StatelessWidget {
                       ),
                       Text(
                         '${habit.currentStreak}',
-                        style: textTheme.titleMedium?.copyWith(
-                          color: colorScheme.primary,
+                        style: context.textStyles.titleMedium?.copyWith(
+                          color: context.colors.primary,
                           fontWeight: FontWeight.bold,
                           fontSize: TextSizes.M,
                         ),
