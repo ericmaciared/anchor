@@ -1,8 +1,8 @@
 // lib/features/shared/main/floating_navbar.dart
 
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/widgets/adaptive_card_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 
 class FloatingNavBar extends StatelessWidget {
   final int currentIndex;
@@ -18,46 +18,40 @@ class FloatingNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 64,
-      child: LiquidGlass(
-        glassContainsChild: false,
-        settings: LiquidGlassSettings(
-          ambientStrength: 0.5,
-          blur: 3,
-        ),
-        shape: LiquidRoundedSuperellipse(borderRadius: Radius.circular(56)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-          child: Row(
-            spacing: 8,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _IconNavItem(
-                icon: Icons.check_circle_outline,
-                isActive: currentIndex == 0,
-                onTap: () {
-                  HapticService.navigation(); // Navigation feedback
-                  onTap(0);
-                },
-              ),
-              _IconNavItem(
-                icon: Icons.anchor,
-                isActive: currentIndex == 1,
-                onTap: () {
-                  HapticService.navigation(); // Navigation feedback
-                  onTap(1);
-                },
-              ),
-              _IconNavItem(
-                icon: Icons.account_circle_outlined,
-                isActive: currentIndex == 2,
-                onTap: () {
-                  HapticService.navigation(); // Navigation feedback
-                  onTap(2);
-                },
-              ),
-            ],
-          ),
+      child: AdaptiveCardWidget(
+        effectIntensity: 2,
+        borderRadius: 32,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: Row(
+          spacing: 8,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _IconNavItem(
+              icon: Icons.check_circle_outline,
+              isActive: currentIndex == 0,
+              onTap: () {
+                HapticService.navigation(); // Navigation feedback
+                onTap(0);
+              },
+            ),
+            _IconNavItem(
+              icon: Icons.anchor,
+              isActive: currentIndex == 1,
+              onTap: () {
+                HapticService.navigation(); // Navigation feedback
+                onTap(1);
+              },
+            ),
+            _IconNavItem(
+              icon: Icons.account_circle_outlined,
+              isActive: currentIndex == 2,
+              onTap: () {
+                HapticService.navigation(); // Navigation feedback
+                onTap(2);
+              },
+            ),
+          ],
         ),
       ),
     );

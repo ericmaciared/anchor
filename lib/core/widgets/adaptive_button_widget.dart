@@ -1,12 +1,14 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/widgets/animated_fade_in_widget.dart';
 import 'package:anchor/core/widgets/regular_button_widget.dart';
+import 'package:anchor/features/shared/settings/settings_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 
 import 'liquid_glass_button_widget.dart';
 
-class AdaptiveButtonWidget extends StatelessWidget {
+class AdaptiveButtonWidget extends ConsumerWidget {
   final Widget child;
   final VoidCallback? onPressed;
   final double? width;
@@ -40,8 +42,6 @@ class AdaptiveButtonWidget extends StatelessWidget {
     this.enableHaptics = true,
   });
 
-  bool get _useLiquidGlass => true;
-
   void _handlePress() {
     if (onPressed != null && enabled) {
       if (enableHaptics) {
@@ -52,8 +52,17 @@ class AdaptiveButtonWidget extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (_useLiquidGlass) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settingsAsyncValue = ref.watch(settingsProvider);
+
+    // Default to liquid glass if settings are loading or failed to load
+    bool useLiquidGlass = true;
+
+    settingsAsyncValue.whenData((settings) {
+      useLiquidGlass = settings.liquidGlassEnabled;
+    });
+
+    if (useLiquidGlass) {
       return LiquidGlassButtonWidget(
         onPressed: _handlePress,
         width: width,

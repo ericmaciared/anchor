@@ -329,8 +329,8 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
     final newState = currentState.copyWith(liquidGlassEnabled: enabled);
     await _updateStateAndSave(
       newState,
-      () => _safeSetBool(SettingsKeys.visualEffectsEnabled, enabled),
-      'visual effects enabled',
+      () => _safeSetBool(SettingsKeys.liquidGlassEnabled, enabled),
+      'liquid glass enabled',
     );
   }
 
