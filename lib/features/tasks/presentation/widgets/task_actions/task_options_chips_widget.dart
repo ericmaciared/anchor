@@ -41,62 +41,52 @@ class TaskOptionsChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        border: Border(
-          top: BorderSide(
-            color: Theme.of(context).colorScheme.outline.withAlpha(50),
-          ),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16.0),
-        child: SizedBox(
-          height: 48, // Fixed height for the scrollable row
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: Row(
-              children: [
-                const SizedBox(width: 16),
-                _buildOptionChip(
-                  label: 'Time',
-                  section: 'time',
-                  icon: Icons.access_time,
-                  context: context,
-                ),
-                const SizedBox(width: 8),
-                _buildOptionChip(
-                  label: 'Duration',
-                  section: 'duration',
-                  icon: Icons.timer,
-                  context: context,
-                ),
-                const SizedBox(width: 8),
-                _buildOptionChip(
-                  label: 'Color & Icon',
-                  section: 'color',
-                  icon: Icons.palette,
-                  context: context,
-                ),
-                const SizedBox(width: 8),
-                _buildOptionChip(
-                  label: 'Subtasks',
-                  section: 'subtasks',
-                  icon: Icons.list,
-                  context: context,
-                ),
-                const SizedBox(width: 8),
-                _buildOptionChip(
-                  label: 'Notifications',
-                  section: 'notifications',
-                  icon: Icons.notifications,
-                  context: context,
-                ),
-                const SizedBox(width: 16),
-              ],
-            ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: SizedBox(
+        height: 48, // Fixed height for the scrollable row
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Row(
+            children: [
+              const SizedBox(width: 16),
+              _buildOptionChip(
+                label: 'Time',
+                section: 'time',
+                icon: Icons.access_time,
+                context: context,
+              ),
+              const SizedBox(width: 8),
+              _buildOptionChip(
+                label: 'Duration',
+                section: 'duration',
+                icon: Icons.timer,
+                context: context,
+              ),
+              const SizedBox(width: 8),
+              _buildOptionChip(
+                label: 'Color & Icon',
+                section: 'color',
+                icon: Icons.palette,
+                context: context,
+              ),
+              const SizedBox(width: 8),
+              _buildOptionChip(
+                label: 'Subtasks',
+                section: 'subtasks',
+                icon: Icons.list,
+                context: context,
+              ),
+              const SizedBox(width: 8),
+              _buildOptionChip(
+                label: 'Notifications',
+                section: 'notifications',
+                icon: Icons.notifications,
+                context: context,
+              ),
+              const SizedBox(width: 16),
+            ],
           ),
         ),
       ),

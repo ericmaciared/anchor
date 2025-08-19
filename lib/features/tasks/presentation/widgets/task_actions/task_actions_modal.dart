@@ -221,7 +221,6 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                 onToggleSection: _toggleSection,
               ),
               const SizedBox(height: 16),
-              const Divider(),
 
               // Footer
               TaskModalFooter(
