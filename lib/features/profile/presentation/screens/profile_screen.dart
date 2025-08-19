@@ -11,6 +11,7 @@ import 'package:anchor/features/shared/settings/settings_provider.dart';
 import 'package:anchor/features/welcome/policy_markdown_sheet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -43,6 +44,10 @@ class ProfileScreen extends ConsumerWidget {
                 onSurfaceColor: colorScheme.onSurface,
               ),
               const SizedBox(height: 32),
+
+              // Settings Section
+              _buildSectionHeader(context, 'Settings'),
+              const SizedBox(height: 16),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -77,51 +82,168 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                 ],
               ),
+
               const SizedBox(height: 32),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Terms section
-                    TextButton(
-                      onPressed: () => _showTermsOfService(context),
-                      style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero),
-                      child: Text(
-                        'terms of service',
-                        style: context.textStyles.bodySmall?.copyWith(
-                          color: context.colors.onSurfaceVariant,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    TextButton(
-                      onPressed: () => _showPrivacyPolicy(context),
-                      style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero),
-                      child: Text(
-                        'privacy policy',
-                        style: context.textStyles.bodySmall?.copyWith(
-                          color: context.colors.onSurfaceVariant,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+
+              // Feedback Section
+              _buildSectionHeader(context, 'Feedback & Support'),
+              const SizedBox(height: 16),
+              _buildFeedbackSection(context),
+
+              const SizedBox(height: 32),
+
+              // Legal Section
+              _buildSectionHeader(context, 'Legal'),
+              const SizedBox(height: 16),
+              _buildLegalSection(context),
+
+              const SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
                   'App Version 1.0.0',
+                  textAlign: TextAlign.center,
                   style: context.textStyles.bodyMedium?.copyWith(
                     color: context.colors.onSurfaceVariant,
                   ),
                 ),
               ),
+              const SizedBox(height: 32),
             ],
           ),
           appBar: _buildAppBar(context, profileName),
         );
       },
+    );
+  }
+
+  Widget _buildSectionHeader(BuildContext context, String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Text(
+        title,
+        style: context.textStyles.titleMedium?.copyWith(
+          fontSize: TextSizes.L,
+          fontWeight: FontWeight.w600,
+          color: context.colors.primary,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFeedbackSection(BuildContext context) {
+    return Column(
+      children: [
+        ListTile(
+          leading: Icon(Icons.feedback_outlined, color: context.colors.primary),
+          title: const Text('Send Feedback', style: TextStyle(fontSize: 14)),
+          subtitle: const Text('Help us improve Anchor with your suggestions', style: TextStyle(fontSize: 12)),
+          trailing: Icon(Icons.open_in_new, size: 16, color: context.colors.onSurfaceVariant),
+          onTap: () => _launchFeedbackBoard(context),
+        ),
+        const Divider(indent: 16, endIndent: 16),
+        ListTile(
+          leading: Icon(Icons.bug_report_outlined, color: context.colors.primary),
+          title: const Text('Report a Bug', style: TextStyle(fontSize: 14)),
+          subtitle: const Text('Found an issue? Let us know so we can fix it', style: TextStyle(fontSize: 12)),
+          trailing: Icon(Icons.open_in_new, size: 16, color: context.colors.onSurfaceVariant),
+          onTap: () => _launchFeedbackBoard(context),
+        ),
+        const Divider(indent: 16, endIndent: 16),
+        ListTile(
+          leading: Icon(Icons.lightbulb_outline, color: context.colors.primary),
+          title: const Text('Feature Request', style: TextStyle(fontSize: 14)),
+          subtitle: const Text('Share your ideas for new features', style: TextStyle(fontSize: 12)),
+          trailing: Icon(Icons.open_in_new, size: 16, color: context.colors.onSurfaceVariant),
+          onTap: () => _launchFeedbackBoard(context),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLegalSection(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        TextButton(
+          onPressed: () => _showTermsOfService(context),
+          style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero),
+          child: Text(
+            'Terms of Service',
+            style: context.textStyles.bodySmall?.copyWith(
+              color: context.colors.onSurfaceVariant,
+            ),
+          ),
+        ),
+        Container(
+          width: 1,
+          height: 16,
+          color: context.colors.onSurfaceVariant.withAlpha(100),
+        ),
+        TextButton(
+          onPressed: () => _showPrivacyPolicy(context),
+          style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero),
+          child: Text(
+            'Privacy Policy',
+            style: context.textStyles.bodySmall?.copyWith(
+              color: context.colors.onSurfaceVariant,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _launchFeedbackBoard(BuildContext context) async {
+    const url = 'https://anchorapp.canny.io/';
+
+    try {
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(
+          Uri.parse(url),
+          mode: LaunchMode.externalApplication,
+        );
+      } else {
+        if (context.mounted) {
+          _showUrlErrorDialog(context, url);
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        _showUrlErrorDialog(context, url);
+      }
+    }
+  }
+
+  void _showUrlErrorDialog(BuildContext context, String url) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Unable to Open Link'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('We couldn\'t open the feedback board automatically.'),
+            const SizedBox(height: 12),
+            const Text('Please visit:'),
+            const SizedBox(height: 8),
+            SelectableText(
+              url,
+              style: TextStyle(
+                color: context.colors.primary,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
     );
   }
 
