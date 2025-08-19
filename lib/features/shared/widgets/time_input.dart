@@ -1,9 +1,8 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
-import 'package:anchor/core/widgets/adaptive_dialog_widget.dart';
-import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
-import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:flutter/material.dart';
+
+import 'minimal_time_picker_widget.dart';
 
 class TimeInput extends StatelessWidget {
   final TimeOfDay time;
@@ -34,51 +33,10 @@ class TimeInput extends StatelessWidget {
   }
 
   Future<void> _showTimePickerDialog(BuildContext context) async {
-    // Use a StatefulBuilder to manage the selected time state
-    TimeOfDay selectedTime = time; // Initialize with current time
-
-    final result = await DialogHelper.showCustom<TimeOfDay>(
+    final result = await showMinimalTimePicker(
       context: context,
-      title: 'Select Time',
-      content: StatefulBuilder(
-        builder: (context, setState) {
-          return SizedBox(
-            height: 350,
-            child: showPicker(
-              isInlinePicker: true,
-              value: Time(
-                hour: selectedTime.hour,
-                minute: selectedTime.minute,
-              ),
-              is24HrFormat: true,
-              sunrise: const TimeOfDay(hour: 6, minute: 0),
-              sunset: const TimeOfDay(hour: 18, minute: 0),
-              sunAsset: Image.asset('assets/images/sun.png'),
-              moonAsset: Image.asset('assets/images/moon.png'),
-              accentColor: Theme.of(context).colorScheme.primary,
-              backgroundColor: Colors.transparent,
-              hideButtons: true,
-              dialogInsetPadding: const EdgeInsets.all(0),
-              duskSpanInMinutes: 120,
-              onChange: (newTime) {
-                HapticService.selection(); // Selection feedback for time change
-                setState(() {
-                  selectedTime = newTime; // Update the local state
-                });
-              },
-            ),
-          );
-        },
-      ),
-      primaryActionText: 'Save',
-      secondaryActionText: 'Cancel',
-      onPrimaryAction: () {
-        Navigator.of(context).pop(selectedTime); // Return the selected time
-      },
-      onSecondaryAction: () {
-        HapticService.light(); // Cancel feedback
-        Navigator.of(context).pop(); // Return null
-      },
+      initialTime: time,
+      is24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
     );
 
     // Apply the result if user didn't cancel

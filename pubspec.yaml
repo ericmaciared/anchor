@@ -49,7 +49,6 @@ dependencies:
   table_calendar: ^3.2.0
   timezone: ^0.10.1
   uuid: ^4.0.0
-  day_night_time_picker: ^1.3.1
   liquid_glass_renderer: ^0.1.1-dev.10
   flutter_markdown: ^0.7.7+1
   url_launcher: ^6.3.2
@@ -90,10 +89,6 @@ flutter:
     - assets/quotes/quotes.csv
     - assets/icon/app_logo_white.png
     - assets/icon/app_logo_black.png
-    - assets/animations/welcome.riv
-    - assets/images/sun.png
-    - assets/images/moon.png
-    - assets/images/back.jpg
     - assets/policies/privacy_policy.md
     - assets/policies/terms_of_service.md
 
