@@ -21,6 +21,7 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final settingsAsyncValue = ref.watch(settingsProvider);
     final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return settingsAsyncValue.when(
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -107,14 +108,17 @@ class ProfileScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
-                  'App Version 1.0.0',
+                  'Anchor App Version 1.0.0',
                   textAlign: TextAlign.center,
                   style: context.textStyles.bodyMedium?.copyWith(
                     color: context.colors.onSurfaceVariant,
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 16),
+              if (isDarkMode) Image.asset('assets/icon/app_logo_white.png', width: 80, height: 80),
+              if (!isDarkMode) Image.asset('assets/icon/app_logo_black.png', width: 80, height: 80),
+              const SizedBox(height: 96),
             ],
           ),
           appBar: _buildAppBar(context, profileName),
