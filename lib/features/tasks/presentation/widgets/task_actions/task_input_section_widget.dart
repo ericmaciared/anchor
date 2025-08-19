@@ -26,6 +26,18 @@ class TaskInputSection extends StatelessWidget {
     onTaskChanged(updatedTask);
   }
 
+  TimeOfDay _getTimeOfDay() {
+    if (task.startTime != null) {
+      return TimeOfDay(
+        hour: task.startTime!.hour,
+        minute: task.startTime!.minute,
+      );
+    }
+    // Fallback to current time if no start time is set
+    final now = DateTime.now();
+    return TimeOfDay(hour: now.hour, minute: now.minute);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -65,23 +77,17 @@ class TaskInputSection extends StatelessWidget {
                   ),
             ),
             TimeInput(
-              time: task.startTime != null
-                  ? TimeOfDay(
-                      hour: task.startTime!.hour,
-                      minute: task.startTime!.minute,
-                    )
-                  : TimeOfDay.now(),
+              time: _getTimeOfDay(),
               onTimeChanged: (time) {
                 if (time != null) {
-                  _updateTask(task.copyWith(
-                    startTime: DateTime(
-                      taskDay.year,
-                      taskDay.month,
-                      taskDay.day,
-                      time.hour,
-                      time.minute,
-                    ),
-                  ));
+                  final newStartTime = DateTime(
+                    taskDay.year,
+                    taskDay.month,
+                    taskDay.day,
+                    time.hour,
+                    time.minute,
+                  );
+                  _updateTask(task.copyWith(startTime: newStartTime));
                 }
               },
             ),

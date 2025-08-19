@@ -1,4 +1,5 @@
 import 'package:anchor/core/theme/text_sizes.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/scroll_fade_overlay_widget.dart';
 import 'package:anchor/features/profile/presentation/widgets/daily_quotes_setting.dart';
 import 'package:anchor/features/profile/presentation/widgets/display_density_setting_tile.dart';
@@ -7,6 +8,7 @@ import 'package:anchor/features/profile/presentation/widgets/status_message_sett
 import 'package:anchor/features/profile/presentation/widgets/time_setting_tile.dart';
 import 'package:anchor/features/profile/presentation/widgets/visual_effects_setting_tile.dart';
 import 'package:anchor/features/shared/settings/settings_provider.dart';
+import 'package:anchor/features/welcome/policy_markdown_sheet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -75,11 +77,81 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 32),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Terms section
+                    TextButton(
+                      onPressed: () => _showTermsOfService(context),
+                      style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero),
+                      child: Text(
+                        'terms of service',
+                        style: context.textStyles.bodySmall?.copyWith(
+                          color: context.colors.onSurfaceVariant,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    TextButton(
+                      onPressed: () => _showPrivacyPolicy(context),
+                      style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero),
+                      child: Text(
+                        'privacy policy',
+                        style: context.textStyles.bodySmall?.copyWith(
+                          color: context.colors.onSurfaceVariant,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  'App Version 1.0.0',
+                  style: context.textStyles.bodyMedium?.copyWith(
+                    color: context.colors.onSurfaceVariant,
+                  ),
+                ),
+              ),
             ],
           ),
           appBar: _buildAppBar(context, profileName),
         );
       },
+    );
+  }
+
+  Future<void> _showTermsOfService(BuildContext context) async {
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => const TermsOfServiceModalWidget(
+        assetPath: 'assets/policies/terms_of_service.md',
+      ),
+    );
+  }
+
+  Future<void> _showPrivacyPolicy(BuildContext context) async {
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => const PrivacyPolicyModalWidget(
+        assetPath: 'assets/policies/privacy_policy.md',
+      ),
     );
   }
 

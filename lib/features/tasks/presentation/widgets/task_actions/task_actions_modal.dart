@@ -76,15 +76,36 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
     setState(() {
       _expandedSections[section] = !_expandedSections[section]!;
 
-      // Clear data when hiding sections
+      // Handle data initialization/clearing when toggling sections
       switch (section) {
         case 'time':
-          if (!_expandedSections[section]!) {
+          if (_expandedSections[section]!) {
+            // When enabling time section, set a default start time if none exists
+            if (_task.startTime == null) {
+              final now = DateTime.now();
+              final defaultTime = DateTime(
+                widget.taskDay.year,
+                widget.taskDay.month,
+                widget.taskDay.day,
+                now.hour,
+                now.minute,
+              );
+              _task = _task.copyWith(startTime: defaultTime);
+            }
+          } else {
+            // When disabling time section, clear the start time
             _task = _task.copyWith(startTime: null);
           }
           break;
+
         case 'duration':
-          if (!_expandedSections[section]!) {
+          if (_expandedSections[section]!) {
+            // When enabling duration section, set a default duration if none exists
+            if (_task.duration == null) {
+              _task = _task.copyWith(duration: const Duration(minutes: 30));
+            }
+          } else {
+            // When disabling duration section, clear the duration
             _task = _task.copyWith(duration: null);
           }
           break;
@@ -200,7 +221,9 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                 onToggleSection: _toggleSection,
               ),
               const SizedBox(height: 16),
-              const Divider(), // Footer
+              const Divider(),
+
+              // Footer
               TaskModalFooter(
                 task: _task,
                 isEdit: isEdit,
