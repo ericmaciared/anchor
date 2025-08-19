@@ -1,8 +1,9 @@
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/scroll_fade_overlay_widget.dart';
-import 'package:anchor/features/profile/presentation/widgets/daily_quotes_setting.dart';
+import 'package:anchor/features/profile/presentation/widgets/daily_quotes_setting_tile.dart';
 import 'package:anchor/features/profile/presentation/widgets/display_density_setting_tile.dart';
+import 'package:anchor/features/profile/presentation/widgets/liquid_glass_setting_tile.dart';
 import 'package:anchor/features/profile/presentation/widgets/profile_name_section.dart';
 import 'package:anchor/features/profile/presentation/widgets/status_message_setting_tile.dart';
 import 'package:anchor/features/profile/presentation/widgets/time_setting_tile.dart';
@@ -31,6 +32,7 @@ class ProfileScreen extends ConsumerWidget {
         final displayDensity = settings.displayDensity;
         final dailyQuotesEnabled = settings.dailyQuotesEnabled;
         final visualEffectsEnabled = settings.visualEffectsEnabled;
+        final liquidGlassEnabled = settings.liquidGlassEnabled;
         final statusMessageEnabled = settings.statusMessageEnabled;
 
         return ScrollFadeOverlayPresets.appBar(
@@ -75,6 +77,10 @@ class ProfileScreen extends ConsumerWidget {
                   const Divider(indent: 16, endIndent: 16),
                   VisualEffectsSettingTile(
                     isEnabled: visualEffectsEnabled,
+                  ),
+                  const Divider(indent: 16, endIndent: 16),
+                  LiquidGlassSettingTile(
+                    isEnabled: liquidGlassEnabled,
                   ),
                   const Divider(indent: 16, endIndent: 16),
                   StatusMessageSettingTile(
@@ -146,14 +152,6 @@ class ProfileScreen extends ConsumerWidget {
           leading: Icon(Icons.bug_report_outlined, color: context.colors.primary),
           title: const Text('Report a Bug', style: TextStyle(fontSize: 14)),
           subtitle: const Text('Found an issue? Let us know so we can fix it', style: TextStyle(fontSize: 12)),
-          trailing: Icon(Icons.open_in_new, size: 16, color: context.colors.onSurfaceVariant),
-          onTap: () => _launchFeedbackBoard(context),
-        ),
-        const Divider(indent: 16, endIndent: 16),
-        ListTile(
-          leading: Icon(Icons.lightbulb_outline, color: context.colors.primary),
-          title: const Text('Feature Request', style: TextStyle(fontSize: 14)),
-          subtitle: const Text('Share your ideas for new features', style: TextStyle(fontSize: 12)),
           trailing: Icon(Icons.open_in_new, size: 16, color: context.colors.onSurfaceVariant),
           onTap: () => _launchFeedbackBoard(context),
         ),

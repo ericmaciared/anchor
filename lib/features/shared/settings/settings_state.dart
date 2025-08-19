@@ -7,6 +7,7 @@ class SettingsState {
   final String displayDensity;
   final bool dailyQuotesEnabled;
   final bool visualEffectsEnabled;
+  final bool liquidGlassEnabled;
   final bool statusMessageEnabled;
 
   SettingsState({
@@ -16,6 +17,7 @@ class SettingsState {
     required this.displayDensity,
     required this.dailyQuotesEnabled,
     required this.visualEffectsEnabled,
+    required this.liquidGlassEnabled,
     required this.statusMessageEnabled,
   });
 
@@ -26,6 +28,7 @@ class SettingsState {
     String? displayDensity,
     bool? dailyQuotesEnabled,
     bool? visualEffectsEnabled,
+    bool? liquidGlassEnabled,
     bool? statusMessageEnabled,
   }) {
     return SettingsState(
@@ -35,6 +38,7 @@ class SettingsState {
       displayDensity: displayDensity ?? this.displayDensity,
       dailyQuotesEnabled: dailyQuotesEnabled ?? this.dailyQuotesEnabled,
       visualEffectsEnabled: visualEffectsEnabled ?? this.visualEffectsEnabled,
+      liquidGlassEnabled: liquidGlassEnabled ?? this.liquidGlassEnabled,
       statusMessageEnabled: statusMessageEnabled ?? this.statusMessageEnabled,
     );
   }

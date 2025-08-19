@@ -100,6 +100,9 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
       final visualEffectsEnabled =
           _prefs!.getBool(SettingsKeys.visualEffectsEnabled) ?? SettingsDefaults.visualEffectsEnabled;
 
+      final liquidGlassEnabled =
+          _prefs!.getBool(SettingsKeys.liquidGlassEnabled) ?? SettingsDefaults.liquidGlassEnabled;
+
       final statusMessageEnabled =
           _prefs!.getBool(SettingsKeys.statusMessageEnabled) ?? SettingsDefaults.statusMessageEnabled;
 
@@ -110,6 +113,7 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
         displayDensity: displayDensity,
         dailyQuotesEnabled: dailyQuotesEnabled,
         visualEffectsEnabled: visualEffectsEnabled,
+        liquidGlassEnabled: liquidGlassEnabled,
         statusMessageEnabled: statusMessageEnabled,
       );
     } catch (e) {
@@ -129,6 +133,7 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
       displayDensity: SettingsDefaults.displayDensity,
       dailyQuotesEnabled: SettingsDefaults.dailyQuotesEnabled,
       visualEffectsEnabled: SettingsDefaults.visualEffectsEnabled,
+      liquidGlassEnabled: SettingsDefaults.liquidGlassEnabled,
       statusMessageEnabled: SettingsDefaults.statusMessageEnabled,
     );
   }
@@ -310,6 +315,18 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
     if (currentState == null) return;
 
     final newState = currentState.copyWith(visualEffectsEnabled: enabled);
+    await _updateStateAndSave(
+      newState,
+      () => _safeSetBool(SettingsKeys.visualEffectsEnabled, enabled),
+      'visual effects enabled',
+    );
+  }
+
+  Future<void> updateLiquidGlassEnabled(bool enabled) async {
+    final currentState = state.valueOrNull;
+    if (currentState == null) return;
+
+    final newState = currentState.copyWith(liquidGlassEnabled: enabled);
     await _updateStateAndSave(
       newState,
       () => _safeSetBool(SettingsKeys.visualEffectsEnabled, enabled),
