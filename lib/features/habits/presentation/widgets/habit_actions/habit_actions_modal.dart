@@ -1,5 +1,6 @@
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
+import 'package:anchor/core/widgets/adaptive_dialog_widget.dart'; // Add this import
 import 'package:anchor/features/habits/domain/entities/habit_model.dart';
 import 'package:anchor/features/shared/widgets/text_input.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/footer_actions.dart';
@@ -52,51 +53,12 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
     }
   }
 
-  Future<bool> _showDeleteConfirmation(BuildContext context) async {
-    return await showDialog<bool>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text(
-              'Confirm Deletion',
-              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    fontSize: TextSizes.XL,
-                  ),
-            ),
-            content: Text(
-              'Are you sure you want to delete this habit?',
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: TextSizes.M,
-                  ),
-            ),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text(
-                  'Cancel',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontSize: TextSizes.M,
-                      ),
-                ),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: Text(
-                  'Delete',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontSize: TextSizes.M,
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                ),
-              ),
-            ],
-          ),
-        ) ??
-        false;
-  }
-
   Future<void> _handleDeleteWithConfirmation(BuildContext context) async {
-    final confirmed = await _showDeleteConfirmation(context);
+    final confirmed = await DialogHelper.showDeleteConfirmation(
+      context: context,
+      itemName: _habit.name.isNotEmpty ? _habit.name : 'this habit',
+    );
+
     if (confirmed) {
       _handleDelete();
     }

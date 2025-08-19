@@ -1,7 +1,7 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
-import 'package:anchor/core/widgets/adaptive_button_widget.dart';
+import 'package:anchor/core/widgets/adaptive_dialog_widget.dart'; // Add this import
 import 'package:anchor/core/widgets/regular_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,12 +41,12 @@ class DurationInput extends StatelessWidget {
       text: !predefinedDurations.contains(duration) && duration != null ? duration.toString() : '',
     );
 
-    return showDialog<void>(
+    await DialogHelper.showCustom(
       context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text('Select Duration'),
-          content: SingleChildScrollView(
+      title: 'Select Duration',
+      content: StatefulBuilder(
+        builder: (context, setState) {
+          return SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -60,7 +60,7 @@ class DurationInput extends StatelessWidget {
                       onPressed: () {
                         HapticService.selection(); // Selection feedback
                         onDurationChanged(d);
-                        Navigator.of(dialogContext).pop();
+                        Navigator.of(context).pop();
                       },
                       backgroundColor: duration == d ? context.colors.primary.withAlpha(80) : null,
                       child: Text('$d mins'),
@@ -68,62 +68,70 @@ class DurationInput extends StatelessWidget {
                   }).toList(),
                 ),
                 const SizedBox(height: 20),
-                // TODO: Redo without material feel
-                TextField(
-                  controller: customDurationController,
-                  decoration: const InputDecoration(
-                    labelText: 'Custom Duration (minutes)',
-                    border: OutlineInputBorder(),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: context.colors.surfaceContainerHigh,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: context.colors.outline.withAlpha(50),
+                    ),
                   ),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                  onSubmitted: (value) {
-                    final int? customMin = int.tryParse(value);
-                    if (customMin != null && customMin > 0) {
-                      HapticService.selection(); // Selection feedback
-                      onDurationChanged(customMin);
-                      Navigator.of(dialogContext).pop();
-                    } else {
-                      HapticService.error(); // Error feedback for invalid input
-                    }
-                  },
+                  child: TextField(
+                    controller: customDurationController,
+                    decoration: InputDecoration(
+                      labelText: 'Custom Duration (minutes)',
+                      labelStyle: TextStyle(
+                        color: context.colors.onSurface.withAlpha(150),
+                        fontSize: TextSizes.M,
+                      ),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                    style: TextStyle(
+                      color: context.colors.onSurface,
+                      fontSize: TextSizes.M,
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                    onSubmitted: (value) {
+                      final int? customMin = int.tryParse(value);
+                      if (customMin != null && customMin > 0) {
+                        HapticService.selection(); // Selection feedback
+                        onDurationChanged(customMin);
+                        Navigator.of(context).pop();
+                      } else {
+                        HapticService.error(); // Error feedback for invalid input
+                      }
+                    },
+                  ),
                 ),
               ],
             ),
-          ),
-          actions: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AdaptiveButtonWidget(
-                  onPressed: () {
-                    HapticService.light(); // Cancel feedback
-                    Navigator.of(dialogContext).pop();
-                  },
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: const Text('Cancel'),
-                ),
-                AdaptiveButtonWidget(
-                  onPressed: () {
-                    final int? customMin = int.tryParse(customDurationController.text);
-                    if (customMin != null && customMin > 0) {
-                      HapticService.selection(); // Selection feedback
-                      onDurationChanged(customMin);
-                      Navigator.of(dialogContext).pop();
-                    } else {
-                      HapticService.error(); // Error feedback
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please enter a valid positive number for custom duration.')),
-                      );
-                    }
-                  },
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: const Text('Set Custom'),
-                ),
-              ],
-            ),
-          ],
-        );
+          );
+        },
+      ),
+      primaryActionText: 'Set Custom',
+      secondaryActionText: 'Cancel',
+      onPrimaryAction: () {
+        final int? customMin = int.tryParse(customDurationController.text);
+        if (customMin != null && customMin > 0) {
+          HapticService.selection(); // Selection feedback
+          onDurationChanged(customMin);
+          Navigator.of(context).pop();
+        } else {
+          HapticService.error(); // Error feedback
+          // Show error using adaptive dialog
+          DialogHelper.showError(
+            context: context,
+            title: 'Invalid Duration',
+            message: 'Please enter a valid positive number for custom duration.',
+          );
+        }
+      },
+      onSecondaryAction: () {
+        HapticService.light(); // Cancel feedback
+        Navigator.of(context).pop();
       },
     );
   }

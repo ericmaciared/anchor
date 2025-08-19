@@ -1,6 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
-import 'package:anchor/core/widgets/adaptive_button_widget.dart';
+import 'package:anchor/core/widgets/adaptive_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
@@ -50,18 +50,20 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
 
     Color tempColor = _customColor ?? context.colors.onSurface.withAlpha(100);
 
-    showDialog(
+    DialogHelper.showCustom(
       context: context,
-      builder: (_) {
-        return AlertDialog(
-          title: const Text('Select a Custom Color'),
-          content: SingleChildScrollView(
-            padding: EdgeInsetsGeometry.symmetric(vertical: 16),
+      title: 'Select a Custom Color',
+      content: StatefulBuilder(
+        builder: (context, setState) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 16),
             child: ColorPicker(
               pickerColor: tempColor,
               onColorChanged: (color) {
                 HapticService.light(); // Light feedback for color changes
-                tempColor = color;
+                setState(() {
+                  tempColor = color;
+                });
               },
               enableAlpha: false,
               labelTypes: [],
@@ -70,33 +72,20 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
               pickerAreaBorderRadius: BorderRadius.circular(8),
               paletteType: PaletteType.hslWithHue,
             ),
-          ),
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AdaptiveButtonWidget(
-                  onPressed: () {
-                    HapticService.light(); // Cancel feedback
-                    Navigator.of(context).pop();
-                  },
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: const Text('Cancel'),
-                ),
-                AdaptiveButtonWidget(
-                  onPressed: () {
-                    HapticService.medium(); // Selection confirmation feedback
-                    setState(() => _customColor = tempColor);
-                    widget.onColorSelected(tempColor);
-                    Navigator.of(context).pop();
-                  },
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: const Text('Select'),
-                ),
-              ],
-            ),
-          ],
-        );
+          );
+        },
+      ),
+      primaryActionText: 'Select',
+      secondaryActionText: 'Cancel',
+      onPrimaryAction: () {
+        HapticService.medium(); // Selection confirmation feedback
+        setState(() => _customColor = tempColor);
+        widget.onColorSelected(tempColor);
+        Navigator.of(context).pop();
+      },
+      onSecondaryAction: () {
+        HapticService.light(); // Cancel feedback
+        Navigator.of(context).pop();
       },
     );
   }
