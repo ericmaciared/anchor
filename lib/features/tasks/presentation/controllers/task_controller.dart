@@ -1,5 +1,6 @@
-import 'package:anchor/core/theme/text_sizes.dart';
+// lib/features/tasks/presentation/controllers/task_controller.dart
 import 'package:anchor/core/utils/date_utils.dart';
+import 'package:anchor/core/widgets/adaptive_snackbar_widget.dart'; // Add this import
 import 'package:anchor/features/shared/confetti/confetti_provider.dart';
 import 'package:anchor/features/shared/settings/settings_provider.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
@@ -30,24 +31,18 @@ class TaskController {
       builder: (_) => TaskActionsModal(
         taskDay: task.day,
         initialTask: task,
-        onSubmit: (updatedTask) => taskNotifier.updateTask(updatedTask),
+        onSubmit: (updatedTask) {
+          taskNotifier.updateTask(updatedTask);
+          context.showSuccessSnackbar(
+            'Task "${updatedTask.title}" updated successfully',
+          );
+        },
         onDelete: (deletedTask) async {
           final deleted = await taskNotifier.deleteTask(deletedTask.id);
           if (deleted != null && context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  'Task "${deleted.title}" deleted',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: TextSizes.M),
-                ),
-                action: SnackBarAction(
-                  label: 'Undo',
-                  textColor: Theme.of(context).colorScheme.primary,
-                  onPressed: () {
-                    taskNotifier.undoDelete(deleted);
-                  },
-                ),
-              ),
+            context.showUndoSnackbar(
+              'Task "${deleted.title}" deleted',
+              () => taskNotifier.undoDelete(deleted),
             );
           }
         },
@@ -64,7 +59,9 @@ class TaskController {
       backgroundColor: Colors.transparent,
       builder: (_) => TaskActionsModal(
         taskDay: taskDay,
-        onSubmit: (task) => taskNotifier.createTask(task),
+        onSubmit: (task) {
+          taskNotifier.createTask(task);
+        },
       ),
     );
   }
@@ -73,7 +70,9 @@ class TaskController {
     final taskNotifier = ref.read(taskProvider.notifier);
     final wasDone = task.isDone;
     taskNotifier.toggleTaskCompletion(task.id);
+
     if (!wasDone) {
+      // Task was completed
       ref.read(settingsProvider).whenData((settings) {
         if (settings.visualEffectsEnabled) {
           final confettiController = ref.read(confettiProvider);
