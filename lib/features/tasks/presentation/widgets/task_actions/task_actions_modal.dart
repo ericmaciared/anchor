@@ -94,7 +94,7 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
             }
           } else {
             // When disabling time section, clear the start time
-            _task = _task.copyWith(startTime: null);
+            _task = _task.copyWith(clearStartTime: true, startTime: null);
           }
           break;
 
@@ -106,7 +106,7 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
             }
           } else {
             // When disabling duration section, clear the duration
-            _task = _task.copyWith(duration: null);
+            _task = _task.copyWith(clearDuration: true, duration: null);
           }
           break;
       }

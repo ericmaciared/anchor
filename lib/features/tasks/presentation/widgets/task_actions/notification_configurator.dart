@@ -270,6 +270,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(widget.taskStartTime?.toIso8601String());
     final hasNotifications = widget.notifications.isNotEmpty;
 
     return Column(
