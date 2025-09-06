@@ -1,18 +1,20 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
+import 'package:anchor/features/shared/widgets/text_input.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class SubtaskEditor extends StatefulWidget {
-  final String taskId; // Add taskId parameter
+  final String taskId;
   final List<SubtaskModel> subtasks;
   final ValueChanged<List<SubtaskModel>> onChanged;
 
   const SubtaskEditor({
     super.key,
-    required this.taskId, // Make taskId required
+    required this.taskId,
     required this.subtasks,
     required this.onChanged,
   });
@@ -23,11 +25,31 @@ class SubtaskEditor extends StatefulWidget {
 
 class _SubtaskEditorState extends State<SubtaskEditor> {
   late List<SubtaskModel> _localSubtasks;
+  final Map<String, FocusNode> _focusNodes = {};
 
   @override
   void initState() {
     super.initState();
     _localSubtasks = List.from(widget.subtasks);
+    _initializeFocusNodes();
+  }
+
+  @override
+  void dispose() {
+    for (final focusNode in _focusNodes.values) {
+      focusNode.dispose();
+    }
+    _focusNodes.clear();
+    super.dispose();
+  }
+
+  void _initializeFocusNodes() {
+    // Create focus nodes for existing subtasks using their IDs as keys
+    for (final subtask in _localSubtasks) {
+      if (!_focusNodes.containsKey(subtask.id)) {
+        _focusNodes[subtask.id] = FocusNode();
+      }
+    }
   }
 
   void _notifyChange() {
@@ -35,26 +57,40 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
   }
 
   void _addSubtask() {
-    HapticService.light(); // Light feedback for adding subtask
+    HapticService.light();
+
+    final newSubtask = SubtaskModel(
+      id: const Uuid().v4(),
+      taskId: widget.taskId,
+      title: '',
+      isDone: false,
+    );
 
     setState(() {
-      _localSubtasks.add(
-        SubtaskModel(
-          id: const Uuid().v4(),
-          taskId: widget.taskId, // Use the actual taskId
-          title: '',
-          isDone: false,
-        ),
-      );
+      _localSubtasks.add(newSubtask);
+
+      // Create focus node for the new subtask
+      _focusNodes[newSubtask.id] = FocusNode();
+
+      // Focus the new input after a brief delay
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _focusNodes[newSubtask.id]?.requestFocus();
+      });
     });
     _notifyChange();
   }
 
   void _removeSubtask(int index) {
-    HapticService.medium(); // Medium feedback for removing subtask
+    HapticService.medium();
+
+    final subtaskToRemove = _localSubtasks[index];
 
     setState(() {
       _localSubtasks.removeAt(index);
+
+      // Dispose and remove the focus node for the removed subtask
+      _focusNodes[subtaskToRemove.id]?.dispose();
+      _focusNodes.remove(subtaskToRemove.id);
     });
     _notifyChange();
   }
@@ -66,59 +102,175 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
     _notifyChange();
   }
 
+  void _moveToNextField(int currentIndex) {
+    if (currentIndex + 1 < _localSubtasks.length) {
+      final nextSubtask = _localSubtasks[currentIndex + 1];
+      _focusNodes[nextSubtask.id]?.requestFocus();
+    } else {
+      // If it's the last field, create a new subtask
+      _addSubtask();
+    }
+  }
+
+  Widget _buildSubtaskItem(int index, SubtaskModel subtask) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: context.colors.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: context.colors.outline.withAlpha(30),
+        ),
+      ),
+      child: Row(
+        children: [
+          // Drag handle
+          Container(
+            padding: const EdgeInsets.all(4),
+            child: Icon(
+              Icons.drag_handle,
+              size: 16,
+              color: context.colors.onSurface.withAlpha(100),
+            ),
+          ),
+
+          const SizedBox(width: 12),
+
+          // Text input
+          Expanded(
+            child: TextInput(
+              key: ValueKey(subtask.id), // Add a key to help Flutter track the widget
+              text: subtask.title,
+              label: 'Subtask ${index + 1}',
+              variant: TextInputVariant.secondary,
+              textAlign: TextAlign.left,
+              focusNode: _focusNodes[subtask.id],
+              textInputAction: TextInputAction.next,
+              onTextChanged: (value) => _updateTitle(index, value),
+              onEditingComplete: () => _moveToNextField(index),
+            ),
+          ),
+
+          const SizedBox(width: 12),
+
+          // Delete button
+          AdaptiveButtonWidget(
+            width: 32,
+            height: 32,
+            borderRadius: 16,
+            enableHaptics: false,
+            primaryColor: context.colors.error.withAlpha(20),
+            onPressed: () => _removeSubtask(index),
+            child: Icon(
+              Icons.close,
+              size: 16,
+              color: context.colors.error,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Header
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Icon(
+              Icons.list_outlined,
+              size: 20,
+              color: context.colors.primary,
+            ),
+            const SizedBox(width: 8),
             Text(
               'Subtasks',
-              style: context.textStyles.titleMedium,
+              style: context.textStyles.titleMedium?.copyWith(
+                fontSize: TextSizes.L,
+                fontWeight: FontWeight.w600,
+              ),
             ),
+            const Spacer(),
             AdaptiveButtonWidget(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              borderRadius: 12,
+              primaryColor: context.colors.primary.withAlpha(30),
+              enableHaptics: false,
               onPressed: _addSubtask,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.add, size: 16),
-                  SizedBox(width: 4),
-                  Text('Add'),
+                children: [
+                  Icon(
+                    Icons.add,
+                    size: 16,
+                    color: context.colors.primary,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Add',
+                    style: TextStyle(
+                      fontSize: TextSizes.S,
+                      fontWeight: FontWeight.w600,
+                      color: context.colors.primary,
+                    ),
+                  ),
                 ],
               ),
             ),
           ],
         ),
-        const SizedBox(height: 8),
-        ..._localSubtasks.asMap().entries.map((entry) {
-          final index = entry.key;
-          final subtask = entry.value;
 
-          final controller = TextEditingController(text: subtask.title);
-          controller.selection = TextSelection.collapsed(offset: controller.text.length);
+        const SizedBox(height: 16),
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
-            child: Row(
+        // Subtasks list
+        if (_localSubtasks.isEmpty)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: context.colors.surfaceContainerHigh.withAlpha(100),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: context.colors.outline.withAlpha(30),
+              ),
+            ),
+            child: Column(
               children: [
-                Expanded(
-                  child: TextField(
-                    controller: controller,
-                    decoration: const InputDecoration(hintText: 'Subtask title'),
-                    onChanged: (val) => _updateTitle(index, val),
+                Icon(
+                  Icons.checklist_outlined,
+                  size: 32,
+                  color: context.colors.onSurface.withAlpha(100),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'No subtasks yet',
+                  style: context.textStyles.bodyMedium?.copyWith(
+                    color: context.colors.onSurface.withAlpha(150),
+                    fontSize: TextSizes.M,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(width: 8),
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () => _removeSubtask(index),
+                const SizedBox(height: 4),
+                Text(
+                  'Break down this task into smaller steps',
+                  style: context.textStyles.bodySmall?.copyWith(
+                    color: context.colors.onSurface.withAlpha(100),
+                    fontSize: TextSizes.S,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),
-          );
-        }),
+          )
+        else
+          ...List.generate(
+            _localSubtasks.length,
+            (index) => _buildSubtaskItem(index, _localSubtasks[index]),
+          ),
       ],
     );
   }

@@ -1,4 +1,3 @@
-import 'package:anchor/core/widgets/adaptive_card_widget.dart';
 import 'package:flutter/material.dart';
 
 class TaskProgressBar extends StatelessWidget {
@@ -8,12 +7,11 @@ class TaskProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: 12,
-      child: AdaptiveCardWidget(
-        borderRadius: 6,
-        primaryColor: color,
-        child: Container(),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(6),
       ),
     );
   }
