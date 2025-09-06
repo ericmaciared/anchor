@@ -78,7 +78,7 @@ class MinimalTaskCard extends StatelessWidget {
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 64.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                       child: Column(
                         spacing: 16,
                         crossAxisAlignment: CrossAxisAlignment.start,

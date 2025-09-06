@@ -192,6 +192,7 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                     ExpandableSection(
                       isExpanded: _expandedSections['subtasks']!,
                       child: SubtaskEditor(
+                        taskId: _task.id, // Pass the task ID here
                         subtasks: _task.subtasks,
                         onChanged: (subtasks) {
                           _updateTask(_task.copyWith(subtasks: subtasks));

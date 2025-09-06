@@ -59,8 +59,7 @@ class TaskNotifier extends StateNotifier<List<TaskModel>> {
 
     // Schedule notifications
     for (final notification in task.notifications) {
-      await notificationService.scheduleNotification(
-          notification, 'Time to progress', task.title);
+      await notificationService.scheduleNotification(notification, 'Time to progress', task.title);
     }
 
     state = [...state, task];
@@ -80,9 +79,7 @@ class TaskNotifier extends StateNotifier<List<TaskModel>> {
     // Schedule new notifications
     for (final notification in updatedTask.notifications) {
       await notificationService.scheduleNotification(
-          notification,
-          'Time to progress',
-          '${updatedTask.title} (${updatedTask.duration} mins)');
+          notification, 'Time to progress', '${updatedTask.title} (${updatedTask.duration} mins)');
     }
 
     state = state.map((task) {
@@ -113,8 +110,7 @@ class TaskNotifier extends StateNotifier<List<TaskModel>> {
 
     // Reschedule notifications
     for (final notification in task.notifications) {
-      await notificationService.scheduleNotification(
-          notification, 'Time to progress', task.title);
+      await notificationService.scheduleNotification(notification, 'Time to progress', task.title);
     }
 
     state = [...state, task];

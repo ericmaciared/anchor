@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class SubtaskEditor extends StatefulWidget {
+  final String taskId; // Add taskId parameter
   final List<SubtaskModel> subtasks;
   final ValueChanged<List<SubtaskModel>> onChanged;
 
   const SubtaskEditor({
     super.key,
+    required this.taskId, // Make taskId required
     required this.subtasks,
     required this.onChanged,
   });
@@ -39,7 +41,7 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
       _localSubtasks.add(
         SubtaskModel(
           id: const Uuid().v4(),
-          taskId: '',
+          taskId: widget.taskId, // Use the actual taskId
           title: '',
           isDone: false,
         ),

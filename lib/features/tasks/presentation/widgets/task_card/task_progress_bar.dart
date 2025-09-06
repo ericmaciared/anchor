@@ -1,3 +1,4 @@
+import 'package:anchor/core/widgets/adaptive_card_widget.dart';
 import 'package:flutter/material.dart';
 
 class TaskProgressBar extends StatelessWidget {
@@ -7,13 +8,12 @@ class TaskProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 250),
-      curve: Curves.easeInOut,
+    return SizedBox(
       width: 12,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(18),
+      child: AdaptiveCardWidget(
+        borderRadius: 6,
+        primaryColor: color,
+        child: Container(),
       ),
     );
   }
