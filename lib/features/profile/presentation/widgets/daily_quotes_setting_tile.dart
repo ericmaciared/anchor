@@ -14,7 +14,7 @@ class DailyQuotesSettingTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SwitchListTile(
-      activeColor: Theme.of(context).colorScheme.primary,
+      activeThumbColor: Theme.of(context).colorScheme.primary,
       secondary: Icon(Icons.format_quote, color: Theme.of(context).colorScheme.primary),
       title: const Text('Show Daily Quotes', style: TextStyle(fontSize: TextSizes.M)),
       value: isEnabled,

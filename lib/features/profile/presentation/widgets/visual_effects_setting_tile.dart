@@ -13,7 +13,7 @@ class VisualEffectsSettingTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SwitchListTile(
-      activeColor: Theme.of(context).colorScheme.primary,
+      activeThumbColor: Theme.of(context).colorScheme.primary,
       secondary: Icon(Icons.star_half, color: Theme.of(context).colorScheme.primary),
       title: const Text('Enable Visual Effects', style: TextStyle(fontSize: 14)),
       value: isEnabled,

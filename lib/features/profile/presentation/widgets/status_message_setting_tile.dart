@@ -10,7 +10,7 @@ class StatusMessageSettingTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SwitchListTile(
-      activeColor: Theme.of(context).colorScheme.primary,
+      activeThumbColor: Theme.of(context).colorScheme.primary,
       secondary: Icon(Icons.message_outlined, color: Theme.of(context).colorScheme.primary),
       title: const Text('Show Status Message', style: TextStyle(fontSize: 14)),
       value: isEnabled,

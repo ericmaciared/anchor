@@ -14,7 +14,7 @@ class LiquidGlassSettingTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SwitchListTile(
-      activeColor: Theme.of(context).colorScheme.primary,
+      activeThumbColor: Theme.of(context).colorScheme.primary,
       secondary: Icon(Icons.opacity, color: Theme.of(context).colorScheme.primary),
       title: const Text('Use Liquid Glass (beta)', style: TextStyle(fontSize: TextSizes.M)),
       value: isEnabled,
