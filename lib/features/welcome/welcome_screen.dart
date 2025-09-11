@@ -5,6 +5,8 @@ import 'package:anchor/features/welcome/policy_markdown_sheet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'tutorial/tutorial_launcher.dart';
+
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
@@ -99,9 +101,9 @@ class WelcomeScreen extends StatelessWidget {
                             ],
                           ),
 
-                          // Login button
+                          // Login button - Updated to show tutorial after navigation
                           AdaptiveButtonWidget(
-                            onPressed: () => context.go('/tasks'),
+                            onPressed: () => _enterApp(context),
                             height: 56,
                             width: 56,
                             borderRadius: 28,
@@ -118,6 +120,22 @@ class WelcomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _enterApp(BuildContext context) async {
+    context.go('/tasks');
+
+    await Future.delayed(const Duration(milliseconds: 800));
+
+    if (context.mounted) {
+      await TutorialLauncher.showTutorial(
+        context: context,
+        isFromProfile: false,
+        onComplete: () async {
+          await TutorialLauncher.markTutorialAsSeen();
+        },
+      );
+    }
   }
 
   Future<void> _showTermsOfService(BuildContext context) async {

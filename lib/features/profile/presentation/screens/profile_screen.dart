@@ -10,6 +10,7 @@ import 'package:anchor/features/profile/presentation/widgets/time_setting_tile.d
 import 'package:anchor/features/profile/presentation/widgets/visual_effects_setting_tile.dart';
 import 'package:anchor/features/shared/settings/settings_provider.dart';
 import 'package:anchor/features/welcome/policy_markdown_sheet_widget.dart';
+import 'package:anchor/features/welcome/tutorial/tutorial_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -45,6 +46,10 @@ class ProfileScreen extends ConsumerWidget {
                 profileName: profileName,
                 onSurfaceColor: context.colors.onSurface,
               ),
+              const SizedBox(height: 32),
+
+              // Tutorial Section - Add this
+              const TutorialSection(),
               const SizedBox(height: 32),
 
               // Settings Section
