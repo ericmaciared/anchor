@@ -55,9 +55,9 @@ class TaskInputSection extends StatelessWidget {
         children: [
           Text(
             'Today, I will ',
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontSize: TextSizes.L,
-                ),
+            style: context.textStyles.bodyMedium!.copyWith(
+              fontSize: TextSizes.l,
+            ),
           ),
           SizedBox(
             width: task.title.isEmpty ? 140 : (task.title.length + 2) * 12,
@@ -72,9 +72,9 @@ class TaskInputSection extends StatelessWidget {
           if (showTimePicker) ...[
             Text(
               'at ',
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: TextSizes.L,
-                  ),
+              style: context.textStyles.bodyMedium!.copyWith(
+                fontSize: TextSizes.l,
+              ),
             ),
             TimeInput(
               time: _getTimeOfDay(),
@@ -95,9 +95,9 @@ class TaskInputSection extends StatelessWidget {
           if (showDurationSelector) ...[
             Text(
               'for ',
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: TextSizes.L,
-                  ),
+              style: context.textStyles.bodyMedium!.copyWith(
+                fontSize: TextSizes.l,
+              ),
             ),
             DurationInput(
               duration: task.duration?.inMinutes ?? 30,

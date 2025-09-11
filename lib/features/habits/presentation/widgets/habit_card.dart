@@ -58,7 +58,7 @@ class HabitCard extends StatelessWidget {
                         Text(
                           habit.name,
                           style: context.textStyles.bodyMedium!.copyWith(
-                            fontSize: TextSizes.M,
+                            fontSize: TextSizes.m,
                             decoration: isCompletedToday ? TextDecoration.lineThrough : TextDecoration.none,
                             color: isCompletedToday
                                 ? context.textStyles.titleMedium!.color?.withAlpha(150)
@@ -87,7 +87,7 @@ class HabitCard extends StatelessWidget {
                         style: context.textStyles.titleMedium?.copyWith(
                           color: context.colors.primary,
                           fontWeight: FontWeight.bold,
-                          fontSize: TextSizes.M,
+                          fontSize: TextSizes.m,
                         ),
                       ),
                     ],

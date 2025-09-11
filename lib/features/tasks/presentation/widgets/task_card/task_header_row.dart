@@ -41,14 +41,14 @@ class TaskHeaderRow extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: context.textStyles.titleMedium!.copyWith(
                   color: task.isDone ? context.colors.onSurface.withAlpha(150) : null,
-                  fontSize: TextSizes.M,
+                  fontSize: TextSizes.m,
                   decoration: task.isDone ? TextDecoration.lineThrough : null,
                 ),
               ),
               if (subtitle.isNotEmpty)
                 Text(subtitle,
                     style: context.textStyles.titleMedium!
-                        .copyWith(fontSize: TextSizes.S, color: context.colors.onSurface.withAlpha(150))),
+                        .copyWith(fontSize: TextSizes.s, color: context.colors.onSurface.withAlpha(150))),
             ],
           ),
         ),

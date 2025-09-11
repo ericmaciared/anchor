@@ -1,3 +1,4 @@
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_card_widget.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
@@ -37,22 +38,22 @@ class WeekCalendar extends StatelessWidget {
           onDaySelected: (selected, _) => onDaySelected(selected),
           daysOfWeekStyle: DaysOfWeekStyle(
             weekdayStyle: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
+              color: context.colors.onSurface,
             ),
             weekendStyle: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
+              color: context.colors.onSurface,
             ),
           ),
           calendarStyle: CalendarStyle(
             todayDecoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(150),
+              color: context.colors.surfaceContainerHighest.withAlpha(150),
               shape: BoxShape.circle,
             ),
             selectedDecoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withAlpha(150),
+              color: context.colors.primary.withAlpha(150),
               shape: BoxShape.circle,
             ),
-            selectedTextStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer),
+            selectedTextStyle: TextStyle(color: context.colors.onPrimaryContainer),
           ),
         ),
       ),

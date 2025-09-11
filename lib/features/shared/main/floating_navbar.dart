@@ -1,6 +1,7 @@
 // lib/features/shared/main/floating_navbar.dart
 
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_card_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -72,10 +73,9 @@ class _IconNavItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final duration = const Duration(milliseconds: 200);
-    final colorScheme = Theme.of(context).colorScheme;
-    final activeColor = colorScheme.onSurface;
-    final inactiveColor = colorScheme.onSurface.withAlpha(150);
-    final activeBackgroundColor = colorScheme.surfaceContainerHighest.withAlpha(100);
+    final activeColor = context.colors.onSurface;
+    final inactiveColor = context.colors.onSurface.withAlpha(150);
+    final activeBackgroundColor = context.colors.surfaceContainerHighest.withAlpha(100);
 
     return GestureDetector(
       onTap: onTap,

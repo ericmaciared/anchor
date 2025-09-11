@@ -1,5 +1,6 @@
 import 'package:anchor/core/mixins/safe_animation_mixin.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/habits/presentation/controllers/habit_controller.dart';
 import 'package:anchor/features/shared/settings/settings_provider.dart';
 import 'package:anchor/features/tasks/presentation/controllers/task_controller.dart';
@@ -75,18 +76,6 @@ class _GreetingCardState extends ConsumerState<GreetingCard> with TickerProvider
     return '$greeting-$userName-$completedTasks-$totalTasks-$completedHabits-$totalHabits-$displayDensity';
   }
 
-  double _getBaseFontSize(String displayDensity) {
-    return displayDensity == 'Compact' ? TextSizes.M : TextSizes.L;
-  }
-
-  double _getHighlightFontSize(String displayDensity) {
-    return displayDensity == 'Compact' ? TextSizes.L : TextSizes.XL;
-  }
-
-  double _getLineHeight(String displayDensity) {
-    return 1.5; // Consistent line height regardless of density
-  }
-
   EdgeInsets _getPadding(String displayDensity) {
     return displayDensity == 'Compact'
         ? const EdgeInsets.symmetric(horizontal: 0, vertical: 12)
@@ -122,24 +111,23 @@ class _GreetingCardState extends ConsumerState<GreetingCard> with TickerProvider
     final totalGoals = totalTasks + totalHabits;
     final completedGoals = completedTasks + completedHabits;
 
-    final colorScheme = Theme.of(context).colorScheme;
-    final lineHeight = _getLineHeight(displayDensity);
+    final lineHeight = 1.5;
 
-    final baseTextStyle = Theme.of(context).textTheme.bodyMedium!.copyWith(
-          color: colorScheme.onSurface,
-          fontWeight: FontWeight.w400,
-          fontSize: _getBaseFontSize(displayDensity),
-          height: lineHeight,
-        );
+    final baseTextStyle = context.textStyles.bodyMedium!.copyWith(
+      color: context.colors.onSurface,
+      fontWeight: FontWeight.w400,
+      fontSize: TextSizes.xl,
+      height: lineHeight,
+    );
 
     final highlightStyle = baseTextStyle.copyWith(
-      color: colorScheme.secondary,
+      color: context.colors.secondary,
       fontWeight: FontWeight.w600,
-      fontSize: _getHighlightFontSize(displayDensity),
+      fontSize: TextSizes.xl,
     );
 
     final successStyle = highlightStyle.copyWith(
-      color: colorScheme.tertiary,
+      color: context.colors.tertiary,
     );
 
     final hour = DateTime.now().hour;
@@ -147,7 +135,7 @@ class _GreetingCardState extends ConsumerState<GreetingCard> with TickerProvider
 
     final List<TextSpan> messageSpans = [
       TextSpan(text: '${_getGreeting()} ', style: baseTextStyle),
-      TextSpan(text: '$userName', style: highlightStyle),
+      TextSpan(text: userName, style: highlightStyle),
       TextSpan(text: ', ', style: baseTextStyle),
     ];
 

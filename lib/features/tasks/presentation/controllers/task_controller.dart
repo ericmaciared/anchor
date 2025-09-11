@@ -77,6 +77,9 @@ class TaskController {
         if (settings.visualEffectsEnabled) {
           final confettiController = ref.read(confettiProvider);
           confettiController.play();
+          context.showSuccessSnackbar(
+            'Task "${task.title}" completed',
+          );
         }
       });
     }

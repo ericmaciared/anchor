@@ -140,7 +140,8 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
           // Text input
           Expanded(
             child: TextInput(
-              key: ValueKey(subtask.id), // Add a key to help Flutter track the widget
+              key: ValueKey(subtask.id),
+              // Add a key to help Flutter track the widget
               text: subtask.title,
               label: 'Subtask ${index + 1}',
               variant: TextInputVariant.secondary,
@@ -190,7 +191,7 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
             Text(
               'Subtasks',
               style: context.textStyles.titleMedium?.copyWith(
-                fontSize: TextSizes.L,
+                fontSize: TextSizes.l,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -213,7 +214,7 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
                   Text(
                     'Add',
                     style: TextStyle(
-                      fontSize: TextSizes.S,
+                      fontSize: TextSizes.s,
                       fontWeight: FontWeight.w600,
                       color: context.colors.primary,
                     ),
@@ -250,7 +251,7 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
                   'No subtasks yet',
                   style: context.textStyles.bodyMedium?.copyWith(
                     color: context.colors.onSurface.withAlpha(150),
-                    fontSize: TextSizes.M,
+                    fontSize: TextSizes.m,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -259,7 +260,7 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
                   'Break down this task into smaller steps',
                   style: context.textStyles.bodySmall?.copyWith(
                     color: context.colors.onSurface.withAlpha(100),
-                    fontSize: TextSizes.S,
+                    fontSize: TextSizes.s,
                   ),
                   textAlign: TextAlign.center,
                 ),

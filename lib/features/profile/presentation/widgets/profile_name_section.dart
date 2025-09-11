@@ -109,7 +109,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
               Text(
                 'Welcome back',
                 style: context.textStyles.bodyMedium?.copyWith(
-                  fontSize: TextSizes.M,
+                  fontSize: TextSizes.m,
                   color: context.colors.onSurface.withAlpha(150),
                 ),
               ),
@@ -167,7 +167,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
               widget.profileName,
               style: context.textStyles.headlineMedium?.copyWith(
                 fontWeight: FontWeight.w700,
-                fontSize: TextSizes.XXL,
+                fontSize: TextSizes.xxl,
                 color: widget.onSurfaceColor,
                 height: 1.2,
               ),
@@ -178,7 +178,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
         Text(
           'Tap to edit your display name',
           style: context.textStyles.bodySmall?.copyWith(
-            fontSize: TextSizes.S,
+            fontSize: TextSizes.s,
             color: context.colors.onSurface.withAlpha(100),
           ),
         ),
@@ -222,7 +222,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
                       Text(
                         'Cancel',
                         style: TextStyle(
-                          fontSize: TextSizes.M,
+                          fontSize: TextSizes.m,
                           color: context.colors.onSurface.withAlpha(150),
                           fontWeight: FontWeight.w500,
                         ),
@@ -254,7 +254,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
                       Text(
                         'Save',
                         style: TextStyle(
-                          fontSize: TextSizes.M,
+                          fontSize: TextSizes.m,
                           color: _currentName.trim().isNotEmpty
                               ? context.colors.primary
                               : context.colors.onSurface.withAlpha(100),

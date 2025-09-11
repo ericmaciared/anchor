@@ -1,7 +1,9 @@
 // lib/features/tasks/presentation/widgets/task_card/minimal_task_card.dart
 
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
+import 'package:anchor/core/widgets/adaptive_card_widget.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
@@ -36,11 +38,9 @@ class MinimalTaskCard extends StatelessWidget {
                   MinimalTaskTimeColumn(startTime: task.startTime, duration: task.duration),
                   const SizedBox(width: 8),
                   // Main task card
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    clipBehavior: Clip.antiAlias,
+                  AdaptiveCardWidget(
+                    borderRadius: 12,
+                    padding: const EdgeInsets.all(12),
                     child: GestureDetector(
                       onTap: () {
                         // Add haptic feedback for task completion toggle
@@ -56,17 +56,14 @@ class MinimalTaskCard extends StatelessWidget {
                         onLongPress();
                       },
                       behavior: HitTestBehavior.opaque,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Text(
-                          task.title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: task.isDone ? context.colors.onSurface.withAlpha(100) : null,
-                            fontSize: 14,
-                            decoration: task.isDone ? TextDecoration.lineThrough : null,
-                          ),
+                      child: Text(
+                        task.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: task.isDone ? context.colors.onSurface.withAlpha(100) : null,
+                          fontSize: TextSizes.m,
+                          decoration: task.isDone ? TextDecoration.lineThrough : null,
                         ),
                       ),
                     ),

@@ -15,7 +15,7 @@ class HabitsScreenAppBar extends StatelessWidget implements PreferredSizeWidget 
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('habits', style: TextStyle(fontSize: TextSizes.XL)),
+            Text('habits', style: TextStyle(fontSize: TextSizes.xl)),
             AdaptiveButtonWidget(
               height: 36,
               width: 36,

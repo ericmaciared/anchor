@@ -1,4 +1,5 @@
 import 'package:anchor/core/theme/text_sizes.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/shared/quotes/presentation/providers/quotes_provider.dart';
 import 'package:anchor/features/shared/settings/settings_provider.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +13,7 @@ class DailyQuoteCard extends ConsumerWidget {
     final settingsAsyncValue = ref.watch(settingsProvider);
 
     return settingsAsyncValue.when(
-      loading: () => const SizedBox(
-          height: 48,
-          child: Center(child: CircularProgressIndicator(strokeWidth: 2))),
+      loading: () => const SizedBox(height: 48, child: Center(child: CircularProgressIndicator(strokeWidth: 2))),
       error: (err, stack) => const SizedBox.shrink(),
       data: (settings) {
         if (!settings.dailyQuotesEnabled) {
@@ -22,7 +21,7 @@ class DailyQuoteCard extends ConsumerWidget {
             width: double.infinity,
             child: Icon(
               Icons.anchor,
-              color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+              color: context.colors.onSurface.withAlpha(100),
               size: 24,
             ),
           );
@@ -31,21 +30,15 @@ class DailyQuoteCard extends ConsumerWidget {
         final dailyQuoteGetter = ref.watch(dailyQuoteProvider);
 
         return dailyQuoteGetter.when(
-          loading: () => const SizedBox(
-              height: 48,
-              child: Center(child: CircularProgressIndicator(strokeWidth: 2))),
+          loading: () => const SizedBox(height: 48, child: Center(child: CircularProgressIndicator(strokeWidth: 2))),
           error: (err, stack) => const SizedBox.shrink(),
           data: (quote) => Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 6.0),
+            padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 6.0),
             // Added horizontal padding from EmptyTaskState
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.format_quote,
-                    size: 20,
-                    color:
-                        Theme.of(context).colorScheme.onSurface.withAlpha(100)),
+                Icon(Icons.format_quote, size: 20, color: context.colors.onSurface.withAlpha(100)),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Column(
@@ -53,26 +46,22 @@ class DailyQuoteCard extends ConsumerWidget {
                     children: [
                       Text(
                         quote.text,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontStyle: FontStyle.italic,
-                              fontSize: TextSizes.M,
-                              fontWeight: FontWeight.w400,
-                              height: 1.3,
-                            ),
+                        style: context.textStyles.bodySmall?.copyWith(
+                          fontStyle: FontStyle.italic,
+                          fontSize: TextSizes.m,
+                          fontWeight: FontWeight.w400,
+                          height: 1.3,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Align(
                         alignment: Alignment.centerRight,
                         child: Text(
                           'Today\'s quote by ${quote.author.isEmpty ? 'someone' : quote.author}.',
-                          style:
-                              Theme.of(context).textTheme.labelSmall?.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface
-                                        .withAlpha(150),
-                                    fontSize: TextSizes.S,
-                                  ),
+                          style: context.textStyles.labelSmall?.copyWith(
+                            color: context.colors.onSurface.withAlpha(150),
+                            fontSize: TextSizes.s,
+                          ),
                         ),
                       ),
                     ],

@@ -1,5 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 
 import 'minimal_time_picker_widget.dart';
@@ -23,11 +24,11 @@ class TimeInput extends StatelessWidget {
       },
       child: Text(
         '${time.hour}:${time.minute.toString().padLeft(2, '0')}',
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-              fontSize: TextSizes.XXL,
-              fontWeight: FontWeight.w700,
-            ),
+        style: context.textStyles.bodyMedium!.copyWith(
+          color: context.colors.primary,
+          fontSize: TextSizes.xxl,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }

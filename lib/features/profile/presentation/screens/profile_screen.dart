@@ -20,7 +20,6 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settingsAsyncValue = ref.watch(settingsProvider);
-    final colorScheme = Theme.of(context).colorScheme;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return settingsAsyncValue.when(
@@ -44,7 +43,7 @@ class ProfileScreen extends ConsumerWidget {
               const SizedBox(height: 120),
               ProfileNameSection(
                 profileName: profileName,
-                onSurfaceColor: colorScheme.onSurface,
+                onSurfaceColor: context.colors.onSurface,
               ),
               const SizedBox(height: 32),
 
@@ -133,7 +132,7 @@ class ProfileScreen extends ConsumerWidget {
       child: Text(
         title,
         style: context.textStyles.titleMedium?.copyWith(
-          fontSize: TextSizes.L,
+          fontSize: TextSizes.l,
           fontWeight: FontWeight.w600,
           color: context.colors.primary,
         ),
@@ -146,16 +145,16 @@ class ProfileScreen extends ConsumerWidget {
       children: [
         ListTile(
           leading: Icon(Icons.feedback_outlined, color: context.colors.primary),
-          title: const Text('Send Feedback', style: TextStyle(fontSize: 14)),
-          subtitle: const Text('Help us improve Anchor with your suggestions', style: TextStyle(fontSize: 12)),
+          title: const Text('Send Feedback', style: TextStyle(fontSize: TextSizes.m)),
+          subtitle: const Text('Help us improve Anchor with your suggestions', style: TextStyle(fontSize: TextSizes.s)),
           trailing: Icon(Icons.open_in_new, size: 16, color: context.colors.onSurfaceVariant),
           onTap: () => _launchFeedbackBoard(context),
         ),
         const Divider(indent: 16, endIndent: 16),
         ListTile(
           leading: Icon(Icons.bug_report_outlined, color: context.colors.primary),
-          title: const Text('Report a Bug', style: TextStyle(fontSize: 14)),
-          subtitle: const Text('Found an issue? Let us know so we can fix it', style: TextStyle(fontSize: 12)),
+          title: const Text('Report a Bug', style: TextStyle(fontSize: TextSizes.m)),
+          subtitle: const Text('Found an issue? Let us know so we can fix it', style: TextStyle(fontSize: TextSizes.s)),
           trailing: Icon(Icons.open_in_new, size: 16, color: context.colors.onSurfaceVariant),
           onTap: () => _launchFeedbackBoard(context),
         ),
@@ -254,7 +253,7 @@ class ProfileScreen extends ConsumerWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: context.colors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -269,7 +268,7 @@ class ProfileScreen extends ConsumerWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: context.colors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -286,7 +285,7 @@ class ProfileScreen extends ConsumerWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('profile & settings', style: TextStyle(fontSize: TextSizes.XL)),
+            Text('profile & settings', style: TextStyle(fontSize: TextSizes.xl)),
           ],
         ),
       ),

@@ -1,3 +1,5 @@
+import 'package:anchor/core/theme/text_sizes.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -14,7 +16,7 @@ class MinimalTaskTimeColumn extends StatelessWidget {
     return Text(
       DateFormat('H:mm').format(startTime!),
       textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
+      style: context.textStyles.bodySmall!.copyWith(fontSize: TextSizes.m),
     );
   }
 }

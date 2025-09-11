@@ -93,46 +93,46 @@ class _TextInputState extends State<TextInput> {
   TextStyle _getTextStyle(BuildContext context) {
     switch (widget.variant) {
       case TextInputVariant.primary:
-        return Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-              fontSize: widget.fontSize ?? TextSizes.XXL,
-              fontWeight: widget.fontWeight ?? FontWeight.w700,
-            );
+        return context.textStyles.bodyMedium!.copyWith(
+          color: context.colors.primary,
+          fontSize: widget.fontSize ?? TextSizes.xxl,
+          fontWeight: widget.fontWeight ?? FontWeight.w700,
+        );
       case TextInputVariant.secondary:
-        return Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: context.colors.onSurface,
-              fontSize: widget.fontSize ?? TextSizes.M,
-              fontWeight: widget.fontWeight ?? FontWeight.w500,
-            );
+        return context.textStyles.bodyMedium!.copyWith(
+          color: context.colors.onSurface,
+          fontSize: widget.fontSize ?? TextSizes.m,
+          fontWeight: widget.fontWeight ?? FontWeight.w500,
+        );
       case TextInputVariant.outlined:
-        return Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: context.colors.onSurface,
-              fontSize: widget.fontSize ?? TextSizes.M,
-              fontWeight: widget.fontWeight ?? FontWeight.w500,
-            );
+        return context.textStyles.bodyMedium!.copyWith(
+          color: context.colors.onSurface,
+          fontSize: widget.fontSize ?? TextSizes.m,
+          fontWeight: widget.fontWeight ?? FontWeight.w500,
+        );
     }
   }
 
   TextStyle _getHintStyle(BuildContext context) {
     switch (widget.variant) {
       case TextInputVariant.primary:
-        return Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: Theme.of(context).colorScheme.primary.withAlpha(150),
-              fontSize: widget.fontSize ?? TextSizes.XXL,
-              fontWeight: widget.fontWeight ?? FontWeight.w500,
-            );
+        return context.textStyles.bodyMedium!.copyWith(
+          color: context.colors.primary.withAlpha(150),
+          fontSize: widget.fontSize ?? TextSizes.xxl,
+          fontWeight: widget.fontWeight ?? FontWeight.w500,
+        );
       case TextInputVariant.secondary:
-        return Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: context.colors.onSurface.withAlpha(100),
-              fontSize: widget.fontSize ?? TextSizes.M,
-              fontWeight: widget.fontWeight ?? FontWeight.w400,
-            );
+        return context.textStyles.bodyMedium!.copyWith(
+          color: context.colors.onSurface.withAlpha(100),
+          fontSize: widget.fontSize ?? TextSizes.m,
+          fontWeight: widget.fontWeight ?? FontWeight.w400,
+        );
       case TextInputVariant.outlined:
-        return Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: context.colors.onSurface.withAlpha(120),
-              fontSize: widget.fontSize ?? TextSizes.M,
-              fontWeight: widget.fontWeight ?? FontWeight.w400,
-            );
+        return context.textStyles.bodyMedium!.copyWith(
+          color: context.colors.onSurface.withAlpha(120),
+          fontSize: widget.fontSize ?? TextSizes.m,
+          fontWeight: widget.fontWeight ?? FontWeight.w400,
+        );
     }
   }
 
@@ -145,18 +145,18 @@ class _TextInputState extends State<TextInput> {
           isDense: true,
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.onSurface.withAlpha(0),
+              color: context.colors.onSurface.withAlpha(0),
             ),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.primary,
+              color: context.colors.primary,
               width: 2.0,
             ),
           ),
           border: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.onSurface.withAlpha(60),
+              color: context.colors.onSurface.withAlpha(60),
             ),
           ),
           contentPadding: widget.contentPadding ?? EdgeInsets.zero,
@@ -214,7 +214,7 @@ class _TextInputState extends State<TextInput> {
       textAlign: widget.textAlign,
       style: _getTextStyle(context),
       decoration: _getDecoration(context),
-      cursorColor: Theme.of(context).colorScheme.primary,
+      cursorColor: context.colors.primary,
       autofocus: widget.autofocus,
       maxLines: widget.maxLines,
       textInputAction: widget.textInputAction,

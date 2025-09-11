@@ -48,7 +48,7 @@ class TaskModalHeader extends StatelessWidget {
                 child: Text(
                   isEdit ? 'Edit Task' : 'New Task',
                   style: context.textStyles.headlineMedium!.copyWith(
-                    fontSize: TextSizes.XXL,
+                    fontSize: TextSizes.xxl,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

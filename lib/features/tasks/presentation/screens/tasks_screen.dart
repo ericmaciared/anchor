@@ -1,4 +1,5 @@
 import 'package:anchor/core/utils/date_utils.dart';
+import 'package:anchor/core/widgets/adaptive_snackbar_widget.dart';
 import 'package:anchor/core/widgets/scroll_fade_overlay_widget.dart';
 import 'package:anchor/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:anchor/features/tasks/presentation/widgets/empty_task_state.dart';
@@ -19,6 +20,20 @@ class TasksScreen extends ConsumerStatefulWidget {
 class _TasksScreenState extends ConsumerState<TasksScreen> {
   DateTime _selectedDay = normalizeDate(DateTime.now());
   final CalendarFormat _calendarFormat = CalendarFormat.week;
+  final List<String> monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +69,11 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
       appBar: TasksScreenAppBar(
         onAddTask: () => controller.showCreateTaskModal(taskDay: _selectedDay),
         onTodayPressed: () => setState(() {
-          _selectedDay = normalizeDate(DateTime.now());
+          final now = DateTime.now();
+          _selectedDay = normalizeDate(now);
+          context.showInfoSnackbar(
+            'Today is the ${now.day} of ${monthNames[now.month - 1]}',
+          );
         }),
       ),
     );

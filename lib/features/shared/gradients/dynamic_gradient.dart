@@ -1,4 +1,5 @@
 import 'package:anchor/core/mixins/safe_animation_mixin.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 
 class DynamicGradient extends StatefulWidget {
@@ -155,7 +156,7 @@ class _DynamicGradientState extends State<DynamicGradient> with TickerProviderSt
           _colorAnimation.value,
         )!;
 
-        final surfaceColor = Theme.of(context).colorScheme.surface;
+        final surfaceColor = context.colors.surface;
         final subtleAccentColor = Color.lerp(
           surfaceColor,
           animatedAccentColor,

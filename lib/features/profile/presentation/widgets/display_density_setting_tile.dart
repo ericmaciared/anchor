@@ -1,5 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
 import 'package:anchor/features/shared/settings/settings_provider.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +30,8 @@ class DisplayDensitySettingTile extends ConsumerWidget {
     ];
 
     return ListTile(
-      leading: Icon(Icons.density_medium, color: Theme.of(context).colorScheme.primary),
-      title: const Text('Display Density', style: TextStyle(fontSize: 14)),
+      leading: Icon(Icons.density_medium, color: context.colors.primary),
+      title: const Text('Display Density', style: TextStyle(fontSize: TextSizes.m)),
       subtitle: Padding(
         padding: const EdgeInsets.only(top: 12.0),
         child: Row(
@@ -48,10 +49,10 @@ class DisplayDensitySettingTile extends ConsumerWidget {
                   borderRadius: 16,
                   enableHaptics: false,
                   // We'll handle haptics manually
-                  primaryColor: isSelected ? Theme.of(context).colorScheme.primary.withAlpha(30) : null,
+                  primaryColor: isSelected ? context.colors.primary.withAlpha(30) : null,
                   border: isSelected
                       ? Border.all(
-                          color: Theme.of(context).colorScheme.primary,
+                          color: context.colors.primary,
                           width: 1.5,
                         )
                       : null,
@@ -65,18 +66,14 @@ class DisplayDensitySettingTile extends ConsumerWidget {
                       Icon(
                         option.icon,
                         size: 20,
-                        color: isSelected
-                            ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.onSurface.withAlpha(150),
+                        color: isSelected ? context.colors.primary : context.colors.onSurface.withAlpha(150),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         option.label,
                         style: TextStyle(
-                          fontSize: TextSizes.S,
-                          color: isSelected
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(context).colorScheme.onSurface,
+                          fontSize: TextSizes.s,
+                          color: isSelected ? context.colors.primary : context.colors.onSurface,
                           fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                         ),
                       ),

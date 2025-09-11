@@ -1,3 +1,4 @@
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 
 class DurationSelector extends StatelessWidget {
@@ -12,8 +13,7 @@ class DurationSelector extends StatelessWidget {
 
   static const predefinedDurations = [15, 30, 60, 90, 120];
 
-  bool get _isCustom =>
-      duration != null && !predefinedDurations.contains(duration);
+  bool get _isCustom => duration != null && !predefinedDurations.contains(duration);
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +29,7 @@ class DurationSelector extends StatelessWidget {
       children: [
         Text(
           'How long?',
-          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
+          style: context.textStyles.titleMedium!.copyWith(color: context.colors.onSurface.withAlpha(100)),
         ),
         const SizedBox(height: 12),
         Wrap(

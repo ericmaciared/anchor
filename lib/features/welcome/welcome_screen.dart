@@ -32,7 +32,7 @@ class WelcomeScreen extends StatelessWidget {
                         children: [
                           Text(
                             'Become better, daily.',
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            style: context.textStyles.headlineSmall?.copyWith(
                               shadows: [
                                 Shadow(
                                   blurRadius: 4.0,
@@ -44,7 +44,7 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                           Text(
                             'anchor.',
-                            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                            style: context.textStyles.displayMedium?.copyWith(
                               shadows: [
                                 Shadow(
                                   blurRadius: 4.0,
@@ -125,7 +125,7 @@ class WelcomeScreen extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: context.colors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -140,7 +140,7 @@ class WelcomeScreen extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: context.colors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),

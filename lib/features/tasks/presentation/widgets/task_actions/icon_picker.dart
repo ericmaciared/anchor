@@ -1,4 +1,5 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 
 class IconPicker extends StatelessWidget {
@@ -94,7 +95,7 @@ class IconPicker extends StatelessWidget {
                       children: [
                         Text(
                           entry.key,
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: context.textStyles.titleMedium,
                         ),
                         const SizedBox(height: 8),
                         GridView.count(
@@ -114,16 +115,12 @@ class IconPicker extends StatelessWidget {
                               child: Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? Theme.of(context).colorScheme.primary.withAlpha(12)
-                                      : Colors.transparent,
+                                  color: isSelected ? context.colors.primary.withAlpha(12) : Colors.transparent,
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(
                                   icon,
-                                  color: isSelected
-                                      ? Theme.of(context).colorScheme.primary
-                                      : Theme.of(context).iconTheme.color,
+                                  color: isSelected ? context.colors.primary : Theme.of(context).iconTheme.color,
                                   size: 28,
                                 ),
                               ),

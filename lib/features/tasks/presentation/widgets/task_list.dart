@@ -1,10 +1,11 @@
+import 'package:anchor/core/utils/context_extensions.dart';
+import 'package:anchor/features/shared/settings/settings_provider.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
-import 'package:anchor/features/tasks/presentation/widgets/task_card/task_card.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_card/minimal_task_card.dart'; // Still need this import
+import 'package:anchor/features/tasks/presentation/widgets/task_card/task_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:anchor/features/shared/settings/settings_provider.dart';
 
 typedef TaskCallback = void Function(TaskModel task);
 
@@ -47,30 +48,25 @@ class TaskList extends ConsumerWidget {
       children: [
         if (label != null)
           Padding(
-            padding: const EdgeInsets.only(
-                top: 16, bottom: 8), // Restored original padding
+            padding: const EdgeInsets.only(top: 16, bottom: 8),
             child: Text(
               label!,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: context.textStyles.titleMedium,
             ),
           ),
         ...tasks.map(
           (task) => displayDensity == 'Compact'
               ? MinimalTaskCard(
-                  // <--- Render MinimalTaskCard for Compact
                   task: task,
                   onToggleTaskCompletion: () => onToggleTaskCompletion(task),
                   onLongPress: () => onLongPress(task),
-                  onToggleSubtaskCompletion: (subtask) =>
-                      onToggleSubtaskCompletion(subtask),
+                  onToggleSubtaskCompletion: (subtask) => onToggleSubtaskCompletion(subtask),
                 )
               : TaskCard(
-                  // <--- Render TaskCard for Normal/Spacious
                   task: task,
                   onToggleTaskCompletion: () => onToggleTaskCompletion(task),
                   onLongPress: () => onLongPress(task),
-                  onToggleSubtaskCompletion: (subtask) =>
-                      onToggleSubtaskCompletion(subtask),
+                  onToggleSubtaskCompletion: (subtask) => onToggleSubtaskCompletion(subtask),
                 ),
         ),
       ],

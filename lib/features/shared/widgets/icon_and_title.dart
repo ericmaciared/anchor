@@ -1,3 +1,4 @@
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/shared/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 
@@ -68,8 +69,7 @@ class _IconAndTitleState extends State<IconAndTitle> {
       children: [
         Text(
           'What?',
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withAlpha(100)),
+          style: context.textStyles.titleLarge!.copyWith(color: context.colors.onSurface.withAlpha(100)),
         ),
         const SizedBox(height: 12),
         Row(

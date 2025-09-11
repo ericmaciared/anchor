@@ -36,14 +36,13 @@ class TaskListSection extends StatelessWidget {
         if (selectedDay == normalizeDate(DateTime.now())) GreetingCard(),
         TaskList(
           tasks: unscheduledTasks,
-          label: 'Unscheduled Tasks',
           onToggleTaskCompletion: onToggleTaskCompletion,
           onToggleSubtaskCompletion: onToggleSubtaskCompletion,
           onLongPress: onLongPress,
         ),
         TaskList(
           tasks: scheduledTasks,
-          label: 'Scheduled Tasks',
+          label: 'Today\'s Schedule',
           onToggleTaskCompletion: onToggleTaskCompletion,
           onToggleSubtaskCompletion: onToggleSubtaskCompletion,
           onLongPress: onLongPress,

@@ -95,7 +95,7 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
           label,
           style: context.textStyles.bodySmall?.copyWith(
             color: context.colors.onSurface.withAlpha(150),
-            fontSize: TextSizes.S,
+            fontSize: TextSizes.s,
           ),
         ),
         const SizedBox(height: 8),
@@ -131,7 +131,7 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
                   child: AnimatedDefaultTextStyle(
                     duration: const Duration(milliseconds: 200),
                     style: context.textStyles.titleLarge!.copyWith(
-                      fontSize: isSelected ? TextSizes.XL : TextSizes.L,
+                      fontSize: isSelected ? TextSizes.xl : TextSizes.l,
                       fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                       color: isSelected ? context.colors.primary : context.colors.onSurface.withAlpha(120),
                     ),
@@ -161,7 +161,7 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
           'Period',
           style: context.textStyles.bodySmall?.copyWith(
             color: context.colors.onSurface.withAlpha(150),
-            fontSize: TextSizes.S,
+            fontSize: TextSizes.s,
           ),
         ),
         const SizedBox(height: 8),
@@ -207,7 +207,7 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
       child: Text(
         text,
         style: TextStyle(
-          fontSize: TextSizes.M,
+          fontSize: TextSizes.m,
           fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
           color: isSelected ? context.colors.primary : context.colors.onSurface.withAlpha(150),
         ),
@@ -232,7 +232,7 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
             child: Text(
               _selectedTime.format(context),
               style: context.textStyles.headlineMedium?.copyWith(
-                fontSize: TextSizes.XXXL,
+                fontSize: TextSizes.xxxl,
                 fontWeight: FontWeight.w700,
                 color: context.colors.primary,
               ),
@@ -261,7 +261,7 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
                   ':',
                   style: context.textStyles.headlineLarge?.copyWith(
                     color: context.colors.onSurface.withAlpha(150),
-                    fontSize: TextSizes.XXL,
+                    fontSize: TextSizes.xxl,
                   ),
                 ),
               ),
@@ -332,7 +332,7 @@ class TimePickerDialog extends StatelessWidget {
                   Text(
                     'Select Time',
                     style: context.textStyles.headlineMedium?.copyWith(
-                      fontSize: TextSizes.XL,
+                      fontSize: TextSizes.xl,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -376,7 +376,7 @@ class TimePickerDialog extends StatelessWidget {
                     child: Text(
                       'Cancel',
                       style: TextStyle(
-                        fontSize: TextSizes.M,
+                        fontSize: TextSizes.m,
                         color: context.colors.onSurface.withAlpha(150),
                       ),
                     ),
@@ -393,7 +393,7 @@ class TimePickerDialog extends StatelessWidget {
                     child: Text(
                       'Save',
                       style: TextStyle(
-                        fontSize: TextSizes.M,
+                        fontSize: TextSizes.m,
                         fontWeight: FontWeight.w600,
                         color: context.colors.primary,
                       ),

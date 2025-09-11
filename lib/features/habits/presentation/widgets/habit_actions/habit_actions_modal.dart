@@ -153,7 +153,7 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
                 child: Text(
                   isEdit ? 'Edit Habit' : 'New Habit',
                   style: context.textStyles.headlineMedium!.copyWith(
-                    fontSize: TextSizes.XXL,
+                    fontSize: TextSizes.xxl,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -181,9 +181,9 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
         children: [
           Text(
             'I will ',
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontSize: TextSizes.L,
-                ),
+            style: context.textStyles.bodyMedium!.copyWith(
+              fontSize: TextSizes.l,
+            ),
           ),
           SizedBox(
             width: _habit.name.isEmpty ? 140 : (_habit.name.length + 2) * 12,
@@ -197,9 +197,9 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
           ),
           Text(
             'everyday',
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontSize: TextSizes.L,
-                ),
+            style: context.textStyles.bodyMedium!.copyWith(
+              fontSize: TextSizes.l,
+            ),
           ),
         ],
       ),
@@ -213,7 +213,7 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
         color: Theme.of(context).scaffoldBackgroundColor,
         border: Border(
           top: BorderSide(
-            color: Theme.of(context).colorScheme.outline.withAlpha(50),
+            color: context.colors.outline.withAlpha(50),
           ),
         ),
       ),

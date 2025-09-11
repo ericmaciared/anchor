@@ -19,7 +19,7 @@ class EmptyHabitState extends StatelessWidget {
         ),
         Text('build better habits.',
             style: context.textStyles.titleMedium!.copyWith(
-              fontSize: TextSizes.XL,
+              fontSize: TextSizes.xl,
             )),
         const SizedBox(
           height: 16,
@@ -33,7 +33,7 @@ class EmptyHabitState extends StatelessWidget {
               onPressed: onAdd,
               child: Text('Add Habit',
                   style: context.textStyles.titleMedium!.copyWith(
-                    fontSize: TextSizes.L,
+                    fontSize: TextSizes.l,
                     color: context.colors.primary,
                   )),
             ),

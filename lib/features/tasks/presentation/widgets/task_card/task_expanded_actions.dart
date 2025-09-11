@@ -1,4 +1,5 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
@@ -45,7 +46,7 @@ class TaskExpandedActions extends StatelessWidget {
               Text(
                 'Task completed!',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: TextSizes.m,
                   color: context.colors.onSurface.withAlpha(100),
                 ),
               ),
@@ -77,7 +78,7 @@ class TaskExpandedActions extends StatelessWidget {
                 'Hold to Complete',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: TextSizes.m,
                   color: textColor,
                 ),
               ),

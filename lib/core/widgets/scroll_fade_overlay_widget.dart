@@ -1,3 +1,4 @@
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -117,7 +118,7 @@ class _ScrollFadeOverlayWidgetState extends State<ScrollFadeOverlayWidget> {
   }
 
   Widget _buildFadeOverlay(BuildContext context) {
-    final effectiveFadeColor = widget.fadeColor ?? Theme.of(context).colorScheme.surface;
+    final effectiveFadeColor = widget.fadeColor ?? context.colors.surface;
 
     final gradientStops = widget.gradientStops ?? [0.0, 0.3, 0.7, 1.0];
     final gradientAlphas = widget.gradientAlphas ?? [242, 204, 102, 0];

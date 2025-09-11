@@ -1,5 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
 
@@ -101,8 +102,7 @@ class SuggestedTasksChips extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 8.0),
                 child: ActionChip(
                   avatar: Icon(suggested.icon, size: 16),
-                  label: Text(suggested.title,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: TextSizes.S)),
+                  label: Text(suggested.title, style: context.textStyles.bodyMedium!.copyWith(fontSize: TextSizes.s)),
                   onPressed: () {
                     HapticService.selection(); // Selection feedback for suggestion
                     onSuggestionSelected(suggested);

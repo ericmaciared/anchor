@@ -63,7 +63,7 @@ class AdaptiveDialogWidget extends StatelessWidget {
                   Text(
                     title,
                     style: context.textStyles.headlineMedium?.copyWith(
-                      fontSize: TextSizes.XL,
+                      fontSize: TextSizes.xl,
                       fontWeight: FontWeight.w600,
                       color: isDangerous ? context.colors.error : null,
                     ),
@@ -81,7 +81,7 @@ class AdaptiveDialogWidget extends StatelessWidget {
                     Text(
                       content!,
                       style: context.textStyles.bodyMedium?.copyWith(
-                        fontSize: TextSizes.M,
+                        fontSize: TextSizes.m,
                         height: 1.4,
                       ),
                       textAlign: TextAlign.center,
@@ -130,7 +130,7 @@ class AdaptiveDialogWidget extends StatelessWidget {
           child: Text(
             primaryActionText!,
             style: TextStyle(
-              fontSize: TextSizes.M,
+              fontSize: TextSizes.m,
               fontWeight: FontWeight.w600,
               color: _getPrimaryActionTextColor(context),
             ),
@@ -156,7 +156,7 @@ class AdaptiveDialogWidget extends StatelessWidget {
             child: Text(
               secondaryActionText!,
               style: TextStyle(
-                fontSize: TextSizes.M,
+                fontSize: TextSizes.m,
                 color: context.colors.onSurface.withAlpha(150),
               ),
             ),
@@ -180,7 +180,7 @@ class AdaptiveDialogWidget extends StatelessWidget {
             child: Text(
               primaryActionText!,
               style: TextStyle(
-                fontSize: TextSizes.M,
+                fontSize: TextSizes.m,
                 fontWeight: FontWeight.w600,
                 color: _getPrimaryActionTextColor(context),
               ),

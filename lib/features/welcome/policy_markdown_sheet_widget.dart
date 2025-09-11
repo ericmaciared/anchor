@@ -1,3 +1,4 @@
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -43,8 +44,6 @@ class PolicyMarkdownSheetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: 0.75,
@@ -59,7 +58,7 @@ class PolicyMarkdownSheetWidget extends StatelessWidget {
               width: 48,
               height: 5,
               decoration: BoxDecoration(
-                color: theme.colorScheme.outlineVariant,
+                color: context.colors.outlineVariant,
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
@@ -71,7 +70,7 @@ class PolicyMarkdownSheetWidget extends StatelessWidget {
                   Expanded(
                     child: Text(
                       title,
-                      style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
+                      style: context.textStyles.titleLarge?.copyWith(fontWeight: FontWeight.w600),
                     ),
                   ),
                   IconButton(
@@ -98,8 +97,8 @@ class PolicyMarkdownSheetWidget extends StatelessWidget {
                         child: Text(
                           'Failed to load policy.\n${snapshot.error}',
                           textAlign: TextAlign.center,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.error,
+                          style: context.textStyles.bodyMedium?.copyWith(
+                            color: context.colors.error,
                           ),
                         ),
                       ),
@@ -112,27 +111,27 @@ class PolicyMarkdownSheetWidget extends StatelessWidget {
                     selectable: true,
                     data: data,
                     padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-                    styleSheet: MarkdownStyleSheet.fromTheme(theme).copyWith(
-                      a: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.primary,
+                    styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+                      a: context.textStyles.bodyMedium?.copyWith(
+                        color: context.colors.primary,
                         decoration: TextDecoration.underline,
                       ),
-                      h1: theme.textTheme.headlineSmall,
-                      h2: theme.textTheme.titleLarge,
-                      h3: theme.textTheme.titleMedium,
+                      h1: context.textStyles.headlineSmall,
+                      h2: context.textStyles.titleLarge,
+                      h3: context.textStyles.titleMedium,
                       blockquoteDecoration: BoxDecoration(
-                        color: theme.colorScheme.surfaceContainerHighest.withAlpha(80),
+                        color: context.colors.surfaceContainerHighest.withAlpha(80),
                         border: Border(
                           left: BorderSide(
-                            color: theme.colorScheme.primary,
+                            color: context.colors.primary,
                             width: 4,
                           ),
                         ),
                       ),
                       blockquotePadding: const EdgeInsets.all(12),
-                      code: theme.textTheme.bodyMedium?.copyWith(
+                      code: context.textStyles.bodyMedium?.copyWith(
                         fontFamily: 'monospace',
-                        backgroundColor: theme.colorScheme.surfaceContainerHighest.withAlpha(60),
+                        backgroundColor: context.colors.surfaceContainerHighest.withAlpha(60),
                       ),
                     ),
                     onTapLink: (text, href, title) {

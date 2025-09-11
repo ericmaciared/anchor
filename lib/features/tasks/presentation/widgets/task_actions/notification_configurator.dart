@@ -209,7 +209,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
             child: Text(
               _formatNotification(notification),
               style: context.textStyles.bodyMedium?.copyWith(
-                fontSize: TextSizes.M,
+                fontSize: TextSizes.m,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -257,7 +257,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
           Text(
             label,
             style: TextStyle(
-              fontSize: TextSizes.S,
+              fontSize: TextSizes.s,
               fontWeight: FontWeight.w500,
               color: isValid ? context.colors.onSurface : context.colors.error,
             ),
@@ -287,7 +287,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
             Text(
               'Notifications',
               style: context.textStyles.titleMedium?.copyWith(
-                fontSize: TextSizes.L,
+                fontSize: TextSizes.l,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -317,7 +317,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
                     'Set a start time to enable notifications',
                     style: context.textStyles.bodySmall?.copyWith(
                       color: context.colors.onSurface.withAlpha(150),
-                      fontSize: TextSizes.S,
+                      fontSize: TextSizes.s,
                     ),
                   ),
                 ),
@@ -337,7 +337,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
           Text(
             'Quick Options',
             style: context.textStyles.bodyMedium?.copyWith(
-              fontSize: TextSizes.M,
+              fontSize: TextSizes.m,
               fontWeight: FontWeight.w600,
               color: context.colors.onSurface.withAlpha(150),
             ),
@@ -395,7 +395,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
                     Text(
                       'Custom\ntime',
                       style: TextStyle(
-                        fontSize: TextSizes.S,
+                        fontSize: TextSizes.s,
                         fontWeight: FontWeight.w500,
                         color: context.colors.secondary,
                       ),
@@ -413,7 +413,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
           Text(
             'Custom Minutes Before',
             style: context.textStyles.bodyMedium?.copyWith(
-              fontSize: TextSizes.M,
+              fontSize: TextSizes.m,
               fontWeight: FontWeight.w600,
               color: context.colors.onSurface.withAlpha(150),
             ),
@@ -442,12 +442,12 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
                       contentPadding: EdgeInsets.zero,
                       hintStyle: TextStyle(
                         color: context.colors.onSurface.withAlpha(100),
-                        fontSize: TextSizes.M,
+                        fontSize: TextSizes.m,
                       ),
                     ),
                     style: TextStyle(
                       color: context.colors.onSurface,
-                      fontSize: TextSizes.M,
+                      fontSize: TextSizes.m,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -476,7 +476,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
                   child: Text(
                     'Add',
                     style: TextStyle(
-                      fontSize: TextSizes.M,
+                      fontSize: TextSizes.m,
                       fontWeight: FontWeight.w600,
                       color: context.colors.primary,
                     ),
@@ -492,7 +492,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
             'Notifications can be scheduled up to $maxAdvanceHours hours in advance',
             style: context.textStyles.bodySmall?.copyWith(
               color: context.colors.onSurface.withAlpha(120),
-              fontSize: TextSizes.S,
+              fontSize: TextSizes.s,
             ),
           ),
         ],

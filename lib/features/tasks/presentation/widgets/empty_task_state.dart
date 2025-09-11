@@ -19,7 +19,7 @@ class EmptyTaskState extends StatelessWidget {
         ),
         Text('plan your day.',
             style: context.textStyles.titleMedium!.copyWith(
-              fontSize: TextSizes.XL,
+              fontSize: TextSizes.xl,
             )),
         const SizedBox(
           height: 16,
@@ -33,7 +33,7 @@ class EmptyTaskState extends StatelessWidget {
               onPressed: onAdd,
               child: Text('Add Task',
                   style: context.textStyles.titleMedium!.copyWith(
-                    fontSize: TextSizes.L,
+                    fontSize: TextSizes.l,
                     color: context.colors.primary,
                   )),
             ),

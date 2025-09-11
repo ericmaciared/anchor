@@ -29,7 +29,7 @@ class DurationInput extends StatelessWidget {
         duration != null ? '${duration.toString()} mins' : 'Set duration',
         style: context.textStyles.bodyMedium!.copyWith(
           color: context.colors.primary,
-          fontSize: TextSizes.XXL,
+          fontSize: TextSizes.xxl,
           fontWeight: FontWeight.w700,
         ),
       ),
@@ -83,14 +83,14 @@ class DurationInput extends StatelessWidget {
                       labelText: 'Custom Duration (minutes)',
                       labelStyle: TextStyle(
                         color: context.colors.onSurface.withAlpha(150),
-                        fontSize: TextSizes.M,
+                        fontSize: TextSizes.m,
                       ),
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.zero,
                     ),
                     style: TextStyle(
                       color: context.colors.onSurface,
-                      fontSize: TextSizes.M,
+                      fontSize: TextSizes.m,
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],

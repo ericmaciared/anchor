@@ -16,7 +16,7 @@ class TasksScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('tasks', style: TextStyle(fontSize: TextSizes.XL)),
+            Text('tasks', style: TextStyle(fontSize: TextSizes.xl)),
             Row(
               children: [
                 AdaptiveButtonWidget(

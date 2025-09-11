@@ -1,4 +1,5 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class SubtaskList extends StatelessWidget {
         Text(
           'Subtasks',
           style: TextStyle(
-            fontSize: 14,
+            fontSize: TextSizes.m,
             fontWeight: FontWeight.bold,
             color: context.colors.onSurface.withAlpha(100),
           ),
@@ -56,7 +57,7 @@ class SubtaskList extends StatelessWidget {
                       child: Text(
                         subtask.title,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: TextSizes.m,
                           color: subtask.isDone ? context.colors.onSurface.withAlpha(100) : null,
                           decoration: subtask.isDone ? TextDecoration.lineThrough : null,
                         ),
