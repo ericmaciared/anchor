@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
@@ -97,7 +99,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
   @override
   Widget build(BuildContext context) {
     return AdaptiveCardWidget(
-      padding: const EdgeInsets.all(24.0),
+      padding: const EdgeInsets.all(SpacingSizes.l),
       borderRadius: 20,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +112,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
                 'Welcome back',
                 style: context.textStyles.bodyMedium?.copyWith(
                   fontSize: TextSizes.m,
-                  color: context.colors.onSurface.withAlpha(150),
+                  color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                 ),
               ),
               if (!_isEditing)
@@ -129,7 +131,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
             ],
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: SpacingSizes.s),
 
           // Name display/edit section
           AnimatedSwitcher(
@@ -174,12 +176,12 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
             ),
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: SpacingSizes.xs),
         Text(
           'Tap to edit your display name',
           style: context.textStyles.bodySmall?.copyWith(
             fontSize: TextSizes.s,
-            color: context.colors.onSurface.withAlpha(100),
+            color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
           ),
         ),
       ],
@@ -197,7 +199,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
           onTextChanged: _onNameChanged,
         ),
 
-        const SizedBox(height: 20),
+        const SizedBox(height: SpacingSizes.m),
 
         // Action buttons
         FadeTransition(
@@ -216,14 +218,14 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
                       Icon(
                         Icons.close,
                         size: 16,
-                        color: context.colors.onSurface.withAlpha(150),
+                        color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: SpacingSizes.s),
                       Text(
                         'Cancel',
                         style: TextStyle(
                           fontSize: TextSizes.m,
-                          color: context.colors.onSurface.withAlpha(150),
+                          color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -231,13 +233,15 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: SpacingSizes.s),
               Expanded(
                 child: AdaptiveButtonWidget(
                   height: 44,
                   borderRadius: 22,
                   enableHaptics: false,
-                  primaryColor: _currentName.trim().isNotEmpty ? context.colors.primary.withAlpha(30) : null,
+                  primaryColor: _currentName.trim().isNotEmpty
+                      ? context.colors.primary.withAlpha(ColorOpacities.opacity10)
+                      : null,
                   enabled: _currentName.trim().isNotEmpty,
                   onPressed: _currentName.trim().isNotEmpty ? _saveEdit : null,
                   child: Row(
@@ -248,16 +252,16 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
                         size: 16,
                         color: _currentName.trim().isNotEmpty
                             ? context.colors.primary
-                            : context.colors.onSurface.withAlpha(100),
+                            : context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: SpacingSizes.s),
                       Text(
                         'Save',
                         style: TextStyle(
                           fontSize: TextSizes.m,
                           color: _currentName.trim().isNotEmpty
                               ? context.colors.primary
-                              : context.colors.onSurface.withAlpha(100),
+                              : context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
                           fontWeight: FontWeight.w600,
                         ),
                       ),

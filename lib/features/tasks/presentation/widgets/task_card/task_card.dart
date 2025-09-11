@@ -1,5 +1,6 @@
 import 'package:anchor/core/mixins/safe_animation_mixin.dart';
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/widgets/adaptive_dialog_widget.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
@@ -170,7 +171,7 @@ class _TaskCardState extends State<TaskCard> with TickerProviderStateMixin, Safe
                       startTime: task.startTime,
                       duration: task.duration,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: SpacingSizes.s),
                     Builder(
                       builder: (context) {
                         return ConstrainedBox(
@@ -182,7 +183,7 @@ class _TaskCardState extends State<TaskCard> with TickerProviderStateMixin, Safe
                         );
                       },
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: SpacingSizes.s),
                     // Main task card
                     Expanded(
                       child: Card(
@@ -198,7 +199,7 @@ class _TaskCardState extends State<TaskCard> with TickerProviderStateMixin, Safe
                           },
                           behavior: HitTestBehavior.opaque,
                           child: Padding(
-                            padding: const EdgeInsets.all(12),
+                            padding: const EdgeInsets.all(SpacingSizes.s),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

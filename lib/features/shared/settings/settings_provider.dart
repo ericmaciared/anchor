@@ -92,6 +92,8 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
         SettingsDefaults.bedTime,
       );
 
+      final themeMode = _prefs!.getString(SettingsKeys.themeMode) ?? SettingsDefaults.themeMode;
+
       final displayDensity = _prefs!.getString(SettingsKeys.displayDensity) ?? SettingsDefaults.displayDensity;
 
       final dailyQuotesEnabled =
@@ -110,6 +112,7 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
         profileName: profileName,
         wakeUpTime: wakeUpTime,
         bedTime: bedTime,
+        themeMode: themeMode,
         displayDensity: displayDensity,
         dailyQuotesEnabled: dailyQuotesEnabled,
         visualEffectsEnabled: visualEffectsEnabled,
@@ -130,6 +133,7 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
       profileName: SettingsDefaults.profileName,
       wakeUpTime: SettingsDefaults.wakeUpTime,
       bedTime: SettingsDefaults.bedTime,
+      themeMode: SettingsDefaults.themeMode,
       displayDensity: SettingsDefaults.displayDensity,
       dailyQuotesEnabled: SettingsDefaults.dailyQuotesEnabled,
       visualEffectsEnabled: SettingsDefaults.visualEffectsEnabled,
@@ -274,6 +278,27 @@ class SettingsNotifier extends AsyncNotifier<SettingsState> {
       newState,
       () => _safeSetString(SettingsKeys.bedTime, _formatTimeOfDay(newTime)),
       'bed time',
+    );
+  }
+
+  Future<void> updateThemeMode(String newMode) async {
+    final currentState = state.valueOrNull;
+    if (currentState == null) return;
+
+    // Validate theme mode value
+    const validModes = ['Light', 'Dark', 'System'];
+    if (!validModes.contains(newMode)) {
+      if (kDebugMode) {
+        debugPrint('Invalid theme mode: $newMode');
+      }
+      return;
+    }
+
+    final newState = currentState.copyWith(themeMode: newMode);
+    await _updateStateAndSave(
+      newState,
+      () => _safeSetString(SettingsKeys.themeMode, newMode),
+      'theme mode',
     );
   }
 

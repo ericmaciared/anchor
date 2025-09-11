@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/color_opacities.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/animated_fade_in_widget.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,10 @@ class LiquidGlassCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = context.theme.brightness == Brightness.dark;
-    final effectiveGlassColor = glassColor ?? (isDarkMode ? Colors.white.withAlpha(20) : Colors.white.withAlpha(60));
+    final effectiveGlassColor = glassColor ??
+        (isDarkMode
+            ? Colors.white.withAlpha(ColorOpacities.opacity10)
+            : Colors.white.withAlpha(ColorOpacities.opacity20));
 
     final shape = customShape ??
         LiquidRoundedSuperellipse(

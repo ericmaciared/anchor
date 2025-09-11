@@ -1,3 +1,5 @@
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_dialog_widget.dart'; // Add this import
@@ -79,7 +81,7 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withAlpha(20),
+              color: Colors.black.withAlpha(ColorOpacities.opacity10),
               blurRadius: 20,
               offset: const Offset(0, -5),
             ),
@@ -101,7 +103,7 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
                     // Habit input section
                     _buildHabitInputSection(context),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: SpacingSizes.m),
                   ],
                 ),
               ),
@@ -122,24 +124,24 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
         children: [
           // Drag handle
           Container(
-            margin: const EdgeInsets.only(top: 12),
+            margin: const EdgeInsets.only(top: SpacingSizes.s),
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: context.colors.onSurface.withAlpha(50),
+              color: context.colors.onSurface.withAlpha(ColorOpacities.opacity20),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: SpacingSizes.l),
 
           // Header with icon and title
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(SpacingSizes.s),
                 decoration: BoxDecoration(
-                  color: context.colors.primary.withAlpha(20),
+                  color: context.colors.primary.withAlpha(ColorOpacities.opacity10),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -148,7 +150,7 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
                   size: 24,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: SpacingSizes.m),
               Expanded(
                 child: Text(
                   isEdit ? 'Edit Habit' : 'New Habit',
@@ -167,12 +169,12 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
 
   Widget _buildHabitInputSection(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(SpacingSizes.m),
       decoration: BoxDecoration(
         color: context.colors.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: context.colors.outline.withAlpha(50),
+          color: context.colors.outline.withAlpha(ColorOpacities.opacity20),
         ),
       ),
       child: Wrap(
@@ -208,12 +210,12 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
 
   Widget _buildFooter(BuildContext context, bool isEdit) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(SpacingSizes.m),
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         border: Border(
           top: BorderSide(
-            color: context.colors.outline.withAlpha(50),
+            color: context.colors.outline.withAlpha(ColorOpacities.opacity20),
           ),
         ),
       ),

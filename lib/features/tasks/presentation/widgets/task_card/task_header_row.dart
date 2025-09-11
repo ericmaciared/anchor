@@ -1,3 +1,5 @@
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
@@ -27,10 +29,10 @@ class TaskHeaderRow extends StatelessWidget {
       children: [
         Icon(
           task.icon,
-          color: task.isDone ? context.colors.onSurface.withAlpha(150) : context.colors.onSurface.withAlpha(150),
+          color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
           size: 24,
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: SpacingSizes.s),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,22 +42,22 @@ class TaskHeaderRow extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: context.textStyles.titleMedium!.copyWith(
-                  color: task.isDone ? context.colors.onSurface.withAlpha(150) : null,
+                  color: task.isDone ? context.colors.onSurface.withAlpha(ColorOpacities.opacity60) : null,
                   fontSize: TextSizes.m,
                   decoration: task.isDone ? TextDecoration.lineThrough : null,
                 ),
               ),
               if (subtitle.isNotEmpty)
                 Text(subtitle,
-                    style: context.textStyles.titleMedium!
-                        .copyWith(fontSize: TextSizes.s, color: context.colors.onSurface.withAlpha(150))),
+                    style: context.textStyles.titleMedium!.copyWith(
+                        fontSize: TextSizes.s, color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60))),
             ],
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: SpacingSizes.s),
         Icon(
           task.isDone ? Icons.check_circle : Icons.circle_outlined,
-          color: !task.isDone ? task.color : context.colors.onSurface.withAlpha(150),
+          color: !task.isDone ? task.color : context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
         ),
       ],
     );

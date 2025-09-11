@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/color_picker.dart';
@@ -40,7 +42,7 @@ class TaskColorIconSection extends StatelessWidget {
             },
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: SpacingSizes.m),
         Column(
           children: [
             Text(
@@ -54,9 +56,9 @@ class TaskColorIconSection extends StatelessWidget {
                 width: 60,
                 height: 60,
                 decoration: BoxDecoration(
-                  color: task.color.withAlpha(50),
+                  color: task.color.withAlpha(ColorOpacities.opacity20),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: task.color.withAlpha(120)),
+                  border: Border.all(color: task.color.withAlpha(ColorOpacities.opacity50)),
                 ),
                 child: Icon(task.icon, color: task.color, size: 28),
               ),

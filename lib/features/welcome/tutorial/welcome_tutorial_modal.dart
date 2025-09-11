@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
@@ -134,7 +136,7 @@ class _WelcomeTutorialModalState extends State<WelcomeTutorialModal> with Ticker
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(SpacingSizes.m),
       child: Row(
         children: [
           // Progress indicator
@@ -145,7 +147,7 @@ class _WelcomeTutorialModalState extends State<WelcomeTutorialModal> with Ticker
                 Text(
                   '${_currentPage + 1} of $_totalPages',
                   style: context.textStyles.bodySmall?.copyWith(
-                    color: context.colors.onSurface.withAlpha(150),
+                    color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                     fontSize: TextSizes.s,
                   ),
                 ),
@@ -154,7 +156,7 @@ class _WelcomeTutorialModalState extends State<WelcomeTutorialModal> with Ticker
                   borderRadius: BorderRadius.circular(4),
                   child: LinearProgressIndicator(
                     value: (_currentPage + 1) / _totalPages,
-                    backgroundColor: context.colors.onSurface.withAlpha(30),
+                    backgroundColor: context.colors.onSurface.withAlpha(ColorOpacities.opacity10),
                     valueColor: AlwaysStoppedAnimation(context.colors.primary),
                     minHeight: 6,
                   ),
@@ -169,7 +171,7 @@ class _WelcomeTutorialModalState extends State<WelcomeTutorialModal> with Ticker
             child: Text(
               'Skip',
               style: TextStyle(
-                color: context.colors.onSurface.withAlpha(150),
+                color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                 fontSize: TextSizes.m,
               ),
             ),
@@ -200,7 +202,7 @@ class _WelcomeTutorialModalState extends State<WelcomeTutorialModal> with Ticker
 
   Widget _buildNavigationButtons() {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(SpacingSizes.m),
       child: Row(
         children: [
           // Previous button
@@ -225,7 +227,7 @@ class _WelcomeTutorialModalState extends State<WelcomeTutorialModal> with Ticker
             width: _currentPage == _totalPages - 1 ? 140 : 56,
             height: 56,
             borderRadius: 28,
-            primaryColor: context.colors.primary.withAlpha(30),
+            primaryColor: context.colors.primary.withAlpha(ColorOpacities.opacity10),
             onPressed: _nextPage,
             child: _currentPage == _totalPages - 1
                 ? Row(
@@ -295,7 +297,7 @@ class _WelcomeSlide extends StatelessWidget {
             style: context.textStyles.bodyLarge?.copyWith(
               fontSize: TextSizes.l,
               height: 1.4,
-              color: context.colors.onSurface.withAlpha(180),
+              color: context.colors.onSurface.withAlpha(ColorOpacities.opacity70),
             ),
             textAlign: TextAlign.center,
           ),
@@ -324,7 +326,7 @@ class _WelcomeSlide extends StatelessWidget {
           width: 60,
           height: 60,
           decoration: BoxDecoration(
-            color: context.colors.primary.withAlpha(20),
+            color: context.colors.primary.withAlpha(ColorOpacities.opacity10),
             borderRadius: BorderRadius.circular(30),
           ),
           child: Icon(
@@ -338,7 +340,7 @@ class _WelcomeSlide extends StatelessWidget {
           label,
           style: context.textStyles.bodySmall?.copyWith(
             fontSize: TextSizes.s,
-            color: context.colors.onSurface.withAlpha(150),
+            color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
           ),
         ),
       ],
@@ -357,7 +359,7 @@ class _TasksSlide extends StatelessWidget {
         children: [
           // Mock task interface
           AdaptiveCardWidget(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(SpacingSizes.m),
             borderRadius: 20,
             child: Column(
               children: [
@@ -390,7 +392,7 @@ class _TasksSlide extends StatelessWidget {
             style: context.textStyles.bodyLarge?.copyWith(
               fontSize: TextSizes.l,
               height: 1.4,
-              color: context.colors.onSurface.withAlpha(180),
+              color: context.colors.onSurface.withAlpha(ColorOpacities.opacity70),
             ),
             textAlign: TextAlign.center,
           ),
@@ -420,7 +422,7 @@ class _TasksSlide extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 16),
-        Icon(icon, color: isCompleted ? context.colors.onSurface.withAlpha(100) : color),
+        Icon(icon, color: isCompleted ? context.colors.onSurface.withAlpha(ColorOpacities.opacity40) : color),
         const SizedBox(width: 12),
         Expanded(
           child: Text(
@@ -428,13 +430,13 @@ class _TasksSlide extends StatelessWidget {
             style: TextStyle(
               fontSize: TextSizes.m,
               decoration: isCompleted ? TextDecoration.lineThrough : null,
-              color: isCompleted ? context.colors.onSurface.withAlpha(100) : null,
+              color: isCompleted ? context.colors.onSurface.withAlpha(ColorOpacities.opacity40) : null,
             ),
           ),
         ),
         Icon(
           isCompleted ? Icons.check_circle : Icons.circle_outlined,
-          color: isCompleted ? context.colors.onSurface.withAlpha(100) : color,
+          color: isCompleted ? context.colors.onSurface.withAlpha(ColorOpacities.opacity40) : color,
         ),
       ],
     );
@@ -459,7 +461,7 @@ class _TasksSlide extends StatelessWidget {
                         feature,
                         style: context.textStyles.bodyMedium?.copyWith(
                           fontSize: TextSizes.m,
-                          color: context.colors.onSurface.withAlpha(160),
+                          color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                         ),
                       ),
                     ),
@@ -482,7 +484,7 @@ class _HabitsSlide extends StatelessWidget {
         children: [
           // Mock habit interface
           AdaptiveCardWidget(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(SpacingSizes.m),
             borderRadius: 20,
             child: Column(
               children: [
@@ -515,7 +517,7 @@ class _HabitsSlide extends StatelessWidget {
             style: context.textStyles.bodyLarge?.copyWith(
               fontSize: TextSizes.l,
               height: 1.4,
-              color: context.colors.onSurface.withAlpha(180),
+              color: context.colors.onSurface.withAlpha(ColorOpacities.opacity70),
             ),
             textAlign: TextAlign.center,
           ),
@@ -524,9 +526,9 @@ class _HabitsSlide extends StatelessWidget {
 
           // Streak explanation
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(SpacingSizes.m),
             decoration: BoxDecoration(
-              color: context.colors.secondary.withAlpha(20),
+              color: context.colors.secondary.withAlpha(ColorOpacities.opacity10),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -542,7 +544,7 @@ class _HabitsSlide extends StatelessWidget {
                     'Streak counters show your consecutive days of progress',
                     style: context.textStyles.bodyMedium?.copyWith(
                       fontSize: TextSizes.m,
-                      color: context.colors.onSurface.withAlpha(160),
+                      color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                     ),
                   ),
                 ),
@@ -559,7 +561,7 @@ class _HabitsSlide extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(SpacingSizes.m),
             decoration: BoxDecoration(
               color: context.colors.surfaceContainerHigh,
               borderRadius: BorderRadius.circular(12),
@@ -569,7 +571,7 @@ class _HabitsSlide extends StatelessWidget {
               style: TextStyle(
                 fontSize: TextSizes.m,
                 decoration: isCompleted ? TextDecoration.lineThrough : null,
-                color: isCompleted ? context.colors.onSurface.withAlpha(150) : null,
+                color: isCompleted ? context.colors.onSurface.withAlpha(ColorOpacities.opacity60) : null,
               ),
             ),
           ),
@@ -581,7 +583,9 @@ class _HabitsSlide extends StatelessWidget {
             children: [
               Icon(
                 Icons.local_fire_department,
-                color: isCompleted ? context.colors.secondary : context.colors.onSurface.withAlpha(100),
+                color: isCompleted
+                    ? context.colors.secondary
+                    : context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
                 size: 20,
               ),
               const SizedBox(width: 4),
@@ -613,20 +617,20 @@ class _NotificationsSlide extends StatelessWidget {
           // Mock notification
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(SpacingSizes.m),
             decoration: BoxDecoration(
-              color: context.colors.primary.withAlpha(15),
+              color: context.colors.primary.withAlpha(ColorOpacities.opacity10),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: context.colors.primary.withAlpha(50)),
+              border: Border.all(color: context.colors.primary.withAlpha(ColorOpacities.opacity20)),
             ),
             child: Column(
               children: [
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(SpacingSizes.s),
                       decoration: BoxDecoration(
-                        color: context.colors.primary.withAlpha(30),
+                        color: context.colors.primary.withAlpha(ColorOpacities.opacity10),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Icon(
@@ -650,7 +654,7 @@ class _NotificationsSlide extends StatelessWidget {
                           Text(
                             'Workout (60 mins)',
                             style: TextStyle(
-                              color: context.colors.onSurface.withAlpha(150),
+                              color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                               fontSize: TextSizes.s,
                             ),
                           ),
@@ -691,7 +695,7 @@ class _NotificationsSlide extends StatelessWidget {
             style: context.textStyles.bodyLarge?.copyWith(
               fontSize: TextSizes.l,
               height: 1.4,
-              color: context.colors.onSurface.withAlpha(180),
+              color: context.colors.onSurface.withAlpha(ColorOpacities.opacity70),
             ),
             textAlign: TextAlign.center,
           ),
@@ -721,13 +725,13 @@ class _NotificationsSlide extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.colors.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: context.colors.outline.withAlpha(50)),
+        border: Border.all(color: context.colors.outline.withAlpha(ColorOpacities.opacity20)),
       ),
       child: Text(
         label,
         style: TextStyle(
           fontSize: TextSizes.s,
-          color: context.colors.onSurface.withAlpha(160),
+          color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
         ),
       ),
     );
@@ -745,7 +749,7 @@ class _PersonalizationSlide extends StatelessWidget {
         children: [
           // Settings preview
           AdaptiveCardWidget(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(SpacingSizes.m),
             borderRadius: 16,
             child: Column(
               children: [
@@ -777,7 +781,7 @@ class _PersonalizationSlide extends StatelessWidget {
             style: context.textStyles.bodyLarge?.copyWith(
               fontSize: TextSizes.l,
               height: 1.4,
-              color: context.colors.onSurface.withAlpha(180),
+              color: context.colors.onSurface.withAlpha(ColorOpacities.opacity70),
             ),
             textAlign: TextAlign.center,
           ),
@@ -830,7 +834,7 @@ class _GetStartedSlide extends StatelessWidget {
             width: 120,
             height: 120,
             decoration: BoxDecoration(
-              color: context.colors.primary.withAlpha(20),
+              color: context.colors.primary.withAlpha(ColorOpacities.opacity10),
               borderRadius: BorderRadius.circular(60),
             ),
             child: Icon(
@@ -860,7 +864,7 @@ class _GetStartedSlide extends StatelessWidget {
             style: context.textStyles.bodyLarge?.copyWith(
               fontSize: TextSizes.l,
               height: 1.4,
-              color: context.colors.onSurface.withAlpha(180),
+              color: context.colors.onSurface.withAlpha(ColorOpacities.opacity70),
             ),
             textAlign: TextAlign.center,
           ),
@@ -869,7 +873,7 @@ class _GetStartedSlide extends StatelessWidget {
 
           // Quick tips
           AdaptiveCardWidget(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(SpacingSizes.m),
             child: Column(
               children: [
                 Text(
@@ -909,7 +913,7 @@ class _GetStartedSlide extends StatelessWidget {
               tip,
               style: context.textStyles.bodyMedium?.copyWith(
                 fontSize: TextSizes.s,
-                color: context.colors.onSurface.withAlpha(160),
+                color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
               ),
             ),
           ),

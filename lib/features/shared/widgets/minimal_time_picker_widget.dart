@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
@@ -94,11 +96,11 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
         Text(
           label,
           style: context.textStyles.bodySmall?.copyWith(
-            color: context.colors.onSurface.withAlpha(150),
+            color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
             fontSize: TextSizes.s,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: SpacingSizes.s),
         Container(
           height: 160,
           width: 80,
@@ -106,7 +108,7 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
             color: context.colors.surfaceContainerHigh,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: context.colors.outline.withAlpha(50),
+              color: context.colors.outline.withAlpha(ColorOpacities.opacity20),
             ),
           ),
           child: ListWheelScrollView.useDelegate(
@@ -133,7 +135,9 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
                     style: context.textStyles.titleLarge!.copyWith(
                       fontSize: isSelected ? TextSizes.xl : TextSizes.l,
                       fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                      color: isSelected ? context.colors.primary : context.colors.onSurface.withAlpha(120),
+                      color: isSelected
+                          ? context.colors.primary
+                          : context.colors.onSurface.withAlpha(ColorOpacities.opacity50),
                     ),
                     child: Text(
                       value.toString().padLeft(2, '0'),
@@ -160,17 +164,17 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
         Text(
           'Period',
           style: context.textStyles.bodySmall?.copyWith(
-            color: context.colors.onSurface.withAlpha(150),
+            color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
             fontSize: TextSizes.s,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: SpacingSizes.s),
         Container(
           decoration: BoxDecoration(
             color: context.colors.surfaceContainerHigh,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: context.colors.outline.withAlpha(50),
+              color: context.colors.outline.withAlpha(ColorOpacities.opacity20),
             ),
           ),
           child: Column(
@@ -181,7 +185,7 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
               }),
               Container(
                 height: 1,
-                color: context.colors.outline.withAlpha(30),
+                color: context.colors.outline.withAlpha(ColorOpacities.opacity10),
               ),
               _buildPeriodButton('PM', period == DayPeriod.pm, () {
                 _updateTime(period: DayPeriod.pm);
@@ -199,7 +203,7 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
       height: 40,
       borderRadius: 0,
       enableHaptics: false,
-      primaryColor: isSelected ? context.colors.primary.withAlpha(30) : null,
+      primaryColor: isSelected ? context.colors.primary.withAlpha(ColorOpacities.opacity10) : null,
       onPressed: () {
         HapticService.selection();
         onTap();
@@ -209,7 +213,7 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
         style: TextStyle(
           fontSize: TextSizes.m,
           fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-          color: isSelected ? context.colors.primary : context.colors.onSurface.withAlpha(150),
+          color: isSelected ? context.colors.primary : context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
         ),
       ),
     );
@@ -218,7 +222,7 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(SpacingSizes.l),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -226,7 +230,7 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
             decoration: BoxDecoration(
-              color: context.colors.primary.withAlpha(20),
+              color: context.colors.primary.withAlpha(ColorOpacities.opacity10),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
@@ -239,7 +243,7 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
             ),
           ),
 
-          const SizedBox(height: 32),
+          const SizedBox(height: SpacingSizes.xl),
 
           // Time wheels
           Row(
@@ -260,7 +264,7 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
                 child: Text(
                   ':',
                   style: context.textStyles.headlineLarge?.copyWith(
-                    color: context.colors.onSurface.withAlpha(150),
+                    color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                     fontSize: TextSizes.xxl,
                   ),
                 ),
@@ -276,13 +280,13 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
               ),
 
               if (!widget.is24HourFormat) ...[
-                const SizedBox(width: 16),
+                const SizedBox(width: SpacingSizes.m),
                 _buildAmPmToggle(),
               ],
             ],
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: SpacingSizes.m),
         ],
       ),
     );
@@ -306,7 +310,7 @@ class TimePickerDialog extends StatelessWidget {
 
     return Dialog(
       backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.all(16),
+      insetPadding: const EdgeInsets.all(SpacingSizes.m),
       child: Container(
         constraints: const BoxConstraints(maxWidth: 400),
         decoration: BoxDecoration(
@@ -314,7 +318,7 @@ class TimePickerDialog extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withAlpha(30),
+              color: Colors.black.withAlpha(ColorOpacities.opacity10),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -355,11 +359,11 @@ class TimePickerDialog extends StatelessWidget {
 
             // Actions
             Container(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(SpacingSizes.l),
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(
-                    color: context.colors.outline.withAlpha(50),
+                    color: context.colors.outline.withAlpha(ColorOpacities.opacity20),
                   ),
                 ),
               ),
@@ -377,14 +381,14 @@ class TimePickerDialog extends StatelessWidget {
                       'Cancel',
                       style: TextStyle(
                         fontSize: TextSizes.m,
-                        color: context.colors.onSurface.withAlpha(150),
+                        color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: SpacingSizes.s),
                   AdaptiveButtonWidget(
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                    primaryColor: context.colors.primary.withAlpha(30),
+                    primaryColor: context.colors.primary.withAlpha(ColorOpacities.opacity10),
                     enableHaptics: false,
                     onPressed: () {
                       HapticService.medium();

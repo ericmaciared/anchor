@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
@@ -38,7 +40,7 @@ class TaskExpandedActions extends StatelessWidget {
             baseColor: task.color,
             onToggleSubtaskCompletion: (subtask) => onToggleSubtaskCompletion(subtask),
           ),
-        const SizedBox(height: 12),
+        const SizedBox(height: SpacingSizes.s),
         if (task.isDone)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,7 +49,7 @@ class TaskExpandedActions extends StatelessWidget {
                 'Task completed!',
                 style: TextStyle(
                   fontSize: TextSizes.m,
-                  color: context.colors.onSurface.withAlpha(100),
+                  color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
                 ),
               ),
               AdaptiveButtonWidget(

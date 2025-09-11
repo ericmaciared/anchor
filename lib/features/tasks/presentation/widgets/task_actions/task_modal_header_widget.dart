@@ -1,3 +1,5 @@
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
@@ -21,24 +23,24 @@ class TaskModalHeader extends StatelessWidget {
         children: [
           // Drag handle
           Container(
-            margin: const EdgeInsets.only(top: 12),
+            margin: const EdgeInsets.only(top: SpacingSizes.s),
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: context.colors.onSurface.withAlpha(50),
+              color: context.colors.onSurface.withAlpha(ColorOpacities.opacity20),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: SpacingSizes.l),
 
           // Header with icon and title
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(SpacingSizes.s),
                 decoration: BoxDecoration(
-                  color: task.color.withAlpha(20),
+                  color: task.color.withAlpha(ColorOpacities.opacity10),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(task.icon, color: task.color, size: 24),

@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class TasksScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onPressed: onTodayPressed,
                   child: const Icon(Icons.today),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: SpacingSizes.m),
                 AdaptiveButtonWidget(
                   height: 36,
                   width: 36,

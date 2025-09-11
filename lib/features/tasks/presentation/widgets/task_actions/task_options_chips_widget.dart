@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +25,7 @@ class TaskOptionsChips extends StatelessWidget {
 
     return AdaptiveButtonWidget(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        primaryColor: isActive ? context.colors.primary.withAlpha(150) : null,
+        primaryColor: isActive ? context.colors.primary.withAlpha(ColorOpacities.opacity60) : null,
         onPressed: () {
           HapticService.medium(); // Medium feedback for section toggle
           onToggleSection(section);
@@ -33,7 +35,7 @@ class TaskOptionsChips extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Icon(icon),
-            const SizedBox(width: 8),
+            const SizedBox(width: SpacingSizes.s),
             Text(label),
           ],
         ));
@@ -50,42 +52,42 @@ class TaskOptionsChips extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Row(
             children: [
-              const SizedBox(width: 16),
+              const SizedBox(width: SpacingSizes.m),
               _buildOptionChip(
                 label: 'Time',
                 section: 'time',
                 icon: Icons.access_time,
                 context: context,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: SpacingSizes.s),
               _buildOptionChip(
                 label: 'Duration',
                 section: 'duration',
                 icon: Icons.timer,
                 context: context,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: SpacingSizes.s),
               _buildOptionChip(
                 label: 'Color & Icon',
                 section: 'color',
                 icon: Icons.palette,
                 context: context,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: SpacingSizes.s),
               _buildOptionChip(
                 label: 'Subtasks',
                 section: 'subtasks',
                 icon: Icons.list,
                 context: context,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: SpacingSizes.s),
               _buildOptionChip(
                 label: 'Notifications',
                 section: 'notifications',
                 icon: Icons.notifications,
                 context: context,
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: SpacingSizes.m),
             ],
           ),
         ),

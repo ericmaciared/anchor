@@ -1,3 +1,5 @@
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/shared/widgets/duration_input.dart';
@@ -41,12 +43,12 @@ class TaskInputSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(SpacingSizes.m),
       decoration: BoxDecoration(
         color: context.colors.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: context.colors.outline.withAlpha(50),
+          color: context.colors.outline.withAlpha(ColorOpacities.opacity20),
         ),
       ),
       child: Wrap(

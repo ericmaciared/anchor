@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'features/shared/confetti/confetti_provider.dart';
 import 'features/shared/notifications/notification_service.dart';
+import 'features/shared/settings/settings_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,11 +24,28 @@ class AnchorApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final confettiController = ref.watch(confettiProvider);
+    final settingsAsyncValue = ref.watch(settingsProvider);
+
+    final themeMode = settingsAsyncValue.when(
+      data: (settings) {
+        switch (settings.themeMode) {
+          case 'Light':
+            return ThemeMode.light;
+          case 'Dark':
+            return ThemeMode.dark;
+          case 'System':
+          default:
+            return ThemeMode.system;
+        }
+      },
+      loading: () => ThemeMode.system,
+      error: (_, __) => ThemeMode.system,
+    );
 
     return MaterialApp.router(
       title: 'Anchor',
       routerConfig: router,
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       builder: (context, child) {

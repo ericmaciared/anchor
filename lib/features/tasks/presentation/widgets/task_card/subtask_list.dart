@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
@@ -23,16 +25,16 @@ class SubtaskList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 12),
+        const SizedBox(height: SpacingSizes.m),
         Text(
           'Subtasks',
           style: TextStyle(
             fontSize: TextSizes.m,
             fontWeight: FontWeight.bold,
-            color: context.colors.onSurface.withAlpha(100),
+            color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: SpacingSizes.s),
         ...subtasks.map((subtask) => GestureDetector(
               onTap: () {
                 // Add haptic feedback for subtask toggle
@@ -44,21 +46,21 @@ class SubtaskList extends StatelessWidget {
                 onToggleSubtaskCompletion(subtask);
               },
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(SpacingSizes.s),
                 child: Row(
                   children: [
                     Icon(
                       subtask.isDone ? Icons.check_circle : Icons.radio_button_unchecked,
                       size: 18,
-                      color: subtask.isDone ? context.colors.onSurface.withAlpha(100) : baseColor,
+                      color: subtask.isDone ? context.colors.onSurface.withAlpha(ColorOpacities.opacity40) : baseColor,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: SpacingSizes.s),
                     Expanded(
                       child: Text(
                         subtask.title,
                         style: TextStyle(
                           fontSize: TextSizes.m,
-                          color: subtask.isDone ? context.colors.onSurface.withAlpha(100) : null,
+                          color: subtask.isDone ? context.colors.onSurface.withAlpha(ColorOpacities.opacity40) : null,
                           decoration: subtask.isDone ? TextDecoration.lineThrough : null,
                         ),
                       ),

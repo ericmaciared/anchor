@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/color_opacities.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/shared/quotes/presentation/providers/quotes_provider.dart';
@@ -21,7 +22,7 @@ class DailyQuoteCard extends ConsumerWidget {
             width: double.infinity,
             child: Icon(
               Icons.anchor,
-              color: context.colors.onSurface.withAlpha(100),
+              color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
               size: 24,
             ),
           );
@@ -38,7 +39,7 @@ class DailyQuoteCard extends ConsumerWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.format_quote, size: 20, color: context.colors.onSurface.withAlpha(100)),
+                Icon(Icons.format_quote, size: 20, color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40)),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Column(
@@ -59,7 +60,7 @@ class DailyQuoteCard extends ConsumerWidget {
                         child: Text(
                           'Today\'s quote by ${quote.author.isEmpty ? 'someone' : quote.author}.',
                           style: context.textStyles.labelSmall?.copyWith(
-                            color: context.colors.onSurface.withAlpha(150),
+                            color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                             fontSize: TextSizes.s,
                           ),
                         ),

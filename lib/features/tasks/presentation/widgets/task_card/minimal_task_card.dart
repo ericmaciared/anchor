@@ -1,6 +1,8 @@
 // lib/features/tasks/presentation/widgets/task_card/minimal_task_card.dart
 
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_card_widget.dart';
@@ -36,11 +38,11 @@ class MinimalTaskCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   MinimalTaskTimeColumn(startTime: task.startTime, duration: task.duration),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: SpacingSizes.s),
                   // Main task card
                   AdaptiveCardWidget(
                     borderRadius: 12,
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(SpacingSizes.s),
                     child: GestureDetector(
                       onTap: () {
                         // Add haptic feedback for task completion toggle
@@ -61,7 +63,7 @@ class MinimalTaskCard extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: task.isDone ? context.colors.onSurface.withAlpha(100) : null,
+                          color: task.isDone ? context.colors.onSurface.withAlpha(ColorOpacities.opacity40) : null,
                           fontSize: TextSizes.m,
                           decoration: task.isDone ? TextDecoration.lineThrough : null,
                         ),
@@ -90,7 +92,9 @@ class MinimalTaskCard extends StatelessWidget {
                               subtask.title,
                               style: context.textStyles.bodySmall?.copyWith(
                                 decoration: subtask.isDone ? TextDecoration.lineThrough : null,
-                                color: subtask.isDone ? context.colors.onSurface.withAlpha(100) : null,
+                                color: subtask.isDone
+                                    ? context.colors.onSurface.withAlpha(ColorOpacities.opacity40)
+                                    : null,
                               ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,

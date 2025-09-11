@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
@@ -37,7 +39,7 @@ class AdaptiveDialogWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.all(16),
+      insetPadding: const EdgeInsets.all(SpacingSizes.m),
       child: Container(
         constraints: const BoxConstraints(maxWidth: 400),
         decoration: BoxDecoration(
@@ -45,7 +47,7 @@ class AdaptiveDialogWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withAlpha(30),
+              color: Colors.black.withAlpha(ColorOpacities.opacity10),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -91,11 +93,11 @@ class AdaptiveDialogWidget extends StatelessWidget {
             // Actions
             if (primaryActionText != null || secondaryActionText != null)
               Container(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(SpacingSizes.l),
                 decoration: BoxDecoration(
                   border: Border(
                     top: BorderSide(
-                      color: context.colors.outline.withAlpha(50),
+                      color: context.colors.outline.withAlpha(ColorOpacities.opacity20),
                     ),
                   ),
                 ),
@@ -157,11 +159,11 @@ class AdaptiveDialogWidget extends StatelessWidget {
               secondaryActionText!,
               style: TextStyle(
                 fontSize: TextSizes.m,
-                color: context.colors.onSurface.withAlpha(150),
+                color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
               ),
             ),
           ),
-        if (hasSecondary && primaryActionText != null) const SizedBox(width: 12),
+        if (hasSecondary && primaryActionText != null) const SizedBox(width: SpacingSizes.s),
         if (primaryActionText != null)
           AdaptiveButtonWidget(
             height: 48,
@@ -192,8 +194,8 @@ class AdaptiveDialogWidget extends StatelessWidget {
 
   Color? _getPrimaryActionColor(BuildContext context) {
     if (primaryActionColor != null) return primaryActionColor;
-    if (isDangerous) return context.colors.error.withAlpha(30);
-    return context.colors.primary.withAlpha(30);
+    if (isDangerous) return context.colors.error.withAlpha(ColorOpacities.opacity10);
+    return context.colors.primary.withAlpha(ColorOpacities.opacity10);
   }
 
   Color _getPrimaryActionTextColor(BuildContext context) {

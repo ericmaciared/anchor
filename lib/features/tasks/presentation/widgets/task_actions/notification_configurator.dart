@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
@@ -88,7 +90,8 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
 
     final newNotification = NotificationModel(
       id: safeId,
-      taskId: 't', // This will be updated when the task is saved
+      taskId: 't',
+      // This will be updated when the task is saved
       triggerType: 'minutesBefore',
       triggerValue: minutesBefore,
       scheduledTime: scheduledTime,
@@ -156,7 +159,9 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
     );
 
     if (existingNotification.id != -1) {
-      _showError('A notification for ${result.format(context)} already exists');
+      if (mounted) {
+        _showError('A notification for ${result.format(context)} already exists');
+      }
       return;
     }
 
@@ -164,7 +169,8 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
 
     final newNotification = NotificationModel(
       id: safeId,
-      taskId: 't', // This will be updated when the task is saved
+      taskId: 't',
+      // This will be updated when the task is saved
       triggerType: 'customTime',
       triggerValue: 0,
       scheduledTime: scheduledTime,
@@ -218,21 +224,21 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
 
   Widget _buildNotificationItem(NotificationModel notification) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.only(bottom: SpacingSizes.s),
+      padding: const EdgeInsets.all(SpacingSizes.m),
       decoration: BoxDecoration(
         color: context.colors.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: context.colors.outline.withAlpha(30),
+          color: context.colors.outline.withAlpha(ColorOpacities.opacity10),
         ),
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(6),
+            padding: const EdgeInsets.all(SpacingSizes.s),
             decoration: BoxDecoration(
-              color: context.colors.primary.withAlpha(20),
+              color: context.colors.primary.withAlpha(ColorOpacities.opacity10),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
@@ -241,7 +247,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
               color: context.colors.primary,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: SpacingSizes.s),
           Expanded(
             child: Text(
               _formatNotification(notification),
@@ -278,8 +284,8 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
     return AdaptiveButtonWidget(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       borderRadius: 12,
-      primaryColor: isValid ? null : context.colors.error.withAlpha(20),
-      border: isValid ? null : Border.all(color: context.colors.error.withAlpha(50)),
+      primaryColor: isValid ? null : context.colors.error.withAlpha(ColorOpacities.opacity10),
+      border: isValid ? null : Border.all(color: context.colors.error.withAlpha(ColorOpacities.opacity20)),
       enableHaptics: false,
       onPressed: isValid ? () => _addNotification(minutes) : null,
       child: Column(
@@ -290,7 +296,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
             size: 20,
             color: isValid ? context.colors.primary : context.colors.error,
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: SpacingSizes.xs),
           Text(
             label,
             style: TextStyle(
@@ -320,7 +326,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
               size: 20,
               color: context.colors.primary,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: SpacingSizes.s),
             Text(
               'Notifications',
               style: context.textStyles.titleMedium?.copyWith(
@@ -331,14 +337,14 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
           ],
         ),
         if (widget.taskStartTime == null) ...[
-          const SizedBox(height: 12),
+          const SizedBox(height: SpacingSizes.s),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(SpacingSizes.m),
             decoration: BoxDecoration(
-              color: context.colors.surfaceContainerHigh.withAlpha(100),
+              color: context.colors.surfaceContainerHigh.withAlpha(ColorOpacities.opacity40),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: context.colors.outline.withAlpha(30),
+                color: context.colors.outline.withAlpha(ColorOpacities.opacity10),
               ),
             ),
             child: Row(
@@ -346,14 +352,14 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
                 Icon(
                   Icons.info_outline,
                   size: 16,
-                  color: context.colors.onSurface.withAlpha(150),
+                  color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: SpacingSizes.s),
                 Expanded(
                   child: Text(
                     'Set a start time to enable notifications',
                     style: context.textStyles.bodySmall?.copyWith(
-                      color: context.colors.onSurface.withAlpha(150),
+                      color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                       fontSize: TextSizes.s,
                     ),
                   ),
@@ -362,12 +368,12 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
             ),
           ),
         ] else ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: SpacingSizes.m),
 
           // Current notifications
           if (hasNotifications) ...[
             ...widget.notifications.map(_buildNotificationItem),
-            const SizedBox(height: 16),
+            const SizedBox(height: SpacingSizes.m),
           ],
 
           // Quick options
@@ -376,10 +382,10 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
             style: context.textStyles.bodyMedium?.copyWith(
               fontSize: TextSizes.m,
               fontWeight: FontWeight.w600,
-              color: context.colors.onSurface.withAlpha(150),
+              color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: SpacingSizes.s),
 
           GridView.count(
             shrinkWrap: true,
@@ -417,7 +423,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
               AdaptiveButtonWidget(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 borderRadius: 12,
-                primaryColor: context.colors.secondary.withAlpha(30),
+                primaryColor: context.colors.secondary.withAlpha(ColorOpacities.opacity10),
                 enableHaptics: false,
                 onPressed: _addCustomTimeNotification,
                 child: Column(
@@ -428,7 +434,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
                       size: 20,
                       color: context.colors.secondary,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: SpacingSizes.xs),
                     Text(
                       'Custom\ntime',
                       style: TextStyle(
@@ -444,7 +450,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
             ],
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: SpacingSizes.m),
 
           // Custom minutes input
           Text(
@@ -452,18 +458,18 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
             style: context.textStyles.bodyMedium?.copyWith(
               fontSize: TextSizes.m,
               fontWeight: FontWeight.w600,
-              color: context.colors.onSurface.withAlpha(150),
+              color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: SpacingSizes.s),
 
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(SpacingSizes.m),
             decoration: BoxDecoration(
               color: context.colors.surfaceContainerHigh,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: context.colors.outline.withAlpha(50),
+                color: context.colors.outline.withAlpha(ColorOpacities.opacity20),
               ),
             ),
             child: Row(
@@ -478,7 +484,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.zero,
                       hintStyle: TextStyle(
-                        color: context.colors.onSurface.withAlpha(100),
+                        color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
                         fontSize: TextSizes.m,
                       ),
                     ),
@@ -489,10 +495,10 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: SpacingSizes.s),
                 AdaptiveButtonWidget(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  primaryColor: context.colors.primary.withAlpha(30),
+                  primaryColor: context.colors.primary.withAlpha(ColorOpacities.opacity10),
                   borderRadius: 10,
                   enableHaptics: false,
                   onPressed: () {
@@ -528,7 +534,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
           Text(
             'Notifications can be scheduled up to $maxAdvanceHours hours in advance',
             style: context.textStyles.bodySmall?.copyWith(
-              color: context.colors.onSurface.withAlpha(120),
+              color: context.colors.onSurface.withAlpha(ColorOpacities.opacity50),
               fontSize: TextSizes.s,
             ),
           ),

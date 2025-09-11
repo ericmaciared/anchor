@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/color_opacities.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_card_widget.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
@@ -46,11 +47,11 @@ class WeekCalendar extends StatelessWidget {
           ),
           calendarStyle: CalendarStyle(
             todayDecoration: BoxDecoration(
-              color: context.colors.surfaceContainerHighest.withAlpha(150),
+              color: context.colors.surfaceContainerHighest.withAlpha(ColorOpacities.opacity60),
               shape: BoxShape.circle,
             ),
             selectedDecoration: BoxDecoration(
-              color: context.colors.primary.withAlpha(150),
+              color: context.colors.primary.withAlpha(ColorOpacities.opacity60),
               shape: BoxShape.circle,
             ),
             selectedTextStyle: TextStyle(color: context.colors.onPrimaryContainer),

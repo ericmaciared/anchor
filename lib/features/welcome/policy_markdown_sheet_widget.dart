@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -53,7 +54,7 @@ class PolicyMarkdownSheetWidget extends StatelessWidget {
         return Column(
           children: [
             // Grab handle + title row
-            const SizedBox(height: 16),
+            const SizedBox(height: SpacingSizes.m),
             Container(
               width: 48,
               height: 5,
@@ -62,7 +63,7 @@ class PolicyMarkdownSheetWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: SpacingSizes.s),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Row(
@@ -93,7 +94,7 @@ class PolicyMarkdownSheetWidget extends StatelessWidget {
                   if (snapshot.hasError) {
                     return Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(SpacingSizes.m),
                         child: Text(
                           'Failed to load policy.\n${snapshot.error}',
                           textAlign: TextAlign.center,
@@ -128,7 +129,7 @@ class PolicyMarkdownSheetWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      blockquotePadding: const EdgeInsets.all(12),
+                      blockquotePadding: const EdgeInsets.all(SpacingSizes.s),
                       code: context.textStyles.bodyMedium?.copyWith(
                         fontFamily: 'monospace',
                         backgroundColor: context.colors.surfaceContainerHighest.withAlpha(60),
@@ -141,7 +142,7 @@ class PolicyMarkdownSheetWidget extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: SpacingSizes.xl),
           ],
         );
       },

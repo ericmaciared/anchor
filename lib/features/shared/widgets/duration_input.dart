@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_dialog_widget.dart'; // Add this import
@@ -67,14 +69,14 @@ class DurationInput extends StatelessWidget {
                     );
                   }).toList(),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: SpacingSizes.m),
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(SpacingSizes.m),
                   decoration: BoxDecoration(
                     color: context.colors.surfaceContainerHigh,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: context.colors.outline.withAlpha(50),
+                      color: context.colors.outline.withAlpha(ColorOpacities.opacity20),
                     ),
                   ),
                   child: TextField(
@@ -82,7 +84,7 @@ class DurationInput extends StatelessWidget {
                     decoration: InputDecoration(
                       labelText: 'Custom Duration (minutes)',
                       labelStyle: TextStyle(
-                        color: context.colors.onSurface.withAlpha(150),
+                        color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                         fontSize: TextSizes.m,
                       ),
                       border: InputBorder.none,

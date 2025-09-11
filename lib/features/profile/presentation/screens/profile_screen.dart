@@ -1,3 +1,5 @@
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/scroll_fade_overlay_widget.dart';
@@ -6,6 +8,7 @@ import 'package:anchor/features/profile/presentation/widgets/display_density_set
 import 'package:anchor/features/profile/presentation/widgets/liquid_glass_setting_tile.dart';
 import 'package:anchor/features/profile/presentation/widgets/profile_name_section.dart';
 import 'package:anchor/features/profile/presentation/widgets/status_message_setting_tile.dart';
+import 'package:anchor/features/profile/presentation/widgets/theme_mode_setting_tile.dart';
 import 'package:anchor/features/profile/presentation/widgets/time_setting_tile.dart';
 import 'package:anchor/features/profile/presentation/widgets/visual_effects_setting_tile.dart';
 import 'package:anchor/features/shared/settings/settings_provider.dart';
@@ -30,6 +33,7 @@ class ProfileScreen extends ConsumerWidget {
         final profileName = settings.profileName;
         final wakeUpTime = settings.wakeUpTime;
         final bedTime = settings.bedTime;
+        final themeMode = settings.themeMode;
         final displayDensity = settings.displayDensity;
         final dailyQuotesEnabled = settings.dailyQuotesEnabled;
         final visualEffectsEnabled = settings.visualEffectsEnabled;
@@ -46,15 +50,15 @@ class ProfileScreen extends ConsumerWidget {
                 profileName: profileName,
                 onSurfaceColor: context.colors.onSurface,
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: SpacingSizes.xxl),
 
               // Tutorial Section - Add this
               const TutorialSection(),
-              const SizedBox(height: 32),
+              const SizedBox(height: SpacingSizes.xxl),
 
               // Settings Section
               _buildSectionHeader(context, 'Settings'),
-              const SizedBox(height: 16),
+              const SizedBox(height: SpacingSizes.m),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -71,6 +75,8 @@ class ProfileScreen extends ConsumerWidget {
                     currentTime: bedTime,
                     updateFunction: (newTime) => ref.read(settingsProvider.notifier).updateBedTime(newTime),
                   ),
+                  const Divider(indent: 16, endIndent: 16),
+                  ThemeModeSettingTile(currentThemeMode: themeMode),
                   const Divider(indent: 16, endIndent: 16),
                   DisplayDensitySettingTile(
                     currentDensity: displayDensity,
@@ -94,23 +100,23 @@ class ProfileScreen extends ConsumerWidget {
                 ],
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: SpacingSizes.xxl),
 
               // Feedback Section
               _buildSectionHeader(context, 'Feedback & Support'),
-              const SizedBox(height: 16),
+              const SizedBox(height: SpacingSizes.m),
               _buildFeedbackSection(context),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: SpacingSizes.xxl),
 
               // Legal Section
               _buildSectionHeader(context, 'Legal'),
-              const SizedBox(height: 16),
+              const SizedBox(height: SpacingSizes.m),
               _buildLegalSection(context),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: SpacingSizes.m),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: SpacingSizes.m),
                 child: Text(
                   'Anchor App Version 1.0.0',
                   textAlign: TextAlign.center,
@@ -119,7 +125,7 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: SpacingSizes.m),
               if (isDarkMode) Image.asset('assets/icon/app_logo_white.png', width: 80, height: 80),
               if (!isDarkMode) Image.asset('assets/icon/app_logo_black.png', width: 80, height: 80),
               const SizedBox(height: 96),
@@ -184,7 +190,7 @@ class ProfileScreen extends ConsumerWidget {
         Container(
           width: 1,
           height: 16,
-          color: context.colors.onSurfaceVariant.withAlpha(100),
+          color: context.colors.onSurfaceVariant.withAlpha(ColorOpacities.opacity40),
         ),
         TextButton(
           onPressed: () => _showPrivacyPolicy(context),
@@ -231,9 +237,9 @@ class ProfileScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('We couldn\'t open the feedback board automatically.'),
-            const SizedBox(height: 12),
+            const SizedBox(height: SpacingSizes.s),
             const Text('Please visit:'),
-            const SizedBox(height: 8),
+            const SizedBox(height: SpacingSizes.s),
             SelectableText(
               url,
               style: TextStyle(

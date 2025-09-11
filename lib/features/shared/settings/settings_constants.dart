@@ -4,6 +4,7 @@ class SettingsKeys {
   static const String profileName = 'profileName';
   static const String wakeUpTime = 'wakeUpTime';
   static const String bedTime = 'bedTime';
+  static const String themeMode = 'themeMode';
   static const String displayDensity = 'displayDensity';
   static const String dailyQuotesEnabled = 'dailyQuotesEnabled';
   static const String visualEffectsEnabled = 'visualEffectsEnabled';
@@ -16,6 +17,7 @@ class SettingsDefaults {
   static const String profileName = 'User Name';
   static const TimeOfDay wakeUpTime = TimeOfDay(hour: 8, minute: 0);
   static const TimeOfDay bedTime = TimeOfDay(hour: 22, minute: 0);
+  static const String themeMode = 'System';
   static const String displayDensity = 'Compact';
   static const bool dailyQuotesEnabled = true;
   static const bool visualEffectsEnabled = true;

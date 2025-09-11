@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_dialog_widget.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +50,7 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
   void _openCustomColorPicker() {
     HapticService.medium(); // Medium feedback for opening custom picker
 
-    Color tempColor = _customColor ?? context.colors.onSurface.withAlpha(100);
+    Color tempColor = _customColor ?? context.colors.onSurface.withAlpha(ColorOpacities.opacity40);
 
     DialogHelper.showCustom(
       context: context,
@@ -99,7 +101,7 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
         widget.onColorSelected(color);
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 4),
+        margin: const EdgeInsets.symmetric(horizontal: SpacingSizes.xs),
         width: 30,
         height: 30,
         decoration: BoxDecoration(
@@ -123,16 +125,16 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
     return GestureDetector(
       onTap: _openCustomColorPicker,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 4),
+        margin: const EdgeInsets.symmetric(horizontal: SpacingSizes.xs),
         width: 30,
         height: 30,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.transparent,
-          border: Border.all(color: context.colors.onSurface.withAlpha(100)),
+          border: Border.all(color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40)),
         ),
         child: Center(
-          child: Icon(Icons.add, size: 18, color: context.colors.onSurface.withAlpha(100)),
+          child: Icon(Icons.add, size: 18, color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40)),
         ),
       ),
     );
@@ -147,11 +149,11 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
           'Task Color',
           style: context.textStyles.titleMedium,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: SpacingSizes.s),
         Card(
           color: context.colors.surfaceContainerHigh,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(SpacingSizes.m),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(

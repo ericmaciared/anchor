@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/color_opacities.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +30,8 @@ class DurationSelector extends StatelessWidget {
       children: [
         Text(
           'How long?',
-          style: context.textStyles.titleMedium!.copyWith(color: context.colors.onSurface.withAlpha(100)),
+          style: context.textStyles.titleMedium!
+              .copyWith(color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40)),
         ),
         const SizedBox(height: 12),
         Wrap(

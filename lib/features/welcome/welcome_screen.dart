@@ -1,3 +1,5 @@
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
 import 'package:anchor/features/shared/gradients/dynamic_gradient.dart';
@@ -38,7 +40,7 @@ class WelcomeScreen extends StatelessWidget {
                               shadows: [
                                 Shadow(
                                   blurRadius: 4.0,
-                                  color: Colors.black.withAlpha(50),
+                                  color: Colors.black.withAlpha(ColorOpacities.opacity20),
                                   offset: const Offset(2.0, 2.0),
                                 ),
                               ],
@@ -50,7 +52,7 @@ class WelcomeScreen extends StatelessWidget {
                               shadows: [
                                 Shadow(
                                   blurRadius: 4.0,
-                                  color: Colors.black.withAlpha(50),
+                                  color: Colors.black.withAlpha(ColorOpacities.opacity20),
                                   offset: const Offset(2.0, 2.0),
                                 ),
                               ],
@@ -85,7 +87,7 @@ class WelcomeScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(width: 16),
+                                  const SizedBox(width: SpacingSizes.m),
                                   TextButton(
                                     onPressed: () => _showPrivacyPolicy(context),
                                     style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero),

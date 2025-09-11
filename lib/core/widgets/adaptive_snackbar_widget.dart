@@ -1,5 +1,7 @@
 // lib/core/widgets/adaptive_snackbar_widget.dart
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
@@ -56,7 +58,7 @@ class AdaptiveSnackbar extends StatelessWidget {
       primaryColor: backgroundColor ?? typeConfig.backgroundColor,
       borderRadius: 16,
       effectIntensity: 8,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(SpacingSizes.m),
       child: Row(
         children: [
           // Leading icon or custom widget
@@ -64,9 +66,9 @@ class AdaptiveSnackbar extends StatelessWidget {
             leading!
           else if (icon != null || typeConfig.icon != null)
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(SpacingSizes.s),
               decoration: BoxDecoration(
-                color: (iconColor ?? typeConfig.iconColor).withAlpha(30),
+                color: (iconColor ?? typeConfig.iconColor).withAlpha(ColorOpacities.opacity10),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
@@ -76,7 +78,7 @@ class AdaptiveSnackbar extends StatelessWidget {
               ),
             ),
 
-          if (leading != null || icon != null || typeConfig.icon != null) const SizedBox(width: 12),
+          if (leading != null || icon != null || typeConfig.icon != null) const SizedBox(width: SpacingSizes.s),
 
           // Message
           Expanded(
@@ -93,11 +95,11 @@ class AdaptiveSnackbar extends StatelessWidget {
 
           // Action button
           if (actionLabel != null && onAction != null) ...[
-            const SizedBox(width: 12),
+            const SizedBox(width: SpacingSizes.s),
             AdaptiveButtonWidget(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               borderRadius: 12,
-              primaryColor: typeConfig.actionColor.withAlpha(30),
+              primaryColor: typeConfig.actionColor.withAlpha(ColorOpacities.opacity10),
               enableHaptics: false,
               onPressed: () {
                 HapticService.medium();
@@ -116,12 +118,12 @@ class AdaptiveSnackbar extends StatelessWidget {
 
           // Close button
           if (showCloseButton) ...[
-            const SizedBox(width: 8),
+            const SizedBox(width: SpacingSizes.s),
             AdaptiveButtonWidget(
               width: 32,
               height: 32,
               borderRadius: 16,
-              primaryColor: typeConfig.iconColor.withAlpha(20),
+              primaryColor: typeConfig.iconColor.withAlpha(ColorOpacities.opacity10),
               enableHaptics: false,
               onPressed: () {
                 HapticService.light();
@@ -130,14 +132,14 @@ class AdaptiveSnackbar extends StatelessWidget {
               child: Icon(
                 Icons.close,
                 size: 16,
-                color: typeConfig.iconColor.withAlpha(150),
+                color: typeConfig.iconColor.withAlpha(ColorOpacities.opacity60),
               ),
             ),
           ],
 
           // Trailing widget
           if (trailing != null) ...[
-            const SizedBox(width: 12),
+            const SizedBox(width: SpacingSizes.s),
             trailing!,
           ],
         ],
@@ -151,7 +153,7 @@ class AdaptiveSnackbar extends StatelessWidget {
         return _SnackbarTypeConfig(
           icon: Icons.check_circle_outline,
           iconColor: Colors.green,
-          backgroundColor: Colors.green.withAlpha(15),
+          backgroundColor: Colors.green.withAlpha(ColorOpacities.opacity10),
           textColor: context.colors.onSurface,
           actionColor: Colors.green,
         );
@@ -159,7 +161,7 @@ class AdaptiveSnackbar extends StatelessWidget {
         return _SnackbarTypeConfig(
           icon: Icons.error_outline,
           iconColor: context.colors.error,
-          backgroundColor: context.colors.error.withAlpha(15),
+          backgroundColor: context.colors.error.withAlpha(ColorOpacities.opacity10),
           textColor: context.colors.onSurface,
           actionColor: context.colors.error,
         );
@@ -167,7 +169,7 @@ class AdaptiveSnackbar extends StatelessWidget {
         return _SnackbarTypeConfig(
           icon: Icons.warning_amber_outlined,
           iconColor: Colors.orange,
-          backgroundColor: Colors.orange.withAlpha(15),
+          backgroundColor: Colors.orange.withAlpha(ColorOpacities.opacity10),
           textColor: context.colors.onSurface,
           actionColor: Colors.orange,
         );
@@ -175,7 +177,7 @@ class AdaptiveSnackbar extends StatelessWidget {
         return _SnackbarTypeConfig(
           icon: Icons.info_outline,
           iconColor: context.colors.primary,
-          backgroundColor: context.colors.primary.withAlpha(15),
+          backgroundColor: context.colors.primary.withAlpha(ColorOpacities.opacity10),
           textColor: context.colors.onSurface,
           actionColor: context.colors.primary,
         );
@@ -235,9 +237,9 @@ class SnackbarHelper {
     final effectiveBottomSpacing = bottomSpacing ?? _defaultBottomSpacing;
     final defaultMargin = margin ??
         EdgeInsets.fromLTRB(
-          16, // left
-          16, // top
-          16, // right
+          SpacingSizes.m, // left
+          SpacingSizes.m, // top
+          SpacingSizes.m, // right
           effectiveBottomSpacing, // bottom - space for floating nav bar
         );
 
@@ -372,7 +374,7 @@ class SnackbarHelper {
       message: message,
       type: SnackbarType.custom,
       leading: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(SpacingSizes.s),
         child: const SizedBox(
           width: 20,
           height: 20,
@@ -408,7 +410,7 @@ class SnackbarHelper {
             CircularProgressIndicator(
               value: progress,
               strokeWidth: 3,
-              backgroundColor: context.colors.outline.withAlpha(50),
+              backgroundColor: context.colors.outline.withAlpha(ColorOpacities.opacity20),
             ),
             Text(
               '${(progress * 100).round()}%',
@@ -574,7 +576,7 @@ extension SnackbarExtension on BuildContext {
       type: type,
       actionLabel: actionLabel,
       onAction: onAction,
-      bottomSpacing: 16, // Standard bottom margin
+      bottomSpacing: SpacingSizes.m, // Standard bottom margin
     );
   }
 }

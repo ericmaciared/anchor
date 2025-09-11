@@ -1,4 +1,5 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
@@ -91,15 +92,15 @@ class SuggestedTasksChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      padding: const EdgeInsets.symmetric(vertical: SpacingSizes.m),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            SizedBox(width: 16),
+            SizedBox(width: SpacingSizes.m),
             ..._suggestions.map((suggested) {
               return Padding(
-                padding: const EdgeInsets.only(right: 8.0),
+                padding: const EdgeInsets.only(right: SpacingSizes.s),
                 child: ActionChip(
                   avatar: Icon(suggested.icon, size: 16),
                   label: Text(suggested.title, style: context.textStyles.bodyMedium!.copyWith(fontSize: TextSizes.s)),

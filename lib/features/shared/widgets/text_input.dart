@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/color_opacities.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
@@ -117,19 +118,19 @@ class _TextInputState extends State<TextInput> {
     switch (widget.variant) {
       case TextInputVariant.primary:
         return context.textStyles.bodyMedium!.copyWith(
-          color: context.colors.primary.withAlpha(150),
+          color: context.colors.primary.withAlpha(ColorOpacities.opacity60),
           fontSize: widget.fontSize ?? TextSizes.xxl,
           fontWeight: widget.fontWeight ?? FontWeight.w500,
         );
       case TextInputVariant.secondary:
         return context.textStyles.bodyMedium!.copyWith(
-          color: context.colors.onSurface.withAlpha(100),
+          color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
           fontSize: widget.fontSize ?? TextSizes.m,
           fontWeight: widget.fontWeight ?? FontWeight.w400,
         );
       case TextInputVariant.outlined:
         return context.textStyles.bodyMedium!.copyWith(
-          color: context.colors.onSurface.withAlpha(120),
+          color: context.colors.onSurface.withAlpha(ColorOpacities.opacity50),
           fontSize: widget.fontSize ?? TextSizes.m,
           fontWeight: widget.fontWeight ?? FontWeight.w400,
         );
@@ -145,7 +146,7 @@ class _TextInputState extends State<TextInput> {
           isDense: true,
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: context.colors.onSurface.withAlpha(0),
+              color: Colors.transparent,
             ),
           ),
           focusedBorder: UnderlineInputBorder(
@@ -183,13 +184,13 @@ class _TextInputState extends State<TextInput> {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: context.colors.outline.withAlpha(50),
+              color: context.colors.outline.withAlpha(ColorOpacities.opacity20),
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: context.colors.outline.withAlpha(50),
+              color: context.colors.outline.withAlpha(ColorOpacities.opacity20),
             ),
           ),
           focusedBorder: OutlineInputBorder(

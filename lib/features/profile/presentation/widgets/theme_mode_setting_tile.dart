@@ -1,6 +1,5 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/theme/color_opacities.dart';
-import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
@@ -8,37 +7,42 @@ import 'package:anchor/features/shared/settings/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DisplayDensitySettingTile extends ConsumerWidget {
-  final String currentDensity;
+class ThemeModeSettingTile extends ConsumerWidget {
+  final String currentThemeMode;
 
-  const DisplayDensitySettingTile({
+  const ThemeModeSettingTile({
     super.key,
-    required this.currentDensity,
+    required this.currentThemeMode,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final options = [
-      _DensityOption(
-        value: 'Compact',
-        label: 'Compact',
-        icon: Icons.view_headline,
+      _ThemeModeOption(
+        value: 'Light',
+        label: 'Light',
+        icon: Icons.light_mode,
       ),
-      _DensityOption(
-        value: 'Spacious',
-        label: 'Spacious',
-        icon: Icons.view_comfortable,
+      _ThemeModeOption(
+        value: 'Dark',
+        label: 'Dark',
+        icon: Icons.dark_mode,
+      ),
+      _ThemeModeOption(
+        value: 'System',
+        label: 'System',
+        icon: Icons.brightness_4,
       ),
     ];
 
     return ListTile(
-      leading: Icon(Icons.density_medium, color: context.colors.primary),
-      title: const Text('Display Density', style: TextStyle(fontSize: TextSizes.m)),
+      leading: Icon(Icons.palette, color: context.colors.primary),
+      title: const Text('Theme Mode', style: TextStyle(fontSize: TextSizes.m)),
       subtitle: Padding(
         padding: const EdgeInsets.only(top: 12.0),
         child: Row(
           children: options.map((option) {
-            final isSelected = option.value == currentDensity;
+            final isSelected = option.value == currentThemeMode;
 
             return Expanded(
               child: Padding(
@@ -60,7 +64,7 @@ class DisplayDensitySettingTile extends ConsumerWidget {
                       : null,
                   onPressed: () {
                     HapticService.selection();
-                    ref.read(settingsProvider.notifier).updateDisplayDensity(option.value);
+                    ref.read(settingsProvider.notifier).updateThemeMode(option.value);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +76,7 @@ class DisplayDensitySettingTile extends ConsumerWidget {
                             ? context.colors.primary
                             : context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                       ),
-                      const SizedBox(height: SpacingSizes.xs),
+                      const SizedBox(height: 4),
                       Text(
                         option.label,
                         style: TextStyle(
@@ -93,12 +97,12 @@ class DisplayDensitySettingTile extends ConsumerWidget {
   }
 }
 
-class _DensityOption {
+class _ThemeModeOption {
   final String value;
   final String label;
   final IconData icon;
 
-  const _DensityOption({
+  const _ThemeModeOption({
     required this.value,
     required this.label,
     required this.icon,

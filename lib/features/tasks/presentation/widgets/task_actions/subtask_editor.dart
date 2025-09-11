@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
@@ -114,28 +116,28 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
 
   Widget _buildSubtaskItem(int index, SubtaskModel subtask) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: SpacingSizes.m),
+      padding: const EdgeInsets.all(SpacingSizes.m),
       decoration: BoxDecoration(
         color: context.colors.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: context.colors.outline.withAlpha(30),
+          color: context.colors.outline.withAlpha(ColorOpacities.opacity10),
         ),
       ),
       child: Row(
         children: [
           // Drag handle
           Container(
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(SpacingSizes.xs),
             child: Icon(
               Icons.drag_handle,
               size: 16,
-              color: context.colors.onSurface.withAlpha(100),
+              color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
             ),
           ),
 
-          const SizedBox(width: 12),
+          const SizedBox(width: SpacingSizes.s),
 
           // Text input
           Expanded(
@@ -153,7 +155,7 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
             ),
           ),
 
-          const SizedBox(width: 12),
+          const SizedBox(width: SpacingSizes.s),
 
           // Delete button
           AdaptiveButtonWidget(
@@ -161,7 +163,7 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
             height: 32,
             borderRadius: 16,
             enableHaptics: false,
-            primaryColor: context.colors.error.withAlpha(20),
+            primaryColor: context.colors.error.withAlpha(ColorOpacities.opacity10),
             onPressed: () => _removeSubtask(index),
             child: Icon(
               Icons.close,
@@ -187,7 +189,7 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
               size: 20,
               color: context.colors.primary,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: SpacingSizes.s),
             Text(
               'Subtasks',
               style: context.textStyles.titleMedium?.copyWith(
@@ -199,7 +201,7 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
             AdaptiveButtonWidget(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               borderRadius: 12,
-              primaryColor: context.colors.primary.withAlpha(30),
+              primaryColor: context.colors.primary.withAlpha(ColorOpacities.opacity10),
               enableHaptics: false,
               onPressed: _addSubtask,
               child: Row(
@@ -210,7 +212,7 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
                     size: 16,
                     color: context.colors.primary,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: SpacingSizes.xs),
                   Text(
                     'Add',
                     style: TextStyle(
@@ -225,18 +227,18 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
           ],
         ),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: SpacingSizes.m),
 
         // Subtasks list
         if (_localSubtasks.isEmpty)
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(SpacingSizes.l),
             decoration: BoxDecoration(
-              color: context.colors.surfaceContainerHigh.withAlpha(100),
+              color: context.colors.surfaceContainerHigh.withAlpha(ColorOpacities.opacity40),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: context.colors.outline.withAlpha(30),
+                color: context.colors.outline.withAlpha(ColorOpacities.opacity10),
               ),
             ),
             child: Column(
@@ -244,13 +246,13 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
                 Icon(
                   Icons.checklist_outlined,
                   size: 32,
-                  color: context.colors.onSurface.withAlpha(100),
+                  color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: SpacingSizes.s),
                 Text(
                   'No subtasks yet',
                   style: context.textStyles.bodyMedium?.copyWith(
-                    color: context.colors.onSurface.withAlpha(150),
+                    color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                     fontSize: TextSizes.m,
                     fontWeight: FontWeight.w500,
                   ),
@@ -259,7 +261,7 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
                 Text(
                   'Break down this task into smaller steps',
                   style: context.textStyles.bodySmall?.copyWith(
-                    color: context.colors.onSurface.withAlpha(100),
+                    color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
                     fontSize: TextSizes.s,
                   ),
                   textAlign: TextAlign.center,

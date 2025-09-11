@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/color_opacities.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/shared/widgets/text_input.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,8 @@ class _IconAndTitleState extends State<IconAndTitle> {
       children: [
         Text(
           'What?',
-          style: context.textStyles.titleLarge!.copyWith(color: context.colors.onSurface.withAlpha(100)),
+          style: context.textStyles.titleLarge!
+              .copyWith(color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40)),
         ),
         const SizedBox(height: 12),
         Row(

@@ -1,3 +1,5 @@
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/habits/domain/entities/habit_model.dart';
@@ -52,7 +54,7 @@ class HabitCard extends StatelessWidget {
                   ),
                   clipBehavior: Clip.antiAlias,
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(SpacingSizes.s),
                     child: Column(
                       children: [
                         Text(
@@ -61,7 +63,7 @@ class HabitCard extends StatelessWidget {
                             fontSize: TextSizes.m,
                             decoration: isCompletedToday ? TextDecoration.lineThrough : TextDecoration.none,
                             color: isCompletedToday
-                                ? context.textStyles.titleMedium!.color?.withAlpha(150)
+                                ? context.textStyles.titleMedium!.color?.withAlpha(ColorOpacities.opacity60)
                                 : context.textStyles.titleMedium!.color,
                           ),
                         ),
@@ -76,7 +78,9 @@ class HabitCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.local_fire_department,
-                        color: isCompletedToday ? context.colors.secondary : context.colors.onSurface.withAlpha(100),
+                        color: isCompletedToday
+                            ? context.colors.secondary
+                            : context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
                         size: 20,
                       ),
                       const SizedBox(

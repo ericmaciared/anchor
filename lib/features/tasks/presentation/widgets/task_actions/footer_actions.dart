@@ -1,4 +1,5 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,9 @@ class FooterActions extends StatelessWidget {
           child: Text(
             isEdit ? 'Save Changes' : 'Create Task',
             style: TextStyle(
-              color: isSaveEnabled ? context.colors.onSurface : context.colors.onSurface.withAlpha(100),
+              color: isSaveEnabled
+                  ? context.colors.onSurface
+                  : context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
             ),
           ),
         ),

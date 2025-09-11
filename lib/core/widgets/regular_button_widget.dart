@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/color_opacities.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +38,7 @@ class RegularButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final effectiveBackgroundColor = backgroundColor ?? context.colors.surfaceContainerHighest;
 
-    final effectiveShadowColor = shadowColor ?? Colors.black.withAlpha(50);
+    final effectiveShadowColor = shadowColor ?? Colors.black.withAlpha(ColorOpacities.opacity20);
 
     final effectiveBorderRadius = customBorderRadius ?? BorderRadius.circular(borderRadius);
 

@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class TaskTimeColumn extends StatelessWidget {
             textAlign: TextAlign.center,
             style: context.textStyles.bodySmall!.copyWith(fontSize: TextSizes.s),
           ),
-          if (duration != null) const SizedBox(height: 12),
+          if (duration != null) const SizedBox(height: SpacingSizes.s),
           if (duration != null)
             Text(
               DateFormat('HH:mm').format(endTime),

@@ -4,6 +4,7 @@ class SettingsState {
   final String profileName;
   final TimeOfDay wakeUpTime;
   final TimeOfDay bedTime;
+  final String themeMode;
   final String displayDensity;
   final bool dailyQuotesEnabled;
   final bool visualEffectsEnabled;
@@ -14,6 +15,7 @@ class SettingsState {
     required this.profileName,
     required this.wakeUpTime,
     required this.bedTime,
+    required this.themeMode,
     required this.displayDensity,
     required this.dailyQuotesEnabled,
     required this.visualEffectsEnabled,
@@ -25,6 +27,7 @@ class SettingsState {
     String? profileName,
     TimeOfDay? wakeUpTime,
     TimeOfDay? bedTime,
+    String? themeMode,
     String? displayDensity,
     bool? dailyQuotesEnabled,
     bool? visualEffectsEnabled,
@@ -35,6 +38,7 @@ class SettingsState {
       profileName: profileName ?? this.profileName,
       wakeUpTime: wakeUpTime ?? this.wakeUpTime,
       bedTime: bedTime ?? this.bedTime,
+      themeMode: themeMode ?? this.themeMode,
       displayDensity: displayDensity ?? this.displayDensity,
       dailyQuotesEnabled: dailyQuotesEnabled ?? this.dailyQuotesEnabled,
       visualEffectsEnabled: visualEffectsEnabled ?? this.visualEffectsEnabled,

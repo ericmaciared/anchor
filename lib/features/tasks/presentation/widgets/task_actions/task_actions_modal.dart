@@ -1,3 +1,5 @@
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/notification_configurator.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/subtask_editor.dart';
@@ -147,7 +149,7 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withAlpha(20),
+              color: Colors.black.withAlpha(ColorOpacities.opacity10),
               blurRadius: 20,
               offset: const Offset(0, -5),
             ),
@@ -178,7 +180,7 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                       onTaskChanged: _updateTask,
                     ),
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: SpacingSizes.l),
 
                     // Expandable sections
                     ExpandableSection(
@@ -211,7 +213,7 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                       ),
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: SpacingSizes.m),
                   ],
                 ),
               ),
@@ -221,7 +223,7 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
                 expandedSections: _expandedSections,
                 onToggleSection: _toggleSection,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: SpacingSizes.m),
 
               // Footer
               TaskModalFooter(

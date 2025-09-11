@@ -1,4 +1,6 @@
 import 'package:anchor/core/services/haptic_feedback_service.dart';
+import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -81,10 +83,10 @@ class IconPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(SpacingSizes.s),
         child: Column(
           children: [
-            const SizedBox(height: 16),
+            const SizedBox(height: SpacingSizes.m),
             Expanded(
               child: ListView(
                 children: _iconCategories.entries.map((entry) {
@@ -113,9 +115,11 @@ class IconPicker extends StatelessWidget {
                                 Navigator.pop(context);
                               },
                               child: Container(
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(SpacingSizes.s),
                                 decoration: BoxDecoration(
-                                  color: isSelected ? context.colors.primary.withAlpha(12) : Colors.transparent,
+                                  color: isSelected
+                                      ? context.colors.primary.withAlpha(ColorOpacities.opacity10)
+                                      : Colors.transparent,
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(

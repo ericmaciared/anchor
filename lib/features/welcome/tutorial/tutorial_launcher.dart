@@ -1,3 +1,4 @@
+import 'package:anchor/core/theme/color_opacities.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/welcome/tutorial/welcome_tutorial_modal.dart';
@@ -224,7 +225,7 @@ class TutorialSection extends StatelessWidget {
           description,
           style: context.textStyles.bodyMedium?.copyWith(
             fontSize: TextSizes.s,
-            color: context.colors.onSurface.withAlpha(180),
+            color: context.colors.onSurface.withAlpha(ColorOpacities.opacity70),
           ),
         ),
       ],
