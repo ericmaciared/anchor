@@ -25,10 +25,6 @@ class _GreetingCardState extends ConsumerState<GreetingCard> with TickerProvider
   int _lastCompletedHabits = -1;
   int _lastTotalHabits = -1;
 
-  // Cache for expensive computations
-  String _cacheKey = '';
-  List<TextSpan>? _cachedSpans;
-
   @override
   void initState() {
     super.initState();
@@ -64,18 +60,6 @@ class _GreetingCardState extends ConsumerState<GreetingCard> with TickerProvider
     }
   }
 
-  String _generateCacheKey(
-    String userName,
-    int totalTasks,
-    int completedTasks,
-    int totalHabits,
-    int completedHabits,
-    String displayDensity,
-  ) {
-    final greeting = _getGreeting();
-    return '$greeting-$userName-$completedTasks-$totalTasks-$completedHabits-$totalHabits-$displayDensity';
-  }
-
   EdgeInsets _getPadding(String displayDensity) {
     return displayDensity == 'Compact'
         ? const EdgeInsets.symmetric(horizontal: 0, vertical: 12)
@@ -91,20 +75,6 @@ class _GreetingCardState extends ConsumerState<GreetingCard> with TickerProvider
     int completedHabits,
     String displayDensity,
   ) {
-    final cacheKey = _generateCacheKey(
-      userName,
-      totalTasks,
-      completedTasks,
-      totalHabits,
-      completedHabits,
-      displayDensity,
-    );
-
-    // Return cached result if available
-    if (_cacheKey == cacheKey && _cachedSpans != null) {
-      return _cachedSpans!;
-    }
-
     final remainingTasks = totalTasks - completedTasks;
     final remainingHabits = totalHabits - completedHabits;
     final totalRemainingGoals = remainingTasks + remainingHabits;
@@ -304,10 +274,6 @@ class _GreetingCardState extends ConsumerState<GreetingCard> with TickerProvider
         }
       }
     }
-
-    // Cache the result
-    _cacheKey = cacheKey;
-    _cachedSpans = messageSpans;
 
     return messageSpans;
   }
