@@ -55,7 +55,18 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
   }
 
   void _notifyChange() {
-    widget.onChanged(List.unmodifiable(_localSubtasks));
+    // Filter out subtasks with empty or whitespace-only titles
+    final validSubtasks = _localSubtasks.where((subtask) => subtask.title.trim().isNotEmpty).toList();
+
+    widget.onChanged(List.unmodifiable(validSubtasks));
+  }
+
+// Alternative approach: Update the _updateTitle method to also filter
+  void _updateTitle(int index, String title) {
+    setState(() {
+      _localSubtasks[index] = _localSubtasks[index].copyWith(title: title);
+    });
+    _notifyChange();
   }
 
   void _addSubtask() {
@@ -93,13 +104,6 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
       // Dispose and remove the focus node for the removed subtask
       _focusNodes[subtaskToRemove.id]?.dispose();
       _focusNodes.remove(subtaskToRemove.id);
-    });
-    _notifyChange();
-  }
-
-  void _updateTitle(int index, String title) {
-    setState(() {
-      _localSubtasks[index] = _localSubtasks[index].copyWith(title: title);
     });
     _notifyChange();
   }

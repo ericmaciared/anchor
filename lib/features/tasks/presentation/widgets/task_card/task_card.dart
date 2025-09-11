@@ -1,6 +1,7 @@
 import 'package:anchor/core/mixins/safe_animation_mixin.dart';
 import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/theme/spacing_sizes.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_dialog_widget.dart';
 import 'package:anchor/features/tasks/domain/entities/subtask_model.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
@@ -187,6 +188,8 @@ class _TaskCardState extends State<TaskCard> with TickerProviderStateMixin, Safe
                     // Main task card
                     Expanded(
                       child: Card(
+                        elevation: 1,
+                        color: context.colors.surfaceContainerLowest,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
