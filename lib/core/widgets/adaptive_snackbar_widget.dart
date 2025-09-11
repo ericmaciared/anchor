@@ -55,7 +55,7 @@ class AdaptiveSnackbar extends StatelessWidget {
     final typeConfig = _getTypeConfiguration(context);
 
     return AdaptiveCardWidget(
-      primaryColor: backgroundColor ?? typeConfig.backgroundColor,
+      primaryColor: typeConfig.backgroundColor,
       borderRadius: 16,
       effectIntensity: 8,
       padding: const EdgeInsets.all(SpacingSizes.m),
@@ -148,12 +148,21 @@ class AdaptiveSnackbar extends StatelessWidget {
   }
 
   _SnackbarTypeConfig _getTypeConfiguration(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     switch (type) {
       case SnackbarType.success:
         return _SnackbarTypeConfig(
           icon: Icons.check_circle_outline,
           iconColor: Colors.green,
-          backgroundColor: Colors.green.withAlpha(ColorOpacities.opacity30),
+          backgroundColor: isDark
+              ? Colors.green.withAlpha(ColorOpacities.opacity20)
+              : Color.lerp(
+                    Colors.black.withAlpha(ColorOpacities.opacity10),
+                    Colors.green.withAlpha(ColorOpacities.opacity20),
+                    0.3,
+                  ) ??
+                  Colors.green.withAlpha(ColorOpacities.opacity20),
           textColor: context.colors.onSurface,
           actionColor: Colors.green,
         );
@@ -161,7 +170,14 @@ class AdaptiveSnackbar extends StatelessWidget {
         return _SnackbarTypeConfig(
           icon: Icons.error_outline,
           iconColor: context.colors.error,
-          backgroundColor: context.colors.error.withAlpha(ColorOpacities.opacity10),
+          backgroundColor: isDark
+              ? context.colors.error.withAlpha(ColorOpacities.opacity20)
+              : Color.lerp(
+                    Colors.black.withAlpha(ColorOpacities.opacity10),
+                    context.colors.error.withAlpha(ColorOpacities.opacity20),
+                    0.3,
+                  ) ??
+                  context.colors.error.withAlpha(ColorOpacities.opacity20),
           textColor: context.colors.onSurface,
           actionColor: context.colors.error,
         );
@@ -169,7 +185,7 @@ class AdaptiveSnackbar extends StatelessWidget {
         return _SnackbarTypeConfig(
           icon: Icons.warning_amber_outlined,
           iconColor: Colors.orange,
-          backgroundColor: Colors.orange.withAlpha(ColorOpacities.opacity10),
+          backgroundColor: Colors.orange.withAlpha(ColorOpacities.opacity20),
           textColor: context.colors.onSurface,
           actionColor: Colors.orange,
         );
@@ -177,7 +193,14 @@ class AdaptiveSnackbar extends StatelessWidget {
         return _SnackbarTypeConfig(
           icon: Icons.info_outline,
           iconColor: context.colors.primary,
-          backgroundColor: context.colors.primary.withAlpha(ColorOpacities.opacity10),
+          backgroundColor: isDark
+              ? context.colors.primary.withAlpha(ColorOpacities.opacity20)
+              : Color.lerp(
+                    Colors.black.withAlpha(ColorOpacities.opacity10),
+                    context.colors.primary.withAlpha(ColorOpacities.opacity20),
+                    0.3,
+                  ) ??
+                  context.colors.primary.withAlpha(ColorOpacities.opacity20),
           textColor: context.colors.onSurface,
           actionColor: context.colors.primary,
         );
