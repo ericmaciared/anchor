@@ -67,11 +67,28 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
       return;
     }
 
+    // Check for duplicate notifications with same trigger
+    final existingNotification = widget.notifications.firstWhere(
+      (n) => n.triggerType == 'minutesBefore' && n.triggerValue == minutesBefore,
+      orElse: () => NotificationModel(
+        id: -1,
+        taskId: '',
+        triggerType: '',
+        triggerValue: 0,
+        scheduledTime: DateTime.now(),
+      ),
+    );
+
+    if (existingNotification.id != -1) {
+      _showError('A notification for $minutesBefore minutes before already exists');
+      return;
+    }
+
     final safeId = await NotificationIdGenerator.next();
 
     final newNotification = NotificationModel(
       id: safeId,
-      taskId: 't',
+      taskId: 't', // This will be updated when the task is saved
       triggerType: 'minutesBefore',
       triggerValue: minutesBefore,
       scheduledTime: scheduledTime,
@@ -123,11 +140,31 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
       return;
     }
 
+    // Check for duplicate custom time notifications
+    final existingNotification = widget.notifications.firstWhere(
+      (n) =>
+          n.triggerType == 'customTime' &&
+          n.scheduledTime.hour == scheduledTime.hour &&
+          n.scheduledTime.minute == scheduledTime.minute,
+      orElse: () => NotificationModel(
+        id: -1,
+        taskId: '',
+        triggerType: '',
+        triggerValue: 0,
+        scheduledTime: DateTime.now(),
+      ),
+    );
+
+    if (existingNotification.id != -1) {
+      _showError('A notification for ${result.format(context)} already exists');
+      return;
+    }
+
     final safeId = await NotificationIdGenerator.next();
 
     final newNotification = NotificationModel(
       id: safeId,
-      taskId: 't',
+      taskId: 't', // This will be updated when the task is saved
       triggerType: 'customTime',
       triggerValue: 0,
       scheduledTime: scheduledTime,

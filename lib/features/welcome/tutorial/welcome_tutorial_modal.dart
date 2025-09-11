@@ -868,12 +868,8 @@ class _GetStartedSlide extends StatelessWidget {
           const SizedBox(height: 32),
 
           // Quick tips
-          Container(
+          AdaptiveCardWidget(
             padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: context.colors.surfaceContainerHigh.withAlpha(100),
-              borderRadius: BorderRadius.circular(16),
-            ),
             child: Column(
               children: [
                 Text(
@@ -885,7 +881,9 @@ class _GetStartedSlide extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 _buildTip(context, 'Tap + to create tasks and habits'),
+                const SizedBox(height: 8),
                 _buildTip(context, 'Long press to edit or complete tasks'),
+                const SizedBox(height: 8),
                 _buildTip(context, 'Swipe calendar to navigate between days'),
               ],
             ),
