@@ -25,10 +25,10 @@ class LiquidGlassCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = context.theme.brightness == Brightness.dark;
+
+    // Enhanced glass color for better visibility in light mode
     final effectiveGlassColor = glassColor ??
-        (isDarkMode
-            ? Colors.white.withAlpha(ColorOpacities.opacity10)
-            : Colors.white.withAlpha(ColorOpacities.opacity20));
+        (isDarkMode ? Colors.white.withAlpha(ColorOpacities.opacity10) : _getLightModeGlassColor(context));
 
     final shape = customShape ??
         LiquidRoundedSuperellipse(
@@ -47,5 +47,20 @@ class LiquidGlassCardWidget extends StatelessWidget {
         child: AnimatedFadeInWidget(child: child),
       ),
     );
+  }
+
+  /// Creates an enhanced glass effect for light mode
+  /// Uses a combination of white and subtle theme color for better visibility
+  Color _getLightModeGlassColor(BuildContext context) {
+    // Get the primary color for a subtle tint
+    final primaryColor = context.colors.primary;
+
+    // Create a base white color with higher opacity for better visibility
+    final baseWhite = Colors.white.withAlpha(ColorOpacities.opacity60);
+
+    // Create a more noticeable tinted version by blending with primary color
+    final tintedColor = Color.lerp(baseWhite, primaryColor.withAlpha(ColorOpacities.opacity20), 0.25);
+
+    return tintedColor ?? baseWhite;
   }
 }

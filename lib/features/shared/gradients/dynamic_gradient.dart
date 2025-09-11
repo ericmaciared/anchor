@@ -12,8 +12,7 @@ class DynamicGradient extends StatefulWidget {
     this.child,
     this.duration = const Duration(seconds: 120),
     this.accentColors = const [
-      Color(0xFFF0C27B),
-      Color(0xFF4B1248),
+      Color(0xFFFFFFFF),
       Color(0xFFE94057),
       Color(0xFFF27121),
       Color(0xFFFDC830),
@@ -23,6 +22,8 @@ class DynamicGradient extends StatefulWidget {
       Color(0xFF5B86E5),
       Color(0xFF4568DC),
       Color(0xFFB06AB3),
+      Color(0xFF4B1248),
+      Color(0xFFF0C27B),
     ],
   });
 
