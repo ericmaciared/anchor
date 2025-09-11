@@ -1,6 +1,9 @@
+import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/theme/color_opacities.dart';
+import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
+import 'package:anchor/core/widgets/adaptive_dialog_widget.dart';
 import 'package:anchor/features/welcome/tutorial/welcome_tutorial_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -140,6 +143,7 @@ class TutorialSection extends StatelessWidget {
             color: context.colors.onSurfaceVariant,
           ),
           onTap: () {
+            HapticService.light();
             TutorialLauncher.showTutorial(
               context: context,
               isFromProfile: true,
@@ -160,6 +164,7 @@ class TutorialSection extends StatelessWidget {
             color: context.colors.onSurfaceVariant,
           ),
           onTap: () {
+            HapticService.light();
             _showQuickTipsDialog(context);
           },
         ),
@@ -170,41 +175,35 @@ class TutorialSection extends StatelessWidget {
   void _showQuickTipsDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Row(
-          children: [
-            Icon(Icons.tips_and_updates, color: context.colors.primary),
-            const SizedBox(width: 8),
-            const Text('Quick Tips'),
-          ],
-        ),
-        content: SingleChildScrollView(
+      barrierDismissible: true,
+      builder: (dialogContext) => AdaptiveDialogWidget(
+        title: 'Quick Tips',
+        contentWidget: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildTipItem(
                   context, 'Creating Tasks', 'Tap the + button to add new tasks with times, durations, and colors.'),
-              const SizedBox(height: 16),
+              const SizedBox(height: SpacingSizes.m),
               _buildTipItem(context, 'Managing Tasks',
                   'Tap to expand tasks, long-press to edit, or hold the completion button to finish.'),
-              const SizedBox(height: 16),
+              const SizedBox(height: SpacingSizes.m),
               _buildTipItem(
                   context, 'Building Habits', 'Create daily habits and track your streaks. Consistency is key!'),
-              const SizedBox(height: 16),
+              const SizedBox(height: SpacingSizes.m),
               _buildTipItem(context, 'Navigation', 'Swipe the calendar to move between days and plan ahead.'),
-              const SizedBox(height: 16),
+              const SizedBox(height: SpacingSizes.m),
               _buildTipItem(context, 'Personalization',
                   'Visit the profile section to customize visual effects and display options.'),
             ],
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Got it!'),
-          ),
-        ],
+        primaryActionText: 'Got it!',
+        onPrimaryAction: () {
+          HapticService.medium();
+          Navigator.of(dialogContext).pop();
+        },
       ),
     );
   }
@@ -218,14 +217,16 @@ class TutorialSection extends StatelessWidget {
           style: context.textStyles.titleSmall?.copyWith(
             fontWeight: FontWeight.w600,
             color: context.colors.primary,
+            fontSize: TextSizes.m,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: SpacingSizes.xs),
         Text(
           description,
           style: context.textStyles.bodyMedium?.copyWith(
             fontSize: TextSizes.s,
             color: context.colors.onSurface.withAlpha(ColorOpacities.opacity70),
+            height: 1.4,
           ),
         ),
       ],
