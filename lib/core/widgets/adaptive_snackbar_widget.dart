@@ -153,7 +153,7 @@ class AdaptiveSnackbar extends StatelessWidget {
         return _SnackbarTypeConfig(
           icon: Icons.check_circle_outline,
           iconColor: Colors.green,
-          backgroundColor: Colors.green.withAlpha(ColorOpacities.opacity10),
+          backgroundColor: Colors.green.withAlpha(ColorOpacities.opacity30),
           textColor: context.colors.onSurface,
           actionColor: Colors.green,
         );

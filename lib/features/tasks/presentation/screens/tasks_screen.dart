@@ -6,6 +6,7 @@ import 'package:anchor/features/tasks/presentation/widgets/empty_task_state.dart
 import 'package:anchor/features/tasks/presentation/widgets/task_list_section.dart';
 import 'package:anchor/features/tasks/presentation/widgets/tasks_screen_app_bar.dart';
 import 'package:anchor/features/tasks/presentation/widgets/week_calendar.dart';
+import 'package:anchor/features/welcome/tutorial/tutorial_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart' show CalendarFormat;
@@ -34,6 +35,18 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
     'November',
     'December'
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Check and show tutorial if this is the first time user visits the tasks screen
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        TutorialLauncher.checkAndShowTutorialIfNeeded(context: context);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

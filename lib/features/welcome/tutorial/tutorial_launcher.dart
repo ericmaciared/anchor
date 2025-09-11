@@ -14,6 +14,9 @@ class TutorialLauncher {
   static const String _tutorialVersionKey = 'tutorial_version';
   static const int _currentTutorialVersion = 1;
 
+  // Flag to prevent multiple tutorial dialogs from showing simultaneously
+  static bool _isTutorialShowing = false;
+
   /// Check if user has seen the tutorial for the current version
   static Future<bool> hasSeenTutorial() async {
     try {
@@ -25,6 +28,7 @@ class TutorialLauncher {
       return hasSeenTutorial && tutorialVersion >= _currentTutorialVersion;
     } catch (e) {
       // If there's an error reading preferences, show tutorial to be safe
+      debugPrint('Error checking tutorial status: $e');
       return false;
     }
   }
@@ -35,6 +39,7 @@ class TutorialLauncher {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool(_hasSeenTutorialKey, true);
       await prefs.setInt(_tutorialVersionKey, _currentTutorialVersion);
+      debugPrint('Tutorial marked as seen for version $_currentTutorialVersion');
     } catch (e) {
       // Handle error silently - not critical for app functionality
       debugPrint('Failed to mark tutorial as seen: $e');
@@ -47,20 +52,32 @@ class TutorialLauncher {
     bool isFromProfile = false,
     VoidCallback? onComplete,
   }) async {
-    return showDialog(
-      context: context,
-      barrierDismissible: false,
-      useSafeArea: false,
-      builder: (context) => WelcomeTutorialModal(
-        isFromProfile: isFromProfile,
-        onComplete: () async {
-          if (!isFromProfile) {
-            await markTutorialAsSeen();
-          }
-          onComplete?.call();
-        },
-      ),
-    );
+    // Prevent multiple tutorials from showing
+    if (_isTutorialShowing) {
+      debugPrint('Tutorial already showing, skipping...');
+      return;
+    }
+
+    _isTutorialShowing = true;
+
+    try {
+      return await showDialog(
+        context: context,
+        barrierDismissible: false,
+        useSafeArea: false,
+        builder: (context) => WelcomeTutorialModal(
+          isFromProfile: isFromProfile,
+          onComplete: () async {
+            if (!isFromProfile) {
+              await markTutorialAsSeen();
+            }
+            onComplete?.call();
+          },
+        ),
+      );
+    } finally {
+      _isTutorialShowing = false;
+    }
   }
 
   /// Check and show tutorial for first-time users
@@ -68,18 +85,33 @@ class TutorialLauncher {
     required BuildContext context,
     VoidCallback? onComplete,
   }) async {
-    final hasSeenTutorialBefore = await hasSeenTutorial();
-    if (!hasSeenTutorialBefore) {
-      // Add a small delay to ensure the main screen is loaded
-      await Future.delayed(const Duration(milliseconds: 500));
+    // Don't show if already showing or if context is not mounted
+    if (_isTutorialShowing || !context.mounted) {
+      return;
+    }
 
-      if (context.mounted) {
-        await showTutorial(
-          context: context,
-          isFromProfile: false,
-          onComplete: onComplete,
-        );
+    try {
+      final hasSeenTutorialBefore = await hasSeenTutorial();
+
+      if (!hasSeenTutorialBefore) {
+        debugPrint('First time user detected, showing tutorial...');
+
+        // Add a small delay to ensure the main screen is loaded
+        await Future.delayed(const Duration(milliseconds: 500));
+
+        if (context.mounted && !_isTutorialShowing) {
+          await showTutorial(
+            context: context,
+            isFromProfile: false,
+            onComplete: onComplete,
+          );
+        }
+      } else {
+        debugPrint('User has already seen tutorial');
       }
+    } catch (e) {
+      debugPrint('Error in checkAndShowTutorialIfNeeded: $e');
+      // On error, don't show tutorial to avoid disrupting user experience
     }
   }
 
@@ -89,9 +121,23 @@ class TutorialLauncher {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_hasSeenTutorialKey);
       await prefs.remove(_tutorialVersionKey);
+      _isTutorialShowing = false;
+      debugPrint('Tutorial state reset successfully');
     } catch (e) {
       debugPrint('Failed to reset tutorial state: $e');
     }
+  }
+
+  /// Force show tutorial (useful for profile screen access)
+  static Future<void> showTutorialFromProfile({
+    required BuildContext context,
+    VoidCallback? onComplete,
+  }) async {
+    await showTutorial(
+      context: context,
+      isFromProfile: true,
+      onComplete: onComplete,
+    );
   }
 }
 
@@ -110,6 +156,7 @@ final shouldShowTutorialProvider = Provider<bool>((ref) {
   );
 });
 
+/// Tutorial Section Widget for Profile Screen
 class TutorialSection extends StatelessWidget {
   const TutorialSection({super.key});
 
@@ -144,10 +191,7 @@ class TutorialSection extends StatelessWidget {
           ),
           onTap: () {
             HapticService.light();
-            TutorialLauncher.showTutorial(
-              context: context,
-              isFromProfile: true,
-            );
+            TutorialLauncher.showTutorialFromProfile(context: context);
           },
         ),
         const Divider(indent: 16, endIndent: 16),
@@ -189,21 +233,16 @@ class TutorialSection extends StatelessWidget {
               _buildTipItem(context, 'Managing Tasks',
                   'Tap to expand tasks, long-press to edit, or hold the completion button to finish.'),
               const SizedBox(height: SpacingSizes.m),
-              _buildTipItem(
-                  context, 'Building Habits', 'Create daily habits and track your streaks. Consistency is key!'),
+              _buildTipItem(context, 'Building Habits', 'Create recurring habits and track your daily progress.'),
               const SizedBox(height: SpacingSizes.m),
-              _buildTipItem(context, 'Navigation', 'Swipe the calendar to move between days and plan ahead.'),
+              _buildTipItem(context, 'Calendar Navigation', 'Swipe the week calendar to navigate between days.'),
               const SizedBox(height: SpacingSizes.m),
-              _buildTipItem(context, 'Personalization',
-                  'Visit the profile section to customize visual effects and display options.'),
+              _buildTipItem(context, 'Customization', 'Visit the profile screen to personalize themes and settings.'),
             ],
           ),
         ),
         primaryActionText: 'Got it!',
-        onPrimaryAction: () {
-          HapticService.medium();
-          Navigator.of(dialogContext).pop();
-        },
+        onPrimaryAction: () => Navigator.of(dialogContext).pop(),
       ),
     );
   }
@@ -214,19 +253,17 @@ class TutorialSection extends StatelessWidget {
       children: [
         Text(
           title,
-          style: context.textStyles.titleSmall?.copyWith(
+          style: context.textStyles.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
-            color: context.colors.primary,
             fontSize: TextSizes.m,
           ),
         ),
-        const SizedBox(height: SpacingSizes.xs),
+        const SizedBox(height: 4),
         Text(
           description,
-          style: context.textStyles.bodyMedium?.copyWith(
+          style: context.textStyles.bodySmall?.copyWith(
             fontSize: TextSizes.s,
             color: context.colors.onSurface.withAlpha(ColorOpacities.opacity70),
-            height: 1.4,
           ),
         ),
       ],
