@@ -189,30 +189,38 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
           color: context.colors.outline.withAlpha(ColorOpacities.opacity20),
         ),
       ),
-      child: Wrap(
-        spacing: 8,
-        crossAxisAlignment: WrapCrossAlignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // First row with "I will" text
           Text(
-            'I will ',
+            'I will',
             style: context.textStyles.bodyMedium!.copyWith(
-              fontSize: TextSizes.l,
+              fontSize: TextSizes.xxl, // Match the input text size
+              fontWeight: FontWeight.w700, // Match the input weight
+              color: context.colors.onSurface,
             ),
           ),
-          SizedBox(
-            width: _habit.name.isEmpty ? 140 : (_habit.name.length + 2) * 12,
-            child: TextInput(
-              text: _habit.name,
-              label: 'habit name',
-              onTextChanged: (text) => setState(
-                () => _habit = _habit.copyWith(name: text),
-              ),
+          const SizedBox(height: SpacingSizes.xs),
+          // Full width text input
+          TextInput(
+            text: _habit.name,
+            label: 'habit name',
+            fontSize: TextSizes.xxl, // Explicit font size
+            fontWeight: FontWeight.w700, // Match other elements
+            textAlign: TextAlign.left,
+            onTextChanged: (text) => setState(
+              () => _habit = _habit.copyWith(name: text),
             ),
           ),
+          const SizedBox(height: SpacingSizes.xs),
+          // "everyday" text
           Text(
             'everyday',
             style: context.textStyles.bodyMedium!.copyWith(
-              fontSize: TextSizes.l,
+              fontSize: TextSizes.xxl, // Match the input text size
+              fontWeight: FontWeight.w700, // Match the input weight
+              color: context.colors.onSurface,
             ),
           ),
         ],
