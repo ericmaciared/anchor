@@ -111,7 +111,7 @@ class PolicyMarkdownSheetWidget extends StatelessWidget {
                     controller: scrollController,
                     selectable: true,
                     data: data,
-                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 144),
                     styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
                       a: context.textStyles.bodyMedium?.copyWith(
                         color: context.colors.primary,
@@ -142,7 +142,6 @@ class PolicyMarkdownSheetWidget extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: SpacingSizes.xl),
           ],
         );
       },
