@@ -1,5 +1,3 @@
-// lib/features/tasks/presentation/widgets/task_card/minimal_task_card.dart
-
 import 'package:anchor/core/services/haptic_feedback_service.dart';
 import 'package:anchor/core/theme/color_opacities.dart';
 import 'package:anchor/core/theme/spacing_sizes.dart';
@@ -37,42 +35,44 @@ class MinimalTaskCard extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  // Time column - keeps its natural width
                   MinimalTaskTimeColumn(startTime: task.startTime, duration: task.duration),
                   const SizedBox(width: SpacingSizes.s),
-                  // Main task card
-                  AdaptiveCardWidget(
-                    borderRadius: 16,
-                    padding: const EdgeInsets.symmetric(vertical: SpacingSizes.s, horizontal: SpacingSizes.m),
-                    child: GestureDetector(
-                      onTap: () {
-                        // Add haptic feedback for task completion toggle
-                        if (task.isDone) {
-                          HapticService.medium(); // Undoing completion
-                        } else {
-                          HapticService.success(); // Completing task
-                        }
-                        onToggleTaskCompletion();
-                      },
-                      onLongPress: () {
-                        HapticService.longPress(); // Long press feedback
-                        onLongPress();
-                      },
-                      behavior: HitTestBehavior.opaque,
-                      child: Text(
-                        task.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: context.textStyles.bodyMedium?.copyWith(
-                          color: task.isDone ? context.colors.onSurface.withAlpha(ColorOpacities.opacity40) : null,
-                          fontSize: TextSizes.m,
-                          decoration: task.isDone ? TextDecoration.lineThrough : null,
+                  // Main task card - flexible to constrain width but allow content-based sizing
+                  Flexible(
+                    child: AdaptiveCardWidget(
+                      borderRadius: 16,
+                      padding: const EdgeInsets.symmetric(vertical: SpacingSizes.s, horizontal: SpacingSizes.m),
+                      child: GestureDetector(
+                        onTap: () {
+                          // Add haptic feedback for task completion toggle
+                          if (task.isDone) {
+                            HapticService.medium(); // Undoing completion
+                          } else {
+                            HapticService.success(); // Completing task
+                          }
+                          onToggleTaskCompletion();
+                        },
+                        onLongPress: () {
+                          HapticService.longPress(); // Long press feedback
+                          onLongPress();
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: Text(
+                          task.title,
+                          style: context.textStyles.bodyMedium?.copyWith(
+                            color: task.isDone ? context.colors.onSurface.withAlpha(ColorOpacities.opacity40) : null,
+                            fontSize: TextSizes.m,
+                            decoration: task.isDone ? TextDecoration.lineThrough : null,
+                          ),
+                          // Allow natural wrapping when needed
                         ),
                       ),
                     ),
                   ),
                 ],
               ),
-              // Subtasks section
+              // Subtasks section - keep exactly as is
               if (task.subtasks.isNotEmpty)
                 Row(
                   children: [

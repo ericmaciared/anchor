@@ -2,9 +2,10 @@ import 'package:anchor/core/theme/color_opacities.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 enum TextInputVariant {
-  primary, // For main titles, large text (existing style)
+  primary, // For main titles, medium-large text (reduced from xxl)
   secondary, // For subtasks, smaller inputs
   outlined, // For forms with visible borders
 }
@@ -16,6 +17,7 @@ class TextInput extends StatefulWidget {
   final TextInputVariant variant;
   final bool autofocus;
   final int? maxLines;
+  final int? maxLength; // Added character limit
   final TextInputAction? textInputAction;
   final VoidCallback? onEditingComplete;
   final FocusNode? focusNode;
@@ -25,6 +27,7 @@ class TextInput extends StatefulWidget {
   final double? fontSize;
   final FontWeight? fontWeight;
   final bool enabled;
+  final bool showCharacterCount; // Option to show character counter
 
   const TextInput({
     super.key,
@@ -34,6 +37,7 @@ class TextInput extends StatefulWidget {
     this.variant = TextInputVariant.primary,
     this.autofocus = false,
     this.maxLines = 1,
+    this.maxLength,
     this.textInputAction,
     this.onEditingComplete,
     this.focusNode,
@@ -43,6 +47,7 @@ class TextInput extends StatefulWidget {
     this.fontSize,
     this.fontWeight,
     this.enabled = true,
+    this.showCharacterCount = false,
   });
 
   @override
@@ -96,8 +101,8 @@ class _TextInputState extends State<TextInput> {
       case TextInputVariant.primary:
         return context.textStyles.bodyMedium!.copyWith(
           color: context.colors.primary,
-          fontSize: widget.fontSize ?? TextSizes.xxl,
-          fontWeight: widget.fontWeight ?? FontWeight.w700,
+          fontSize: widget.fontSize ?? TextSizes.l, // Reduced from xxl to l (16px)
+          fontWeight: widget.fontWeight ?? FontWeight.w600, // Reduced from w700
         );
       case TextInputVariant.secondary:
         return context.textStyles.bodyMedium!.copyWith(
@@ -119,8 +124,8 @@ class _TextInputState extends State<TextInput> {
       case TextInputVariant.primary:
         return context.textStyles.bodyMedium!.copyWith(
           color: context.colors.primary.withAlpha(ColorOpacities.opacity60),
-          fontSize: widget.fontSize ?? TextSizes.xxl,
-          fontWeight: widget.fontWeight ?? FontWeight.w500,
+          fontSize: widget.fontSize ?? TextSizes.l, // Reduced from xxl to l
+          fontWeight: widget.fontWeight ?? FontWeight.w500, // Reduced from w500
         );
       case TextInputVariant.secondary:
         return context.textStyles.bodyMedium!.copyWith(
@@ -163,6 +168,7 @@ class _TextInputState extends State<TextInput> {
           contentPadding: widget.contentPadding ?? EdgeInsets.zero,
           filled: widget.backgroundColor != null,
           fillColor: widget.backgroundColor,
+          counterText: widget.showCharacterCount ? null : '', // Hide counter if not requested
         );
       case TextInputVariant.secondary:
         return InputDecoration(
@@ -175,6 +181,7 @@ class _TextInputState extends State<TextInput> {
           contentPadding: widget.contentPadding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           filled: widget.backgroundColor != null,
           fillColor: widget.backgroundColor,
+          counterText: widget.showCharacterCount ? null : '', // Hide counter if not requested
         );
       case TextInputVariant.outlined:
         return InputDecoration(
@@ -203,6 +210,7 @@ class _TextInputState extends State<TextInput> {
           contentPadding: widget.contentPadding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           filled: true,
           fillColor: widget.backgroundColor ?? context.colors.surfaceContainerHigh,
+          counterText: widget.showCharacterCount ? null : '', // Hide counter if not requested
         );
     }
   }
@@ -218,9 +226,11 @@ class _TextInputState extends State<TextInput> {
       cursorColor: context.colors.primary,
       autofocus: widget.autofocus,
       maxLines: widget.maxLines,
+      maxLength: widget.maxLength, // Apply character limit
       textInputAction: widget.textInputAction,
       onEditingComplete: widget.onEditingComplete,
       enabled: widget.enabled,
+      inputFormatters: widget.maxLength != null ? [LengthLimitingTextInputFormatter(widget.maxLength)] : null,
     );
   }
 }

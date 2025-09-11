@@ -2,9 +2,7 @@ import 'package:anchor/core/theme/color_opacities.dart';
 import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
-import 'package:anchor/features/shared/widgets/duration_input.dart';
 import 'package:anchor/features/shared/widgets/text_input.dart';
-import 'package:anchor/features/shared/widgets/time_input.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +12,8 @@ class TaskInputSection extends StatelessWidget {
   final bool showTimePicker;
   final bool showDurationSelector;
   final ValueChanged<TaskModel> onTaskChanged;
+
+  static const int maxTaskTitleLength = 50; // Character limit for tasks
 
   const TaskInputSection({
     super.key,
@@ -42,76 +42,225 @@ class TaskInputSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(SpacingSizes.m),
-      decoration: BoxDecoration(
-        color: context.colors.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: context.colors.outline.withAlpha(ColorOpacities.opacity20),
+    return Column(
+      children: [
+        // Main input container
+        Container(
+          padding: const EdgeInsets.all(SpacingSizes.m),
+          decoration: BoxDecoration(
+            color: context.colors.surfaceContainerHigh,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: context.colors.outline.withAlpha(ColorOpacities.opacity20),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // First row with "Today, I will" text
+              Text(
+                'Today, I will',
+                style: context.textStyles.bodyMedium!.copyWith(
+                  fontSize: TextSizes.xxl, // Match the other text sizes
+                  fontWeight: FontWeight.w700, // Match the input weight
+                  color: context.colors.onSurface,
+                ),
+              ),
+              const SizedBox(height: SpacingSizes.xs),
+              // Full width text input
+              TextInput(
+                text: task.title,
+                label: 'task name',
+                maxLength: maxTaskTitleLength,
+                fontSize: TextSizes.xxl,
+                // Explicit font size
+                fontWeight: FontWeight.w700,
+                // Match other elements
+                textAlign: TextAlign.left,
+                onTextChanged: (text) {
+                  _updateTask(task.copyWith(title: text));
+                },
+              ),
+
+              // Second row with time and duration (if enabled)
+              if (showTimePicker || showDurationSelector) ...[
+                const SizedBox(height: SpacingSizes.s), // Reduced spacing
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    if (showTimePicker) ...[
+                      Text(
+                        'at ',
+                        style: context.textStyles.bodyMedium!.copyWith(
+                          fontSize: TextSizes.xxl, // Match other text
+                          fontWeight: FontWeight.w700,
+                          color: context.colors.onSurface,
+                        ),
+                      ),
+                      const SizedBox(width: SpacingSizes.xs),
+                      // Create a custom TimeInput to ensure consistent styling
+                      _CustomTimeInput(
+                        time: _getTimeOfDay(),
+                        onTimeChanged: (time) {
+                          if (time != null) {
+                            final newStartTime = DateTime(
+                              taskDay.year,
+                              taskDay.month,
+                              taskDay.day,
+                              time.hour,
+                              time.minute,
+                            );
+                            _updateTask(task.copyWith(startTime: newStartTime));
+                          }
+                        },
+                      ),
+                      const SizedBox(width: SpacingSizes.s),
+                    ],
+                    if (showDurationSelector) ...[
+                      Text(
+                        'for ',
+                        style: context.textStyles.bodyMedium!.copyWith(
+                          fontSize: TextSizes.xxl, // Match other text
+                          fontWeight: FontWeight.w700,
+                          color: context.colors.onSurface,
+                        ),
+                      ),
+                      const SizedBox(width: SpacingSizes.xs),
+                      // Create a custom DurationInput to ensure consistent styling
+                      _CustomDurationInput(
+                        duration: task.duration?.inMinutes ?? 30,
+                        onDurationChanged: (minutes) {
+                          _updateTask(task.copyWith(
+                            duration: minutes != null ? Duration(minutes: minutes) : null,
+                          ));
+                        },
+                      ),
+                    ],
+                  ],
+                ),
+              ],
+            ],
+          ),
         ),
-      ),
-      child: Wrap(
-        spacing: 8,
-        crossAxisAlignment: WrapCrossAlignment.center,
+
+        // Character count indicator - moved closer to reduce bottom spacing
+        const SizedBox(height: SpacingSizes.xs), // Reduced spacing
+        _buildCharacterCountIndicator(context),
+      ],
+    );
+  }
+
+  Widget _buildCharacterCountIndicator(BuildContext context) {
+    final currentLength = task.title.length;
+    final isNearLimit = currentLength > maxTaskTitleLength * 0.8; // Show warning at 80%
+    final isAtLimit = currentLength >= maxTaskTitleLength;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: SpacingSizes.m),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            'Today, I will ',
-            style: context.textStyles.bodyMedium!.copyWith(
-              fontSize: TextSizes.l,
+            '$currentLength/$maxTaskTitleLength',
+            style: context.textStyles.bodySmall!.copyWith(
+              fontSize: TextSizes.s,
+              color: isAtLimit
+                  ? context.colors.error
+                  : isNearLimit
+                      ? context.colors.secondary
+                      : context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
+              fontWeight: isNearLimit ? FontWeight.w500 : FontWeight.normal,
             ),
           ),
-          SizedBox(
-            width: task.title.isEmpty ? 140 : (task.title.length + 2) * 12,
-            child: TextInput(
-              text: task.title,
-              label: 'task name',
-              onTextChanged: (text) {
-                _updateTask(task.copyWith(title: text));
-              },
-            ),
-          ),
-          if (showTimePicker) ...[
-            Text(
-              'at ',
-              style: context.textStyles.bodyMedium!.copyWith(
-                fontSize: TextSizes.l,
-              ),
-            ),
-            TimeInput(
-              time: _getTimeOfDay(),
-              onTimeChanged: (time) {
-                if (time != null) {
-                  final newStartTime = DateTime(
-                    taskDay.year,
-                    taskDay.month,
-                    taskDay.day,
-                    time.hour,
-                    time.minute,
-                  );
-                  _updateTask(task.copyWith(startTime: newStartTime));
-                }
-              },
-            ),
-          ],
-          if (showDurationSelector) ...[
-            Text(
-              'for ',
-              style: context.textStyles.bodyMedium!.copyWith(
-                fontSize: TextSizes.l,
-              ),
-            ),
-            DurationInput(
-              duration: task.duration?.inMinutes ?? 30,
-              onDurationChanged: (minutes) {
-                _updateTask(task.copyWith(
-                  duration: minutes != null ? Duration(minutes: minutes) : null,
-                ));
-              },
-            ),
-          ],
         ],
       ),
     );
+  }
+}
+
+// Custom TimeInput widget to ensure consistent styling
+class _CustomTimeInput extends StatelessWidget {
+  final TimeOfDay time;
+  final ValueChanged<TimeOfDay?> onTimeChanged;
+
+  const _CustomTimeInput({
+    required this.time,
+    required this.onTimeChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        final TimeOfDay? result = await showTimePicker(
+          context: context,
+          initialTime: time,
+        );
+        if (result != null) {
+          onTimeChanged(result);
+        }
+      },
+      child: Text(
+        '${time.hour}:${time.minute.toString().padLeft(2, '0')}',
+        style: context.textStyles.bodyMedium!.copyWith(
+          color: context.colors.primary,
+          fontSize: TextSizes.xxl, // Match other elements
+          fontWeight: FontWeight.w700, // Match other elements
+        ),
+      ),
+    );
+  }
+}
+
+// Custom DurationInput widget to ensure consistent styling
+class _CustomDurationInput extends StatelessWidget {
+  final int? duration;
+  final ValueChanged<int?> onDurationChanged;
+
+  const _CustomDurationInput({
+    required this.duration,
+    required this.onDurationChanged,
+  });
+
+  static const List<int> predefinedDurations = [15, 30, 60, 90, 120];
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        await _showDurationPickerDialog(context);
+      },
+      child: Text(
+        duration != null ? '${duration.toString()} mins' : 'Set duration',
+        style: context.textStyles.bodyMedium!.copyWith(
+          color: context.colors.primary,
+          fontSize: TextSizes.xxl, // Match other elements
+          fontWeight: FontWeight.w700, // Match other elements
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showDurationPickerDialog(BuildContext context) async {
+    // Simplified duration picker for demo
+    final int? result = await showDialog<int>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Select Duration'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: predefinedDurations.map((d) {
+            return ListTile(
+              title: Text('$d minutes'),
+              onTap: () => Navigator.of(context).pop(d),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+
+    if (result != null) {
+      onDurationChanged(result);
+    }
   }
 }
