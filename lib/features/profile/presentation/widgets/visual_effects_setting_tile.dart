@@ -17,7 +17,7 @@ class VisualEffectsSettingTile extends ConsumerWidget {
     return SwitchListTile(
       activeThumbColor: context.colors.primary,
       secondary: Icon(Icons.star_half, color: context.colors.primary),
-      title: const Text('Enable Visual Effects', style: TextStyle(fontSize: TextSizes.m)),
+      title: Text('Enable Visual Effects', style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.m)),
       value: isEnabled,
       onChanged: (bool value) {
         ref.read(settingsProvider.notifier).updateVisualEffectsEnabled(value);

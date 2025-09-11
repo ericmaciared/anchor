@@ -1,4 +1,5 @@
 import 'package:anchor/core/theme/text_sizes.dart';
+import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class HabitsScreenAppBar extends StatelessWidget implements PreferredSizeWidget 
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('habits', style: TextStyle(fontSize: TextSizes.xl)),
+            Text('habits', style: context.textStyles.titleMedium?.copyWith(fontSize: TextSizes.xl)),
             AdaptiveButtonWidget(
               height: 36,
               width: 36,

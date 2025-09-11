@@ -215,7 +215,7 @@ class _SubtaskEditorState extends State<SubtaskEditor> {
                   const SizedBox(width: SpacingSizes.xs),
                   Text(
                     'Add',
-                    style: TextStyle(
+                    style: context.textStyles.bodyMedium?.copyWith(
                       fontSize: TextSizes.s,
                       fontWeight: FontWeight.w600,
                       color: context.colors.primary,

@@ -83,14 +83,14 @@ class DurationInput extends StatelessWidget {
                     controller: customDurationController,
                     decoration: InputDecoration(
                       labelText: 'Custom Duration (minutes)',
-                      labelStyle: TextStyle(
+                      labelStyle: context.textStyles.labelMedium?.copyWith(
                         color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                         fontSize: TextSizes.m,
                       ),
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.zero,
                     ),
-                    style: TextStyle(
+                    style: context.textStyles.bodyMedium?.copyWith(
                       color: context.colors.onSurface,
                       fontSize: TextSizes.m,
                     ),

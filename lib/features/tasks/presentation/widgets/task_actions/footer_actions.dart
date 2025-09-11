@@ -31,7 +31,7 @@ class FooterActions extends StatelessWidget {
               HapticService.heavy(); // Heavy feedback for delete action
               onDelete();
             },
-            child: Text('Delete', style: TextStyle(color: context.colors.error)),
+            child: Text('Delete', style: context.textStyles.bodyMedium?.copyWith(color: context.colors.error)),
           ),
         AdaptiveButtonWidget(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -45,7 +45,7 @@ class FooterActions extends StatelessWidget {
           enabled: isSaveEnabled,
           child: Text(
             isEdit ? 'Save Changes' : 'Create Task',
-            style: TextStyle(
+            style: context.textStyles.bodyMedium?.copyWith(
               color: isSaveEnabled
                   ? context.colors.onSurface
                   : context.colors.onSurface.withAlpha(ColorOpacities.opacity40),

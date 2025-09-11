@@ -17,7 +17,7 @@ class LiquidGlassSettingTile extends ConsumerWidget {
     return SwitchListTile(
       activeThumbColor: context.colors.primary,
       secondary: Icon(Icons.opacity, color: context.colors.primary),
-      title: const Text('Use Liquid Glass (beta)', style: TextStyle(fontSize: TextSizes.m)),
+      title: Text('Use Liquid Glass (beta)', style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.m)),
       value: isEnabled,
       onChanged: (bool value) {
         ref.read(settingsProvider.notifier).updateLiquidGlassEnabled(value);

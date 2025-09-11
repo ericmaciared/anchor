@@ -210,7 +210,7 @@ class _MinimalTimePickerState extends State<MinimalTimePicker> {
       },
       child: Text(
         text,
-        style: TextStyle(
+        style: context.textStyles.bodyMedium?.copyWith(
           fontSize: TextSizes.m,
           fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
           color: isSelected ? context.colors.primary : context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
@@ -379,7 +379,7 @@ class TimePickerDialog extends StatelessWidget {
                     },
                     child: Text(
                       'Cancel',
-                      style: TextStyle(
+                      style: context.textStyles.bodyMedium?.copyWith(
                         fontSize: TextSizes.m,
                         color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                       ),
@@ -396,7 +396,7 @@ class TimePickerDialog extends StatelessWidget {
                     },
                     child: Text(
                       'Save',
-                      style: TextStyle(
+                      style: context.textStyles.bodyMedium?.copyWith(
                         fontSize: TextSizes.m,
                         fontWeight: FontWeight.w600,
                         color: context.colors.primary,

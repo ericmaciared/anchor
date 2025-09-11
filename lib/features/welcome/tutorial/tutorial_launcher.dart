@@ -132,10 +132,10 @@ class TutorialSection extends StatelessWidget {
         const SizedBox(height: 16),
         ListTile(
           leading: Icon(Icons.school_outlined, color: context.colors.primary),
-          title: const Text('View Tutorial', style: TextStyle(fontSize: TextSizes.m)),
-          subtitle: const Text(
+          title: Text('View Tutorial', style: context.textStyles.bodyMedium!.copyWith(fontSize: TextSizes.m)),
+          subtitle: Text(
             'Review how to use Anchor\'s features',
-            style: TextStyle(fontSize: TextSizes.s),
+            style: context.textStyles.bodyMedium!.copyWith(fontSize: TextSizes.s),
           ),
           trailing: Icon(
             Icons.arrow_forward_ios,
@@ -153,10 +153,10 @@ class TutorialSection extends StatelessWidget {
         const Divider(indent: 16, endIndent: 16),
         ListTile(
           leading: Icon(Icons.help_outline, color: context.colors.primary),
-          title: const Text('Getting Started Tips', style: TextStyle(fontSize: TextSizes.m)),
-          subtitle: const Text(
+          title: Text('Getting Started Tips', style: context.textStyles.bodyMedium!.copyWith(fontSize: TextSizes.m)),
+          subtitle: Text(
             'Quick tips for using the app effectively',
-            style: TextStyle(fontSize: TextSizes.s),
+            style: context.textStyles.bodyMedium!.copyWith(fontSize: TextSizes.s),
           ),
           trailing: Icon(
             Icons.arrow_forward_ios,

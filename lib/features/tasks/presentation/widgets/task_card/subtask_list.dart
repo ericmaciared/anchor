@@ -28,7 +28,7 @@ class SubtaskList extends StatelessWidget {
         const SizedBox(height: SpacingSizes.m),
         Text(
           'Subtasks',
-          style: TextStyle(
+          style: context.textStyles.titleMedium?.copyWith(
             fontSize: TextSizes.m,
             fontWeight: FontWeight.bold,
             color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
@@ -58,7 +58,7 @@ class SubtaskList extends StatelessWidget {
                     Expanded(
                       child: Text(
                         subtask.title,
-                        style: TextStyle(
+                        style: context.textStyles.bodyMedium?.copyWith(
                           fontSize: TextSizes.m,
                           color: subtask.isDone ? context.colors.onSurface.withAlpha(ColorOpacities.opacity40) : null,
                           decoration: subtask.isDone ? TextDecoration.lineThrough : null,

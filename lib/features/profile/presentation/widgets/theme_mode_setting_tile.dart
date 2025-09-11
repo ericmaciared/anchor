@@ -37,7 +37,7 @@ class ThemeModeSettingTile extends ConsumerWidget {
 
     return ListTile(
       leading: Icon(Icons.palette, color: context.colors.primary),
-      title: const Text('Theme Mode', style: TextStyle(fontSize: TextSizes.m)),
+      title: Text('Theme Mode', style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.m)),
       subtitle: Padding(
         padding: const EdgeInsets.only(top: 12.0),
         child: Row(
@@ -79,7 +79,7 @@ class ThemeModeSettingTile extends ConsumerWidget {
                       const SizedBox(height: 4),
                       Text(
                         option.label,
-                        style: TextStyle(
+                        style: context.textStyles.bodyMedium?.copyWith(
                           fontSize: TextSizes.s,
                           color: isSelected ? context.colors.primary : context.colors.onSurface,
                           fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,

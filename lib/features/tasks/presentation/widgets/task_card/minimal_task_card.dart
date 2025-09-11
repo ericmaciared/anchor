@@ -62,7 +62,7 @@ class MinimalTaskCard extends StatelessWidget {
                         task.title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: context.textStyles.bodyMedium?.copyWith(
                           color: task.isDone ? context.colors.onSurface.withAlpha(ColorOpacities.opacity40) : null,
                           fontSize: TextSizes.m,
                           decoration: task.isDone ? TextDecoration.lineThrough : null,

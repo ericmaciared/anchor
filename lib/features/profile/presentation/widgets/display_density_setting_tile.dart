@@ -33,7 +33,7 @@ class DisplayDensitySettingTile extends ConsumerWidget {
 
     return ListTile(
       leading: Icon(Icons.density_medium, color: context.colors.primary),
-      title: const Text('Display Density', style: TextStyle(fontSize: TextSizes.m)),
+      title: Text('Display Density', style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.m)),
       subtitle: Padding(
         padding: const EdgeInsets.only(top: 12.0),
         child: Row(
@@ -75,7 +75,7 @@ class DisplayDensitySettingTile extends ConsumerWidget {
                       const SizedBox(height: SpacingSizes.xs),
                       Text(
                         option.label,
-                        style: TextStyle(
+                        style: context.textStyles.bodyMedium?.copyWith(
                           fontSize: TextSizes.s,
                           color: isSelected ? context.colors.primary : context.colors.onSurface,
                           fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,

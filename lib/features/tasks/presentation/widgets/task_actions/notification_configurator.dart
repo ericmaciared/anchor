@@ -299,7 +299,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
           const SizedBox(height: SpacingSizes.xs),
           Text(
             label,
-            style: TextStyle(
+            style: context.textStyles.bodyMedium?.copyWith(
               fontSize: TextSizes.s,
               fontWeight: FontWeight.w500,
               color: isValid ? context.colors.onSurface : context.colors.error,
@@ -437,7 +437,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
                     const SizedBox(height: SpacingSizes.xs),
                     Text(
                       'Custom\ntime',
-                      style: TextStyle(
+                      style: context.textStyles.bodyMedium?.copyWith(
                         fontSize: TextSizes.s,
                         fontWeight: FontWeight.w500,
                         color: context.colors.secondary,
@@ -483,12 +483,12 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
                       hintText: 'e.g., 45',
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.zero,
-                      hintStyle: TextStyle(
+                      hintStyle: context.textStyles.bodyMedium?.copyWith(
                         color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
                         fontSize: TextSizes.m,
                       ),
                     ),
-                    style: TextStyle(
+                    style: context.textStyles.bodyMedium?.copyWith(
                       color: context.colors.onSurface,
                       fontSize: TextSizes.m,
                       fontWeight: FontWeight.w500,
@@ -518,7 +518,7 @@ class _NotificationConfiguratorState extends State<NotificationConfigurator> {
                   },
                   child: Text(
                     'Add',
-                    style: TextStyle(
+                    style: context.textStyles.bodyMedium?.copyWith(
                       fontSize: TextSizes.m,
                       fontWeight: FontWeight.w600,
                       color: context.colors.primary,

@@ -14,7 +14,7 @@ class StatusMessageSettingTile extends ConsumerWidget {
     return SwitchListTile(
       activeThumbColor: context.colors.primary,
       secondary: Icon(Icons.message_outlined, color: context.colors.primary),
-      title: const Text('Show Status Message', style: TextStyle(fontSize: TextSizes.m)),
+      title: Text('Show Status Message', style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.m)),
       value: isEnabled,
       onChanged: (bool value) {
         ref.read(settingsProvider.notifier).updateStatusMessageEnabled(value);

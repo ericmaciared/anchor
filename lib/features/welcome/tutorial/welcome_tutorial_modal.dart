@@ -170,7 +170,7 @@ class _WelcomeTutorialModalState extends State<WelcomeTutorialModal> with Ticker
             onPressed: _skipTutorial,
             child: Text(
               'Skip',
-              style: TextStyle(
+              style: context.textStyles.bodyMedium!.copyWith(
                 color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                 fontSize: TextSizes.m,
               ),
@@ -235,7 +235,7 @@ class _WelcomeTutorialModalState extends State<WelcomeTutorialModal> with Ticker
                     children: [
                       Text(
                         widget.isFromProfile ? 'Done' : 'Get Started',
-                        style: TextStyle(
+                        style: context.textStyles.bodyMedium!.copyWith(
                           color: context.colors.primary,
                           fontWeight: FontWeight.w600,
                           fontSize: TextSizes.m,
@@ -427,7 +427,7 @@ class _TasksSlide extends StatelessWidget {
         Expanded(
           child: Text(
             title,
-            style: TextStyle(
+            style: context.textStyles.bodyMedium!.copyWith(
               fontSize: TextSizes.m,
               decoration: isCompleted ? TextDecoration.lineThrough : null,
               color: isCompleted ? context.colors.onSurface.withAlpha(ColorOpacities.opacity40) : null,
@@ -568,7 +568,7 @@ class _HabitsSlide extends StatelessWidget {
             ),
             child: Text(
               title,
-              style: TextStyle(
+              style: context.textStyles.bodyMedium!.copyWith(
                 fontSize: TextSizes.m,
                 decoration: isCompleted ? TextDecoration.lineThrough : null,
                 color: isCompleted ? context.colors.onSurface.withAlpha(ColorOpacities.opacity60) : null,
@@ -591,7 +591,7 @@ class _HabitsSlide extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 '$streak',
-                style: TextStyle(
+                style: context.textStyles.bodyMedium!.copyWith(
                   fontSize: TextSizes.m,
                   fontWeight: FontWeight.bold,
                   color: context.colors.primary,
@@ -646,14 +646,14 @@ class _NotificationsSlide extends StatelessWidget {
                         children: [
                           Text(
                             'Time to progress',
-                            style: TextStyle(
+                            style: context.textStyles.titleMedium!.copyWith(
                               fontWeight: FontWeight.w600,
                               fontSize: TextSizes.m,
                             ),
                           ),
                           Text(
                             'Workout (60 mins)',
-                            style: TextStyle(
+                            style: context.textStyles.titleMedium!.copyWith(
                               color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                               fontSize: TextSizes.s,
                             ),
@@ -663,7 +663,7 @@ class _NotificationsSlide extends StatelessWidget {
                     ),
                     Text(
                       'now',
-                      style: TextStyle(
+                      style: context.textStyles.titleMedium!.copyWith(
                         color: context.colors.primary,
                         fontSize: TextSizes.s,
                         fontWeight: FontWeight.w500,
@@ -729,7 +729,7 @@ class _NotificationsSlide extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyle(
+        style: context.textStyles.bodyMedium!.copyWith(
           fontSize: TextSizes.s,
           color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
         ),
@@ -804,7 +804,7 @@ class _PersonalizationSlide extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: TextStyle(
+              style: context.textStyles.bodyMedium!.copyWith(
                 fontSize: TextSizes.m,
               ),
             ),

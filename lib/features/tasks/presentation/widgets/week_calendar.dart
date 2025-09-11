@@ -38,10 +38,10 @@ class WeekCalendar extends StatelessWidget {
           selectedDayPredicate: (day) => isSameDay(day, selectedDay),
           onDaySelected: (selected, _) => onDaySelected(selected),
           daysOfWeekStyle: DaysOfWeekStyle(
-            weekdayStyle: TextStyle(
+            weekdayStyle: context.textStyles.bodyMedium!.copyWith(
               color: context.colors.onSurface,
             ),
-            weekendStyle: TextStyle(
+            weekendStyle: context.textStyles.bodyMedium!.copyWith(
               color: context.colors.onSurface,
             ),
           ),
@@ -54,7 +54,7 @@ class WeekCalendar extends StatelessWidget {
               color: context.colors.primary.withAlpha(ColorOpacities.opacity60),
               shape: BoxShape.circle,
             ),
-            selectedTextStyle: TextStyle(color: context.colors.onPrimaryContainer),
+            selectedTextStyle: context.textStyles.bodyMedium!.copyWith(color: context.colors.onPrimaryContainer),
           ),
         ),
       ),

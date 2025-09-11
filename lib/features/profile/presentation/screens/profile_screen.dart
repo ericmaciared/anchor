@@ -156,16 +156,18 @@ class ProfileScreen extends ConsumerWidget {
       children: [
         ListTile(
           leading: Icon(Icons.feedback_outlined, color: context.colors.primary),
-          title: const Text('Send Feedback', style: TextStyle(fontSize: TextSizes.m)),
-          subtitle: const Text('Help us improve Anchor with your suggestions', style: TextStyle(fontSize: TextSizes.s)),
+          title: Text('Send Feedback', style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.m)),
+          subtitle: Text('Help us improve Anchor with your suggestions',
+              style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.s)),
           trailing: Icon(Icons.open_in_new, size: 16, color: context.colors.onSurfaceVariant),
           onTap: () => _launchFeedbackBoard(context),
         ),
         const Divider(indent: 16, endIndent: 16),
         ListTile(
           leading: Icon(Icons.bug_report_outlined, color: context.colors.primary),
-          title: const Text('Report a Bug', style: TextStyle(fontSize: TextSizes.m)),
-          subtitle: const Text('Found an issue? Let us know so we can fix it', style: TextStyle(fontSize: TextSizes.s)),
+          title: Text('Report a Bug', style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.m)),
+          subtitle: Text('Found an issue? Let us know so we can fix it',
+              style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.s)),
           trailing: Icon(Icons.open_in_new, size: 16, color: context.colors.onSurfaceVariant),
           onTap: () => _launchFeedbackBoard(context),
         ),
@@ -242,7 +244,7 @@ class ProfileScreen extends ConsumerWidget {
             const SizedBox(height: SpacingSizes.s),
             SelectableText(
               url,
-              style: TextStyle(
+              style: context.textStyles.bodyMedium?.copyWith(
                 color: context.colors.primary,
                 fontWeight: FontWeight.w500,
               ),
@@ -296,7 +298,7 @@ class ProfileScreen extends ConsumerWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('profile & settings', style: TextStyle(fontSize: TextSizes.xl)),
+            Text('profile & settings', style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.xl)),
           ],
         ),
       ),

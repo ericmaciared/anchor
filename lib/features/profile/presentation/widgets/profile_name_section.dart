@@ -223,7 +223,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
                       const SizedBox(width: SpacingSizes.s),
                       Text(
                         'Cancel',
-                        style: TextStyle(
+                        style: context.textStyles.bodyMedium?.copyWith(
                           fontSize: TextSizes.m,
                           color: context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
                           fontWeight: FontWeight.w500,
@@ -257,7 +257,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
                       const SizedBox(width: SpacingSizes.s),
                       Text(
                         'Save',
-                        style: TextStyle(
+                        style: context.textStyles.bodyMedium?.copyWith(
                           fontSize: TextSizes.m,
                           color: _currentName.trim().isNotEmpty
                               ? context.colors.primary

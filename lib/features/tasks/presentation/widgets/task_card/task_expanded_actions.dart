@@ -47,7 +47,7 @@ class TaskExpandedActions extends StatelessWidget {
             children: [
               Text(
                 'Task completed!',
-                style: TextStyle(
+                style: context.textStyles.bodyMedium?.copyWith(
                   fontSize: TextSizes.m,
                   color: context.colors.onSurface.withAlpha(ColorOpacities.opacity40),
                 ),
@@ -79,7 +79,7 @@ class TaskExpandedActions extends StatelessWidget {
               child: Text(
                 'Hold to Complete',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: context.textStyles.bodyMedium?.copyWith(
                   fontSize: TextSizes.m,
                   color: textColor,
                 ),

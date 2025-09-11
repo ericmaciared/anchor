@@ -23,8 +23,9 @@ class TimeSettingTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
       leading: Icon(icon, color: context.colors.primary),
-      title: Text(title, style: const TextStyle(fontSize: TextSizes.m)),
-      trailing: Text(currentTime.format(context), style: const TextStyle(fontSize: TextSizes.m)),
+      title: Text(title, style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.m)),
+      trailing:
+          Text(currentTime.format(context), style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.m)),
       onTap: () async {
         HapticService.light(); // Light feedback for opening time picker
 

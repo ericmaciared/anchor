@@ -17,7 +17,7 @@ class DailyQuotesSettingTile extends ConsumerWidget {
     return SwitchListTile(
       activeThumbColor: context.colors.primary,
       secondary: Icon(Icons.format_quote, color: context.colors.primary),
-      title: const Text('Show Daily Quotes', style: TextStyle(fontSize: TextSizes.m)),
+      title: Text('Show Daily Quotes', style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.m)),
       value: isEnabled,
       onChanged: (bool value) {
         ref.read(settingsProvider.notifier).updateDailyQuotesEnabled(value);

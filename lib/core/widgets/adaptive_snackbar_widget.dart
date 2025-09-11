@@ -107,7 +107,7 @@ class AdaptiveSnackbar extends StatelessWidget {
               },
               child: Text(
                 actionLabel!,
-                style: TextStyle(
+                style: context.textStyles.bodyMedium?.copyWith(
                   fontSize: TextSizes.s,
                   fontWeight: FontWeight.w600,
                   color: typeConfig.actionColor,
@@ -414,7 +414,7 @@ class SnackbarHelper {
             ),
             Text(
               '${(progress * 100).round()}%',
-              style: TextStyle(
+              style: context.textStyles.bodyMedium?.copyWith(
                 fontSize: TextSizes.xs,
                 fontWeight: FontWeight.w600,
                 color: context.colors.primary,
