@@ -52,7 +52,7 @@ class ProfileScreen extends ConsumerWidget {
               ),
               const SizedBox(height: SpacingSizes.xxl),
 
-              // Tutorial Section - Add this
+              // Tutorial Section
               const TutorialSection(),
               const SizedBox(height: SpacingSizes.xxl),
 
@@ -106,6 +106,13 @@ class ProfileScreen extends ConsumerWidget {
               _buildSectionHeader(context, 'Feedback & Support'),
               const SizedBox(height: SpacingSizes.m),
               _buildFeedbackSection(context),
+
+              const SizedBox(height: SpacingSizes.xxl),
+
+              // Buy Me a Coffee Section
+              _buildSectionHeader(context, 'Support the Developer'),
+              const SizedBox(height: SpacingSizes.m),
+              _buildBuyMeCoffeeSection(context),
 
               const SizedBox(height: SpacingSizes.xxl),
 
@@ -175,6 +182,17 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
+  Widget _buildBuyMeCoffeeSection(BuildContext context) {
+    return ListTile(
+      leading: Icon(Icons.coffee_outlined, color: context.colors.primary),
+      title: Text('Buy Me a Coffee', style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.m)),
+      subtitle: Text('Support the development of Anchor',
+          style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.s)),
+      trailing: Icon(Icons.open_in_new, size: 16, color: context.colors.onSurfaceVariant),
+      onTap: () => _launchBuyMeCoffee(context),
+    );
+  }
+
   Widget _buildLegalSection(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -229,6 +247,27 @@ class ProfileScreen extends ConsumerWidget {
     }
   }
 
+  Future<void> _launchBuyMeCoffee(BuildContext context) async {
+    const url = 'https://buymeacoffee.com/ericmacia';
+
+    try {
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(
+          Uri.parse(url),
+          mode: LaunchMode.externalApplication,
+        );
+      } else {
+        if (context.mounted) {
+          _showUrlErrorDialog(context, url);
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        _showUrlErrorDialog(context, url);
+      }
+    }
+  }
+
   void _showUrlErrorDialog(BuildContext context, String url) {
     showDialog(
       context: context,
@@ -238,7 +277,7 @@ class ProfileScreen extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('We couldn\'t open the feedback board automatically.'),
+            const Text('We couldn\'t open the link automatically.'),
             const SizedBox(height: SpacingSizes.s),
             const Text('Please visit:'),
             const SizedBox(height: SpacingSizes.s),
