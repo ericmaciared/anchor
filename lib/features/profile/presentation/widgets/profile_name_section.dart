@@ -196,6 +196,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> with Si
         TextInput(
           text: _currentName,
           label: 'Your name',
+          textAlign: TextAlign.start,
           onTextChanged: _onNameChanged,
         ),
 

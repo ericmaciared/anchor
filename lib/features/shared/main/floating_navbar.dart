@@ -73,10 +73,10 @@ class _IconNavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final duration = const Duration(milliseconds: 200);
+    const duration = Duration(milliseconds: 200);
     final activeColor = context.colors.onSurface;
     final inactiveColor = context.colors.onSurface.withAlpha(ColorOpacities.opacity60);
-    final activeBackgroundColor = context.colors.surfaceContainerHighest.withAlpha(ColorOpacities.opacity40);
+    final activeBackgroundColor = context.colors.surfaceContainerHigh.withAlpha(ColorOpacities.opacity80);
 
     return GestureDetector(
       onTap: onTap,
@@ -90,23 +90,16 @@ class _IconNavItem extends StatelessWidget {
             scale: scale,
             child: AnimatedContainer(
               duration: duration,
+              curve: Curves.ease,
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               decoration: BoxDecoration(
-                color: isActive ? activeBackgroundColor : Colors.transparent,
+                color: isActive ? activeBackgroundColor : activeBackgroundColor.withAlpha(0),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: AnimatedSwitcher(
-                duration: duration,
-                transitionBuilder: (child, animation) => FadeTransition(
-                  opacity: animation,
-                  child: child,
-                ),
-                child: Icon(
-                  icon,
-                  key: ValueKey<bool>(isActive),
-                  color: isActive ? activeColor : inactiveColor,
-                  size: 24,
-                ),
+              child: Icon(
+                icon,
+                color: isActive ? activeColor : inactiveColor,
+                size: 24,
               ),
             ),
           );

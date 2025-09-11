@@ -1,4 +1,3 @@
-import 'package:anchor/core/theme/color_opacities.dart';
 import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_button_widget.dart';
@@ -34,30 +33,8 @@ class WelcomeScreen extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Become better, daily.',
-                            style: context.textStyles.headlineSmall?.copyWith(
-                              shadows: [
-                                Shadow(
-                                  blurRadius: 4.0,
-                                  color: Colors.black.withAlpha(ColorOpacities.opacity20),
-                                  offset: const Offset(2.0, 2.0),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            'anchor.',
-                            style: context.textStyles.displayMedium?.copyWith(
-                              shadows: [
-                                Shadow(
-                                  blurRadius: 4.0,
-                                  color: Colors.black.withAlpha(ColorOpacities.opacity20),
-                                  offset: const Offset(2.0, 2.0),
-                                ),
-                              ],
-                            ),
-                          ),
+                          Text('Become better, daily.', style: context.textStyles.headlineSmall),
+                          Text('anchor.', style: context.textStyles.displayMedium),
                         ],
                       ),
                       Row(

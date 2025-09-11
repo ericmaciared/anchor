@@ -55,8 +55,8 @@ class LiquidGlassCardWidget extends StatelessWidget {
     // Get the primary color for a subtle tint
     final primaryColor = context.colors.primary;
 
-    // Create a base white color with higher opacity for better visibility
-    final baseWhite = Colors.white.withAlpha(ColorOpacities.opacity60);
+    // Create a base color with higher opacity for better visibility
+    final baseWhite = Colors.black.withAlpha(ColorOpacities.opacity10);
 
     // Create a more noticeable tinted version by blending with primary color
     final tintedColor = Color.lerp(baseWhite, primaryColor.withAlpha(ColorOpacities.opacity20), 0.25);

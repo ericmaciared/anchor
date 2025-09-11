@@ -3,6 +3,8 @@ import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/features/shared/widgets/text_input.dart';
+import 'package:anchor/features/shared/widgets/time_input.dart';
+import 'package:anchor/features/shared/widgets/duration_input.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:flutter/material.dart';
 
@@ -92,14 +94,13 @@ class TaskInputSection extends StatelessWidget {
                       Text(
                         'at ',
                         style: context.textStyles.bodyMedium!.copyWith(
-                          fontSize: TextSizes.xxl, // Match other text
-                          fontWeight: FontWeight.w700,
+                          fontSize: TextSizes.xxl, // Match other elements
+                          fontWeight: FontWeight.w700, // Match other elements
                           color: context.colors.onSurface,
                         ),
                       ),
-                      const SizedBox(width: SpacingSizes.xs),
-                      // Create a custom TimeInput to ensure consistent styling
-                      _CustomTimeInput(
+                      // Use your existing TimeInput widget
+                      TimeInput(
                         time: _getTimeOfDay(),
                         onTimeChanged: (time) {
                           if (time != null) {
@@ -114,25 +115,24 @@ class TaskInputSection extends StatelessWidget {
                           }
                         },
                       ),
-                      const SizedBox(width: SpacingSizes.s),
+                      if (showDurationSelector) ...[
+                        Text(
+                          ' for ',
+                          style: context.textStyles.bodyMedium!.copyWith(
+                            fontSize: TextSizes.xxl,
+                            fontWeight: FontWeight.w700,
+                            color: context.colors.onSurface,
+                          ),
+                        ),
+                      ],
                     ],
                     if (showDurationSelector) ...[
-                      Text(
-                        'for ',
-                        style: context.textStyles.bodyMedium!.copyWith(
-                          fontSize: TextSizes.xxl, // Match other text
-                          fontWeight: FontWeight.w700,
-                          color: context.colors.onSurface,
-                        ),
-                      ),
-                      const SizedBox(width: SpacingSizes.xs),
-                      // Create a custom DurationInput to ensure consistent styling
-                      _CustomDurationInput(
-                        duration: task.duration?.inMinutes ?? 30,
-                        onDurationChanged: (minutes) {
-                          _updateTask(task.copyWith(
-                            duration: minutes != null ? Duration(minutes: minutes) : null,
-                          ));
+                      // Use your existing DurationInput widget
+                      DurationInput(
+                        duration: task.duration?.inMinutes,
+                        onDurationChanged: (durationInMinutes) {
+                          final duration = durationInMinutes != null ? Duration(minutes: durationInMinutes) : null;
+                          _updateTask(task.copyWith(duration: duration));
                         },
                       ),
                     ],
@@ -142,125 +142,32 @@ class TaskInputSection extends StatelessWidget {
             ],
           ),
         ),
-
-        // Character count indicator - moved closer to reduce bottom spacing
-        const SizedBox(height: SpacingSizes.xs), // Reduced spacing
-        _buildCharacterCountIndicator(context),
+        const SizedBox(height: SpacingSizes.xs),
+        // Character count indicator
+        _buildCharacterCount(context),
       ],
     );
   }
 
-  Widget _buildCharacterCountIndicator(BuildContext context) {
+  Widget _buildCharacterCount(BuildContext context) {
     final currentLength = task.title.length;
-    final isNearLimit = currentLength > maxTaskTitleLength * 0.8; // Show warning at 80%
-    final isAtLimit = currentLength >= maxTaskTitleLength;
+    final isNearLimit = currentLength > maxTaskTitleLength * 0.8;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: SpacingSizes.m),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            '$currentLength/$maxTaskTitleLength',
-            style: context.textStyles.bodySmall!.copyWith(
-              fontSize: TextSizes.s,
-              color: isAtLimit
-                  ? context.colors.error
-                  : isNearLimit
-                      ? context.colors.secondary
-                      : context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
-              fontWeight: isNearLimit ? FontWeight.w500 : FontWeight.normal,
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text(
+          '$currentLength/$maxTaskTitleLength',
+          style: context.textStyles.bodySmall!.copyWith(
+            color: currentLength > maxTaskTitleLength
+                ? context.colors.error
+                : isNearLimit
+                    ? context.colors.secondary
+                    : context.colors.onSurface.withAlpha(ColorOpacities.opacity60),
+            fontWeight: isNearLimit ? FontWeight.w500 : FontWeight.normal,
           ),
-        ],
-      ),
-    );
-  }
-}
-
-// Custom TimeInput widget to ensure consistent styling
-class _CustomTimeInput extends StatelessWidget {
-  final TimeOfDay time;
-  final ValueChanged<TimeOfDay?> onTimeChanged;
-
-  const _CustomTimeInput({
-    required this.time,
-    required this.onTimeChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        final TimeOfDay? result = await showTimePicker(
-          context: context,
-          initialTime: time,
-        );
-        if (result != null) {
-          onTimeChanged(result);
-        }
-      },
-      child: Text(
-        '${time.hour}:${time.minute.toString().padLeft(2, '0')}',
-        style: context.textStyles.bodyMedium!.copyWith(
-          color: context.colors.primary,
-          fontSize: TextSizes.xxl, // Match other elements
-          fontWeight: FontWeight.w700, // Match other elements
         ),
-      ),
+      ],
     );
-  }
-}
-
-// Custom DurationInput widget to ensure consistent styling
-class _CustomDurationInput extends StatelessWidget {
-  final int? duration;
-  final ValueChanged<int?> onDurationChanged;
-
-  const _CustomDurationInput({
-    required this.duration,
-    required this.onDurationChanged,
-  });
-
-  static const List<int> predefinedDurations = [15, 30, 60, 90, 120];
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        await _showDurationPickerDialog(context);
-      },
-      child: Text(
-        duration != null ? '${duration.toString()} mins' : 'Set duration',
-        style: context.textStyles.bodyMedium!.copyWith(
-          color: context.colors.primary,
-          fontSize: TextSizes.xxl, // Match other elements
-          fontWeight: FontWeight.w700, // Match other elements
-        ),
-      ),
-    );
-  }
-
-  Future<void> _showDurationPickerDialog(BuildContext context) async {
-    // Simplified duration picker for demo
-    final int? result = await showDialog<int>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Select Duration'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: predefinedDurations.map((d) {
-            return ListTile(
-              title: Text('$d minutes'),
-              onTap: () => Navigator.of(context).pop(d),
-            );
-          }).toList(),
-        ),
-      ),
-    );
-
-    if (result != null) {
-      onDurationChanged(result);
-    }
   }
 }
