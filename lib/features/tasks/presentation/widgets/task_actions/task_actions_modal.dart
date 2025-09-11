@@ -1,5 +1,6 @@
 import 'package:anchor/core/theme/color_opacities.dart';
 import 'package:anchor/core/theme/spacing_sizes.dart';
+import 'package:anchor/core/widgets/adaptive_snackbar_widget.dart';
 import 'package:anchor/features/tasks/domain/entities/task_model.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/notification_configurator.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/subtask_editor.dart';
@@ -122,7 +123,18 @@ class _TaskActionsModalState extends State<TaskActionsModal> {
   }
 
   void _submit() {
-    if (_task.title.trim().isEmpty) return;
+    final trimmedTitle = _task.title.trim();
+    if (trimmedTitle.isEmpty) {
+      context.showErrorSnackbar('Task title cannot be empty');
+      return;
+    }
+    if (trimmedTitle.length > 100) {
+      context.showErrorSnackbar('Task title too long (max 100 characters)');
+      return;
+    }
+
+    _task = _task.copyWith(title: trimmedTitle);
+
     widget.onSubmit(_task);
     Navigator.of(context).pop();
   }

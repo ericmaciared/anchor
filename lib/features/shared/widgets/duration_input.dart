@@ -98,12 +98,25 @@ class DurationInput extends StatelessWidget {
                     inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                     onSubmitted: (value) {
                       final int? customMin = int.tryParse(value);
-                      if (customMin != null && customMin > 0) {
-                        HapticService.selection(); // Selection feedback
+                      // REPLACE THIS ENTIRE BLOCK:
+                      if (customMin == null || customMin <= 0) {
+                        HapticService.error();
+                        // Don't show dialog here, just provide haptic feedback
+                        return;
+                      } else if (customMin > 1440) {
+                        // 24 hours = 1440 minutes
+                        HapticService.error();
+                        // Show error but don't close dialog
+                        DialogHelper.showError(
+                          context: context,
+                          title: 'Duration Too Long',
+                          message: 'Duration cannot exceed 24 hours (1440 minutes).',
+                        );
+                        return;
+                      } else {
+                        HapticService.selection();
                         onDurationChanged(customMin);
                         Navigator.of(context).pop();
-                      } else {
-                        HapticService.error(); // Error feedback for invalid input
                       }
                     },
                   ),
@@ -117,18 +130,27 @@ class DurationInput extends StatelessWidget {
       secondaryActionText: 'Cancel',
       onPrimaryAction: () {
         final int? customMin = int.tryParse(customDurationController.text);
-        if (customMin != null && customMin > 0) {
-          HapticService.selection(); // Selection feedback
-          onDurationChanged(customMin);
-          Navigator.of(context).pop();
-        } else {
-          HapticService.error(); // Error feedback
-          // Show error using adaptive dialog
+        if (customMin == null || customMin <= 0) {
+          HapticService.error();
           DialogHelper.showError(
             context: context,
             title: 'Invalid Duration',
-            message: 'Please enter a valid positive number for custom duration.',
+            message: 'Please enter a positive number for duration.',
           );
+          return;
+        } else if (customMin > 1440) {
+          // 24 hours = 1440 minutes
+          HapticService.error();
+          DialogHelper.showError(
+            context: context,
+            title: 'Duration Too Long',
+            message: 'Duration cannot exceed 24 hours (1440 minutes).',
+          );
+          return;
+        } else {
+          HapticService.selection();
+          onDurationChanged(customMin);
+          Navigator.of(context).pop();
         }
       },
       onSecondaryAction: () {

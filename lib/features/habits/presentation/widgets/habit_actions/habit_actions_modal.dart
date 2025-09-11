@@ -3,6 +3,7 @@ import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
 import 'package:anchor/core/widgets/adaptive_dialog_widget.dart'; // Add this import
+import 'package:anchor/core/widgets/adaptive_snackbar_widget.dart';
 import 'package:anchor/features/habits/domain/entities/habit_model.dart';
 import 'package:anchor/features/shared/widgets/text_input.dart';
 import 'package:anchor/features/tasks/presentation/widgets/task_actions/footer_actions.dart';
@@ -43,7 +44,18 @@ class _HabitActionsModalState extends State<HabitActionsModal> {
   }
 
   void _submit() {
-    if (_habit.name.trim().isEmpty) return;
+    final trimmedName = _habit.name.trim();
+    if (trimmedName.isEmpty) {
+      context.showErrorSnackbar('Habit name cannot be empty');
+      return;
+    }
+    if (trimmedName.length > 50) {
+      context.showErrorSnackbar('Habit name too long (max 50 characters)');
+      return;
+    }
+
+    _habit = _habit.copyWith(name: trimmedName);
+
     widget.onSubmit(_habit);
     Navigator.of(context).pop();
   }

@@ -11,17 +11,21 @@ final notificationServiceProvider = Provider<NotificationService>((ref) {
 class NotificationService {
   NotificationService();
 
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
     // Initialize timezone database and set default location
     tz.initializeTimeZones();
-    tz.setLocalLocation(tz.getLocation('Europe/Madrid'));
+    try {
+      final String timeZoneName = tz.local.name;
+      tz.setLocalLocation(tz.getLocation(timeZoneName));
+    } catch (e) {
+      // Fallback to UTC if local timezone detection fails
+      tz.setLocalLocation(tz.UTC);
+    }
 
     // Notification settings for Android and iOS
-    const androidSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosSettings = DarwinInitializationSettings();
 
     const initSettings = InitializationSettings(
@@ -33,10 +37,8 @@ class NotificationService {
   }
 
   /// Schedule a notification using the provided NotificationModel
-  Future<void> scheduleNotification(
-      NotificationModel notification, String title, String subtitle) async {
-    final scheduledTime =
-        tz.TZDateTime.from(notification.scheduledTime, tz.local);
+  Future<void> scheduleNotification(NotificationModel notification, String title, String subtitle) async {
+    final scheduledTime = tz.TZDateTime.from(notification.scheduledTime, tz.local);
 
     if (scheduledTime.isAfter(tz.TZDateTime.now(tz.local))) {
       const androidDetails = AndroidNotificationDetails(
