@@ -2,6 +2,7 @@ import 'package:anchor/core/theme/color_opacities.dart';
 import 'package:anchor/core/theme/spacing_sizes.dart';
 import 'package:anchor/core/theme/text_sizes.dart';
 import 'package:anchor/core/utils/context_extensions.dart';
+import 'package:anchor/core/widgets/adaptive_card_widget.dart';
 import 'package:anchor/features/habits/domain/entities/habit_model.dart';
 import 'package:flutter/material.dart';
 
@@ -48,27 +49,22 @@ class HabitCard extends StatelessWidget {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  child: Padding(
-                    padding: const EdgeInsets.all(SpacingSizes.s),
-                    child: Column(
-                      children: [
-                        Text(
-                          habit.name,
-                          style: context.textStyles.bodyMedium!.copyWith(
-                            fontSize: TextSizes.m,
-                            decoration: isCompletedToday ? TextDecoration.lineThrough : TextDecoration.none,
-                            color: isCompletedToday
-                                ? context.textStyles.titleMedium!.color?.withAlpha(ColorOpacities.opacity60)
-                                : context.textStyles.titleMedium!.color,
-                          ),
+                AdaptiveCardWidget(
+                  borderRadius: 16,
+                  padding: const EdgeInsets.symmetric(vertical: SpacingSizes.s, horizontal: SpacingSizes.m),
+                  child: Column(
+                    children: [
+                      Text(
+                        habit.name,
+                        style: context.textStyles.bodyMedium!.copyWith(
+                          fontSize: TextSizes.m,
+                          decoration: isCompletedToday ? TextDecoration.lineThrough : TextDecoration.none,
+                          color: isCompletedToday
+                              ? context.textStyles.titleMedium!.color?.withAlpha(ColorOpacities.opacity60)
+                              : context.textStyles.titleMedium!.color,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 if (shouldShowStreak) ...[

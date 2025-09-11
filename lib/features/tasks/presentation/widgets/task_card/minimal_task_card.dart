@@ -41,8 +41,8 @@ class MinimalTaskCard extends StatelessWidget {
                   const SizedBox(width: SpacingSizes.s),
                   // Main task card
                   AdaptiveCardWidget(
-                    borderRadius: 12,
-                    padding: const EdgeInsets.all(SpacingSizes.s),
+                    borderRadius: 16,
+                    padding: const EdgeInsets.symmetric(vertical: SpacingSizes.s, horizontal: SpacingSizes.m),
                     child: GestureDetector(
                       onTap: () {
                         // Add haptic feedback for task completion toggle
