@@ -43,6 +43,7 @@ class AnchorApp extends ConsumerWidget {
     );
 
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       title: 'Anchor',
       routerConfig: router,
       themeMode: themeMode,
