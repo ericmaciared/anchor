@@ -110,11 +110,11 @@ class ProfileScreen extends ConsumerWidget {
               const SizedBox(height: SpacingSizes.xxl),
 
               // Buy Me a Coffee Section
-              _buildSectionHeader(context, 'Support the Developer'),
+              /* _buildSectionHeader(context, 'Support the Developer'),
               const SizedBox(height: SpacingSizes.m),
               _buildBuyMeCoffeeSection(context),
 
-              const SizedBox(height: SpacingSizes.xxl),
+              const SizedBox(height: SpacingSizes.xxl),*/
 
               // Legal Section
               _buildSectionHeader(context, 'Legal'),
@@ -182,17 +182,6 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildBuyMeCoffeeSection(BuildContext context) {
-    return ListTile(
-      leading: Icon(Icons.coffee_outlined, color: context.colors.primary),
-      title: Text('Buy Me a Coffee', style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.m)),
-      subtitle: Text('Support the development of Anchor',
-          style: context.textStyles.bodyMedium?.copyWith(fontSize: TextSizes.s)),
-      trailing: Icon(Icons.open_in_new, size: 16, color: context.colors.onSurfaceVariant),
-      onTap: () => _launchBuyMeCoffee(context),
-    );
-  }
-
   Widget _buildLegalSection(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -228,27 +217,6 @@ class ProfileScreen extends ConsumerWidget {
 
   Future<void> _launchFeedbackBoard(BuildContext context) async {
     const url = 'https://anchorapp.canny.io/';
-
-    try {
-      if (await canLaunchUrl(Uri.parse(url))) {
-        await launchUrl(
-          Uri.parse(url),
-          mode: LaunchMode.externalApplication,
-        );
-      } else {
-        if (context.mounted) {
-          _showUrlErrorDialog(context, url);
-        }
-      }
-    } catch (e) {
-      if (context.mounted) {
-        _showUrlErrorDialog(context, url);
-      }
-    }
-  }
-
-  Future<void> _launchBuyMeCoffee(BuildContext context) async {
-    const url = 'https://buymeacoffee.com/ericmacia';
 
     try {
       if (await canLaunchUrl(Uri.parse(url))) {

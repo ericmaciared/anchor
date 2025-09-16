@@ -72,9 +72,5 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
-	<key>UIBackgroundModes</key>
-    <array>
-        <string>background-processing</string>
-    </array>
 </dict>
 </plist>
